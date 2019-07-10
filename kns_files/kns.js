@@ -23,7 +23,7 @@ $(function() {
 	Kns.detailVariant = 1;
 	Kns.result  = [0, 1, 5, 6, 3, 2, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
 	Kns.blocks  = [["Основа", [0, 16], 15, 18, 17], ["Шея и морда", [1, 19, 7, 8, 10, 20, 21], 2, 11], ["Туловище", 3, 9, 12], ["Лапы и хвост", 4, 5, 6, 13, 14]];
-	Kns.actions = [0, 1];
+	Kns.actions = [-1, 0, 1];
 	Kns.info    = [
 		/* 0 */ {name: "Основной цвет", // base
 			noCombine: true,
@@ -232,7 +232,7 @@ $(function() {
 			if (selectedList.length < max && selectedList.length < elems) {
 				canAdd = true;
 			}
-			html += '<table><tr><td><table class="tabledetail" style="margin: auto;">';
+			html += '<table><tr><td><table class="tabledetail">';
 			for (var i = 0; i < selectedList.length; i++) {
 				var style = i != dataNum ? '' : ' class="sel"';
 				var moveup = '';
@@ -243,8 +243,8 @@ $(function() {
 
 				var down = selectedList.length > i + 1;
 				var up = i > 0;
-				moveup = up ? '<a style="width:10px;text-decoration: none;color:black;" id="moveup" data-num="' + i + '" onclick="Kns.moveLine(true, this);">↑</a>' : '';
-				movedown = down ? '<a style="width:10px;text-decoration: none;color:black;" id="movedown" data-num="' + i + '" onclick="Kns.moveLine(false, this);">↓</a>' : '';
+				moveup = up ? '<a id="moveup" data-num="' + i + '" onclick="Kns.moveLine(true, this);">↑</a>' : '';
+				movedown = down ? '<a id="movedown" data-num="' + i + '" onclick="Kns.moveLine(false, this);">↓</a>' : '';
 				var name;
 				switch (Kns.detailVariant) {
 					case 1:
@@ -278,13 +278,13 @@ $(function() {
 				}
 			}
 			if (canAdd) {
-				html += '<tr><td></td><td></td><td><a onclick="Kns.addDetail();" style="text-decoration: none;color:black;">+</a></td></tr>';
+				html += '<tr><td></td><td></td><td><a onclick="Kns.addDetail();" class="a_none">+</a></td></tr>';
 			}
 			html += "</table></td>";
 			switch (Kns.detailVariant) {
 				case 1:
 					if (dataNum >= 0 && dataNum < selectedList.length) {
-						html += '<td><div style="border: 1px #000 solid; box-sizing: border-box; width: 130px; height: 300px; overflow: auto;"><table style="border-width: 0;" class="tabledetail"><tr>';
+						html += '<td><div style="border: 1px #000 solid; box-sizing: border-box; width: 130px; height: 300px; overflow: auto;"><table style="border-width: 0; margin: auto;" class="tabledetail"><tr>';
 						var line = 0;
 						for (id in info) {
 							if (!info.hasOwnProperty(id)) {
@@ -467,7 +467,7 @@ $(function() {
 				html += '</tr><tr>';
 				width = 0;
 			}
-			html += '<td><div style="margin: 1px; background: ' + bg + ' center no-repeat; border-width: 1px; box-sizing: border-box; border-style: solid" title="' + name + '" data-num="' + i + '"' + (i == colour ? ' class="selected_colour"' : '') + '> </div></td>';
+			html += '<td><div style="background: ' + bg + ' center no-repeat; border-width: 1px; box-sizing: border-box; border-style: solid" title="' + name + '" data-num="' + i + '"' + (i == colour ? ' class="selected_colour"' : '') + '> </div></td>';
 			width += 32;
 		}
 		html += '</tr></table>';

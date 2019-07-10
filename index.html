@@ -14,9 +14,9 @@
 </select></label>
 <table><tr>
 <!-- БЛОК С ВЫБОРОМ ТЕЛОСЛОЖЕНИЯ -->
-<td style="min-width: 150px;"><div id="blocks" style="padding: 1px; height: 300px; overflow: auto; border: 1px solid #000; box-sizing: border-box; width: 100%;"></div></td>
+<td style="min-width: 150px;"><div id="blocks" style="padding: 5px; height: 300px; overflow: auto; border: 1px solid #000; box-sizing: border-box; width: 100%;"></div></td>
 <!-- БЛОК С ФОНОМ ЗА КОТОМ -->
-<td style="min-width: 400px;"><div id="field" style="height: 300px; overflow: auto; border: 5px solid #000; box-sizing: border-box; width: 100%; background: url(spacoj/0.jpg) center no-repeat ;">
+<td style="min-width: 350px;"><div id="field" style="height: 300px; overflow: auto; border: 5px solid #000; box-sizing: border-box; width: 100%; background: url(spacoj/0.jpg) center no-repeat ;">
 <!-- БЛОК С ВЫБОРОМ ФОНА -->
 <table style="width: 100%;"><tr><td id="cat"></td><td style="width: 30px;"><div style="height:290px; overflow: overlay;"><table id="area" style="width: 100%;border-collapse: separate;border-spacing: 0;">
 <!-- перечисление доступных фонов -->
@@ -31,7 +31,7 @@
 <tr><td style="background: url(spacoj/7.jpg); background-size: 200%;" class="field_palette"/></tr>
 </table></div></td></tr></table>
 </div></td>
-<!-- БЛОК С ВЫБОРОМ ЭЛЕМЕНТОВ -->
+<!-- БЛОК С ЭЛЕМЕНТАМИ -->
 <td id="detail" style="height: 300px; overflow: auto; min-width: 200px;"></td>
 <td/></tr>
 <!-- ПАЛИТРА -->
@@ -44,7 +44,7 @@
 <p><b>Поскольку вам больше 275 лун и вы только что переродились, вы обладаете невероятно редкой возможностью выбрать гетерохромию, один из особых окрасов и/или фиолетовые глаза. Поспешите: это возможно только до 0.5 лун после перерождения.</b></p>
 
 <p><a href="#" id="random">Случайный окрас</a> | <a href="#" id="random2">Очень случайный окрас</a> | <a href="#" id="reset">Сбросить</a></p>
-<label><b>Код окраса:</b><input style="margin-left: 10px;" id="code" onchange="Kns.parseCode(this);"></label><br>
+<label>Код окраса:<input id="code" onchange="Kns.parseCode(this);"></label><br>
 
 
 </td></tr></table></div>
