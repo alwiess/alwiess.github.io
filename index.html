@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- saved from url=(0025)https://catwar.su/cw3/kns -->
+<html xmlns="http://www.w3.org/1999/html"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Конструктор окрасов / CatWar</title><noscript>&lt;meta http-equiv="refresh" content="0; URL=/noscript"&gt;</noscript><script type="text/javascript" async="" src="./kns_files/watch_ua.js"></script><script>var p = '9b73b7fa022a99bb78b4efc7c4a4f2ca', s = '1920x1080x24', t = '3', u = 'catwar.su', c = '5fc330c14ca9c0f0a040e0e9341636ad', o = '5708d4dfb33cb11068eabafa76535b2e', f = false;</script><link rel="stylesheet" href="./kns_files/blank.css"><link rel="stylesheet" href="./kns_files/jquery-ui.css"><link rel="stylesheet" href="./kns_files/kns.css"><script src="./kns_files/jquery.js"></script><script src="./kns_files/vue.js"></script><script src="./kns_files/jquery-ui.js"></script><script src="./kns_files/func.js"></script><script src="./kns_files/kns.js"></script><script src="./kns_files/ssl.js"></script><script async="" src="./kns_files/all.js"></script></head><body>
+<p id="error"></p>
+<div id="main" data-vip="0" style="width: fit-content;"><h2>Конструктор окрасов</h2>
+
+<label style="display: inherit;"><input type="checkbox" onchange="Func.isGenerate = this.checked;Kns.drawCat();">Генерация вместо скрипта</label>
+<label style="display: inherit;"><input type="checkbox" onchange="Kns.detailVariant = this.checked ? 1 : 0;Kns.drawDetail();" checked>Кружочки</label>
+<label>Режим<select onchange="Kns.vip(this.value); Kns.refresh(true, false, false, true);">
+<option value="0">Обычный КО</option>
+<option value="1">75 лун</option>
+<option value="2">75 лун и могущество</option>
+<option value="3">275 лун</option>
+</select></label>
+<table><tr>
+<!-- БЛОК С ВЫБОРОМ ТЕЛОСЛОЖЕНИЯ -->
+<td style="min-width: 150px;"><div id="blocks" style="padding: 1px; height: 300px; overflow: auto; border: 1px solid #000; box-sizing: border-box; width: 100%;"></div></td>
+<!-- БЛОК С ФОНОМ ЗА КОТОМ -->
+<td style="min-width: 400px;"><div id="field" style="height: 300px; overflow: auto; border: 5px solid #000; box-sizing: border-box; width: 100%; background: url(spacoj/0.jpg) center no-repeat ;">
+<!-- БЛОК С ВЫБОРОМ ФОНА -->
+<table style="width: 100%;"><tr><td id="cat"></td><td style="width: 30px;"><div style="height:290px; overflow: overlay;"><table id="area" style="width: 100%;border-collapse: separate;border-spacing: 0;">
+<!-- перечисление доступных фонов -->
+<tr><td style="background: #FFDEAD;" class="field_palette"/></tr>
+<tr><td style="background: url(spacoj/0.jpg); background-size: 200%;" class="field_palette selected_field"/></tr>
+<tr><td style="background: url(spacoj/1.jpg); background-size: 200%;" class="field_palette"/></tr>
+<tr><td style="background: url(spacoj/2.jpg); background-size: 200%;" class="field_palette"/></tr>
+<tr><td style="background: url(spacoj/3.jpg); background-size: 200%;" class="field_palette"/></tr>
+<tr><td style="background: url(spacoj/4.jpg); background-size: 200%;" class="field_palette"/></tr>
+<tr><td style="background: url(spacoj/5.jpg); background-size: 200%;" class="field_palette"/></tr>
+<tr><td style="background: url(spacoj/6.jpg); background-size: 200%;" class="field_palette"/></tr>
+<tr><td style="background: url(spacoj/7.jpg); background-size: 200%;" class="field_palette"/></tr>
+</table></div></td></tr></table>
+</div></td>
+<!-- БЛОК С ВЫБОРОМ ЭЛЕМЕНТОВ -->
+<td id="detail" style="height: 300px; overflow: auto; min-width: 200px;"></td>
+<td/></tr>
+<!-- ПАЛИТРА -->
+<tr><td colspan="4"><div id="color" style="margin-top: 10px; margin-bottom: 10px;"></div></td></tr>
+<!-- ХРЕНЬ НИЖЕ ПАЛИТРЫ -->
+<tr><td colspan="4" style="max-width: 0;">
+<!-- СОХРАНИТЬ ОКРАС? -->
+<div id="confirm" style="display:none"><p id="confirm_text">?</p> <input type="submit" value="OK" id="confirm_yes"> <input type="submit" value="Отмена" id="confirm_no"></div>
+<input type="submit" value="Сохранить" id="sbm">
+<p><b>Поскольку вам больше 275 лун и вы только что переродились, вы обладаете невероятно редкой возможностью выбрать гетерохромию, один из особых окрасов и/или фиолетовые глаза. Поспешите: это возможно только до 0.5 лун после перерождения.</b></p>
+
+<p><a href="#" id="random">Случайный окрас</a> | <a href="#" id="random2">Очень случайный окрас</a> | <a href="#" id="reset">Сбросить</a></p>
+<label><b>Код окраса:</b><input style="margin-left: 10px;" id="code" onchange="Kns.parseCode(this);"></label><br>
+
+
+</td></tr></table></div>
+
+<script>(function(d,w,c){(w[c]=w[c]||[]).push(function(){try{w.yaCounter6984625=new Ya.Metrika({id:6984625,clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true})}catch(e){}});var n=d.getElementsByTagName("script")[0],s=d.createElement("script"),f=function(){n.parentNode.insertBefore(s,n)};s.type="text/javascript";s.async=true;s.src="https://d31j93rd8oukbv.cloudfront.net/metrika/watch_ua.js";if(w.opera=="[object Opera]"){d.addEventListener("DOMContentLoaded",f,false)}else{f()}})(document,window,"yandex_metrika_callbacks");</script><div style="visibility:hidden"><noscript>&lt;img src="https://mc.yandex.ru/watch/6984625" style="position:absolute;left:-9999px" alt=""&gt;</noscript></div>
+<div id="tiptip_holder" style="max-width:200px;"><div id="tiptip_arrow"><div id="tiptip_arrow_inner"></div></div><div id="tiptip_content"></div></div></body></html>

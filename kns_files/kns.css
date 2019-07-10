@@ -1,0 +1,40 @@
+table {
+	border-collapse: collapse;
+}
+p, h2 {
+	margin: 7px 0;
+}
+td {
+	padding: 0;
+}
+#main {
+	margin: auto;
+}
+#color div, #area td, .tabledetail div {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	border-spacing: 5px 5px;
+}
+.sel, .selected_block, .selected_colour, .selected_field {
+	font-weight: bold;
+	border-color: red;
+	border-width: 0;
+	border-style: solid;
+}
+.field_palette {
+	border-width: 1px;
+	border-style: solid;
+	box-sizing: border-box;
+}
+#lock {
+	cursor: pointer;
+}
+#confirm {
+	background: #AD8446;
+	width: 400px;
+	height: 72px;
+	margin: 5px 0;
+	padding: 5px;
+	border-radius: 5px;
+}
