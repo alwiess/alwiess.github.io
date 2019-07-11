@@ -284,7 +284,7 @@ $(function() {
 			switch (Kns.detailVariant) {
 				case 1:
 					if (dataNum >= 0 && dataNum < selectedList.length) {
-						html += '<td><div style="border: 1px #000 solid; box-sizing: border-box; width: 130px; height: 300px; overflow: auto;"><table style="border-width: 0; margin: auto;" class="tabledetail"><tr>';
+						html += '<td><div style="margin-left: 5px; solid; box-sizing: border-box; border: 0; width: 130px; height: 300px; overflow: auto;"><table style="border-width: 2; margin: auto;" class="tabledetail"><tr>';
 						var line = 0;
 						for (id in info) {
 							if (!info.hasOwnProperty(id)) {

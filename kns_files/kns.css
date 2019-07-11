@@ -1,3 +1,26 @@
+::-webkit-scrollbar-track { 
+background-color: #FFDEAD;  
+} 
+
+::-webkit-scrollbar-thumb {
+border-radius: 5px;
+background-color:#e5bd7f ;
+background-image:url('https://yraaa.ru/_pu/24/59610063.png'); 
+background-position:center; 
+background-repeat:no-repeat; 
+} 
+
+::-webkit-resizer{ 
+background-image:url(''); 
+background-repeat:no-repeat; 
+width:7px; 
+height:0px 
+} 
+
+::-webkit-scrollbar{ 
+width: 11px; 
+}
+
 table {
 	border-collapse: collapse;
 }
@@ -14,7 +37,6 @@ td {
 	width: 30px;
 	height: 30px;
 	border-radius: 50%;
-	box-sizing: border-box;
 	margin: 1px;
 	padding: 1px;
 }
@@ -44,4 +66,5 @@ td {
 	width:10px;
 	text-decoration: none;
 	color:black;
+	margin-left: 5px;
 }
