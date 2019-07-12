@@ -560,7 +560,7 @@ $(function() {
 			Kns.info[numRightEye] = {};
 			return;
 		}
-		Kns.info[numLeftEye].name = "Левый глаз";
+		Kns.info[numLeftEye].name = "Глаза";
 		if (vipLevel < 2) {
 			return;
 		}
