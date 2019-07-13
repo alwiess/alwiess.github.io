@@ -341,7 +341,7 @@ $(function() {
 				id = parent + '/' + id;
 			}
 		}
-		return Func.getUrlStyle(0, Func.folders.animationCode[Kns.unresult(Sel.now)], id) + 'background-size: 100%;';
+		return Func.getUrlStyle(0, Func.folders.animationCode[Kns.unresult(Sel.now)], id);
 	};
 
 	Kns.refresh = function(allnew, detailnotnew, noblocks, newselect, nodetail, nocats) {
