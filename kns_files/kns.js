@@ -178,7 +178,7 @@ $(function() {
 					}
 					for (var j = 0; j < all_n.length; j++) {
 						var n = all_n[j];
-						var hide = Sel.main[numBase] > normalBases && !numSpecialEdits.includes(n);
+						var hide = Sel.main[numBase] > normalBases && numSpecialEdits.indexOf(n) === -1;
 						hide |= !Sel.main[numManeBase][0] && n == numManeElement;
 						hide |= !Sel.main[numTuftBase][0] && n == numTuftElement;
 						try {
@@ -263,7 +263,7 @@ $(function() {
 							if (!info.hasOwnProperty(id)) {
 								continue;
 							}
-							if (selectedList.includes(id) && selectedList[i] != id) {
+							if (selectedList.indexOf(id) !== -1 && selectedList[i] != id) {
 								continue;
 							}
 							name = info[id];
@@ -290,7 +290,7 @@ $(function() {
 							if (!info.hasOwnProperty(id)) {
 								continue;
 							}
-							if (selectedList.includes(id) && id != selectedList[dataNum]) {
+							if (selectedList.indexOf(id) !== -1 && id != selectedList[dataNum]) {
 								continue;
 							}
 							name = info[id];
@@ -410,7 +410,7 @@ $(function() {
 			if (!info.hasOwnProperty(part)) {
 				continue;
 			}
-			if (selectedList.includes(part)) {
+			if (selectedList.indexOf(part) !== -1) {
 				continue;
 			}
 			var palette = info[palette] || 0;
@@ -495,7 +495,10 @@ $(function() {
 		}
 		Kns.refresh(true);
 	};
-	Kns.random = function(coeff = 0.5) {
+	Kns.random = function(coeff) {
+		if (coeff === undefined) {
+			coeff = 0.5;
+		}
 		Sel.random = true;
 		Kns.reset();
 		for (var i = 0; i < Kns.info.length; i++) {
@@ -508,7 +511,7 @@ $(function() {
 				continue;
 			}
 			for (var dataNum = 0; dataNum < ((Kns.info[i].noVariations || Kns.info[i].noCombine) ? 1 : 5); dataNum++) {
-				if (Math.random() >= coeff && !numObligatory.includes(i) || Sel.main[numBase][0] > normalBases && !numSpecialEdits.includes(i)) {
+				if (Math.random() >= coeff && numObligatory.indexOf(i) === -1 || Sel.main[numBase][0] > normalBases && numSpecialEdits.indexOf(i) === -1) {
 					continue;
 				}
 				var result = [];
@@ -519,7 +522,7 @@ $(function() {
 						if (!Kns.info[i].info.hasOwnProperty(onepart)) {
 							continue;
 						}
-						if (pastParts.includes(onepart)) {
+						if (pastParts.indexOf(onepart) !== -1) {
 							continue;
 						}
 						parts.push(onepart);
@@ -608,7 +611,7 @@ $(function() {
 				} else {
 					Sel.main[num] = [];
 				}
-				if (Sel.main[numBase] > normalBases && !numSpecialEdits.includes(num)) {
+				if (Sel.main[numBase] > normalBases && numSpecialEdits.indexOf(num) === -1) {
 					Sel.main[num] = [];
 				}
 				continue;
@@ -678,7 +681,7 @@ $(function() {
 						Kns.error("Ошибочная строка, сохранение невозможно: слишком много элементов");
 						return;
 					}
-					var obligatory = numObligatory.includes(Kns.result[i]) && (Sel.main[numBase][0] <= normalBases || Sel.main[numBase][0] > normalBases && numSpecialEdits.includes(Kns.result[i]));
+					var obligatory = numObligatory.indexOf(Kns.result[i]) !== -1 && (Sel.main[numBase][0] <= normalBases || Sel.main[numBase][0] > normalBases && numSpecialEdits.indexOf(Kns.result[i]) !== -1);
 					if (now.length < 1 && obligatory) {
 						Kns.error("Ошибочная строка, сохранение невозможно: не выбраны обязательные элементы");
 						return;
@@ -708,7 +711,7 @@ $(function() {
 								Kns.error("Ошибочная строка, сохранение невозможно: неверный цвет");
 								return;
 							}
-							if (oldLayers.includes(parts[0])) {
+							if (oldLayers.indexOf(parts[0]) !== -1) {
 								Kns.error("Ошибочная строка, сохранение невозможно: повторяющийся элемент");
 								return;
 							}
@@ -757,7 +760,7 @@ $(function() {
 		}
 		if (Sel.now == numBase && num > normalBases) {
 			for (var i = 0; i < Kns.info.length; i++) {
-				if (numSpecialEdits.includes(i)) {
+				if (numSpecialEdits.indexOf(i) !== -1) {
 					continue;
 				}
 				Sel.main[i] = [];
@@ -767,7 +770,7 @@ $(function() {
 			Sel.main[numTailBase] = [Kns.info[numTailBase].default];
 			Sel.main[numEarBase] = [Kns.info[numEarBase].default];
 		}
-		if (Sel.main[numBase][0] > normalBases && !numSpecialEdits.includes(Sel.now) && num > 0) {
+		if (Sel.main[numBase][0] > normalBases && numSpecialEdits.indexOf(Sel.now) === -1 && num > 0) {
 			Kns.error("На особых окрасах нельзя выбирать какие-либо элементы.");
 			return;
 		}
