@@ -278,7 +278,7 @@ $(function() {
 				}
 			}
 			if (canAdd) {
-				html += '<tr><td></td><td></td><td><a onclick="Kns.addDetail();" class="a_none">+</a></td></tr>';
+				html += '<tr><td></td><td></td><td><a onclick="Kns.addDetail();" style="font-size: 20px;" class="a_none"><b>+</b></a></td></tr>';
 			}
 			html += "</table></td>";
 			switch (Kns.detailVariant) {
