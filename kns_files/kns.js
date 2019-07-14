@@ -486,7 +486,11 @@ $(function() {
 				newArr.push(val);
 			}
 		}
+		var isNew = Sel.main[el].length != newArr.length;
 		Sel.main[el] = newArr;
+		if (isNew) {
+			Kns.drawDetail(false);
+		}
 	};
 	Kns.reset = function() {
 		Sel.main = [];
@@ -805,7 +809,7 @@ $(function() {
 		}
 		Sel.main[Sel.now][dataNum] = num;
 		Kns.cleanMain(Sel.now);
-		Kns.refresh(false, true);
+		Kns.refresh(false, true, false, false, true);
 	});
 	
 	$("#random").on("click", function() {
