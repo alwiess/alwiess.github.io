@@ -18,8 +18,9 @@ $(function() {
 	var numLeftEye = 1;
 	var numRightEye = 19;
 	var numRightHindPaw = 14;
+	var numWhisker = 22;
 	var numSpecialEdits = [numBase, numLeftEye, numRightEye];
-	var numObligatory = [numBase, numTailBase, numEarBase, numLeftEye];
+	var numObligatory = [numBase, numTailBase, numEarBase, numLeftEye, numWhisker];
 	Kns.detailVariant = 1;
 	Kns.result  = [0, 1, 5, 6, 3, 2, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 	Kns.blocks  = [["Основа", [0, 22, 16], 15, 18, 17], ["Шея и морда", [1, 19, 7, 8, 10, 20, 21], 2, 11], ["Туловище", 3, 9, 12], ["Лапы и хвост", 4, 5, 6, 13, 14]];
@@ -88,7 +89,7 @@ $(function() {
 		/* 20 */ {name: "Грива", // elements/mane
 			info: {"1": "Брызги", "2": "Пятнышки", "3": "Пятна", "4": "Полосы", "5": "Пламенные полосы", "6": "Мрамор", "7": "Ремень", "8": "Узкий ремень", "9": "Налёт", "10": "Затушёвка"}},
 		/* 21 */ {name: "Шерсть", // elements/hair
-		info: {"1": "Левая", "2": "Правая"}},
+		info: {"1": "Левая", "2": "Правая", "3": "Брызги слева", "4": "Брызги справа", "5": "Пятна слева", "6": "Пятна справа", "7": "Полосы слева", "8": "Полосы справа"}},
 		/* 22 */ {name: "Усы", // elements/whisker
 			noCombine: true,
 			default: "1/1",
