@@ -23,6 +23,7 @@ $(function() {
 	var numObligatory = [numBase, numTailBase, numEarBase, numLeftEye, numWhisker];
 	var paletteSpecialBases = 2;
 	var paletteVioletEyes = 3;
+	var detailsMax = 8;
 	Kns.detailVariant = 1;
 	Kns.result  = [0, 1, 5, 6, 3, 2, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 	Kns.blocks  = [["Основа", [0, 22, 16], 15, 18, 17], ["Шея и морда", [1, 19, 7, 8, 10, 20, 21], 2, 11], ["Туловище", 3, 9, 12], ["Лапы и хвост", 4, 5, 6, 13, 14]];
@@ -229,7 +230,7 @@ $(function() {
 			Sel.nowSelected = selectedList[dataNum];
 			var max = 1;
 			if (!Kns.info[Sel.now].noCombine && !Kns.info[Sel.now].noVariations) {
-				max = 5;
+				max = detailsMax;
 			}
 			var elems = 0;
 			for (var id in info) {
@@ -540,7 +541,7 @@ $(function() {
 			if (!Kns.info[i] || !Kns.info[i].name) {
 				continue;
 			}
-			for (var dataNum = 0; dataNum < ((Kns.info[i].noVariations || Kns.info[i].noCombine) ? 1 : 5); dataNum++) {
+			for (var dataNum = 0; dataNum < ((Kns.info[i].noVariations || Kns.info[i].noCombine) ? 1 : detailsMax); dataNum++) {
 				if (Math.random() >= coeff && numObligatory.indexOf(i) === -1 || Sel.main[numBase][0] > normalBases && numSpecialEdits.indexOf(i) === -1) {
 					continue;
 				}
@@ -707,7 +708,7 @@ $(function() {
 					}
 					var now = Sel.main[Kns.result[i]];
 					var info = Kns.info[Kns.result[i]];
-					if (now.length > (info.noVariations || info.noCombine ? 1 : 5)) {
+					if (now.length > (info.noVariations || info.noCombine ? 1 : detailsMax)) {
 						Kns.error("Ошибочная строка, сохранение невозможно: слишком много элементов");
 						return;
 					}
