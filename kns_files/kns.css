@@ -4,7 +4,7 @@ background-color: #FFDEAD;
 
 ::-webkit-scrollbar-thumb {
 border-radius: 5px;
-background-color:#e5bd7f ;
+background-color:#e5bd7f;
 background-image:url('https://yraaa.ru/_pu/24/59610063.png'); 
 background-position:center; 
 background-repeat:no-repeat; 
@@ -14,7 +14,7 @@ background-repeat:no-repeat;
 background-image:url(''); 
 background-repeat:no-repeat; 
 width:7px; 
-height:0px 
+height:0px;
 } 
 
 ::-webkit-scrollbar{ 
@@ -37,8 +37,20 @@ td {
 	width: 30px;
 	height: 30px;
 	border-radius: 50%;
+	box-sizing: border-box;
 	margin: 1px;
-	padding: 1px;
+}
+.tabledetail div {
+	width: 34px;
+	height: 34px;
+	box-sizing: content-box;
+}
+.tabledetail td {
+	vertical-align: middle;
+	text-align: center;
+}
+.potent_sel {
+	border: 1px black solid;
 }
 .sel, .selected_block, .selected_colour, .selected_field {
 	font-weight: bold;
@@ -62,9 +74,61 @@ td {
 	padding: 5px;
 	border-radius: 5px;
 }
-.a_none, #moveup, #movedown {
-	width:10px;
+.a_none, #moveup, #movedown, .a_none:hover, #moveup:hover, #movedown:hover {
 	text-decoration: none;
-	color:black;
-	margin-left: 5px;
+	color: black;
+}
+.a_none {
+	font-weight: bold;
+	font-size: 20px;
+}
+.tdarrow {
+	width: 8px;
+}
+.td_x {
+	width: 17px;
+}
+td.td_plus {
+	text-align: left;
+	padding-left: 5px;
+}
+.detailslist {
+	border: 0;
+	width: 125px;
+	height: 300px;
+	overflow: auto;
+}
+
+/*index.html*/
+.blocks {
+	min-width: 190px;
+	max-width: 190px;
+}
+#blocks {
+	padding: 5px;
+	height: 300px;
+	overflow: auto;
+	border: 1px solid black;
+	box-sizing: border-box;
+	width: 100%;
+}
+.field {
+	min-width: 350px;
+	max-width: 350px;
+}
+#field {
+	height: 300px;
+	overflow: auto;
+	border: 5px solid #000;
+	box-sizing: border-box;
+	width: 100%;
+}
+#detail {
+	height: 300px;
+	overflow: auto;
+	min-width: 200px;
+	max-width: 200px;
+}
+#color {
+	margin: 10px 0 10px 0;
 }

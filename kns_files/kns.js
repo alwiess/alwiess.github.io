@@ -21,6 +21,8 @@ $(function() {
 	var numWhisker = 22;
 	var numSpecialEdits = [numBase, numLeftEye, numRightEye];
 	var numObligatory = [numBase, numTailBase, numEarBase, numLeftEye, numWhisker];
+	var paletteSpecialBases = 2;
+	var paletteVioletEyes = 3;
 	Kns.detailVariant = 1;
 	Kns.result  = [0, 1, 5, 6, 3, 2, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 	Kns.blocks  = [["Основа", [0, 22, 16], 15, 18, 17], ["Шея и морда", [1, 19, 7, 8, 10, 20, 21], 2, 11], ["Туловище", 3, 9, 12], ["Лапы и хвост", 4, 5, 6, 13, 14]];
@@ -29,12 +31,11 @@ $(function() {
 		/* 0 */ {name: "Основной цвет", // base
 			noCombine: true,
 			default: 1,
-			palette: 1,
 			noVariations: true},
 		/* 1 */ {name: "Глаза", // elements/eyes
 			noCombine: true,
 			default: 12,
-			palette: 2,
+			palette: 1,
 			noVariations: true},
 		/* 2 */ {name: "Морда", // elements/head
 			info: {"1": "Полосочки", "2": "Полосы", "3": "Извилистые полосы", "4": "Полосы от щёк", "5": "Разорванные полосы от щёк", "6": "Полосы вокруг бровей", "7": "Полосы до глаз", "8": "Пламенные полосы", "9": "Полосы на лбу", "10": "Разорванные полосы на лбу", "11": "Полосы на носу", "12": "Мрамор", "13": "Ремень", "14": "Узкий ремень", "15": "Половина ремня", "16": "Половина узкого ремня", "17": "Брызги", "18": "Брызги на носу", "19": "Пятнышки", "20": "Пятнышки под глазами", "21": "Пятна", "22": "Леопардовые пятнышки", "23": "Маленькая маска", "24": "Маска", "25": "Маска без глаз", "26": "Маска с глазами", "27": "Бородка", "28": "Бородка с щеками", "29": "Подбородок", "30": "Подбородок с щеками", "31": "Брови", "32": "Рысьи брови", "33": "Вибриссы", "34": "Отметина под носом", "35": "Внешняя сторона губ", "36": "Губы", "37": "Щипец", "38": "Пятно меж глаз", "39": "Переносица", "40": "Клякса на нос", "41": "Отметины на скулах", "42": "Щёки полностью", "43": "Макушка", "44": "Шапка", "45": "Подпалины на лбу", "46": "Отметина справа морды", "47": "Отметина на глазу", "48": "Слеза", "49": "Пятно на лбу", "50": "Отметины над глазами №1", "51": "Отметины над глазами №2", "52": "Отметины под глазами №1", "53": "Отметины под глазами №2", "54": "Отметина в половину носа", "55": "Отметина на нос", "56": "Левая половина морды №1", "57": "Левая половина морды №2", "58": "Левая половина морды №3", "59": "Левая половина морды №4", "60": "Правая половина морды №1", "61": "Правая половина морды №2", "62": "Правая половина морды №3", "63": "Правая половина морды №4", "64": "Большое пятно №1", "65": "Большое пятно №2", "66": "Большое пятно №3", "67": "Большое пятно №4", "68": "Большое пятно №5", "69": "Слабый налёт", "70": "Налёт", "71": "Слабая затушёвка", "72": "Затушёвка"}},
@@ -76,7 +77,6 @@ $(function() {
 			noCombine: true,
 			type: true,
 			default: "1/1",
-			palette: 1,
 			info: {1: "Торчком", 2: "Висячие", 3: "Длинные"}},
 		/* 18 */ {name: "Шерсть", // base_hair
 			noCombine: true,
@@ -84,7 +84,7 @@ $(function() {
 			info: {1: "На щёках №1", 2: "На щёках №2", 3: "На щёках №3"}},
 		/* 19 */ {name: "Правый глаз", // elements/eye_right
 			noCombine: true,
-			palette: 2,
+			palette: 1,
 			noVariations: true},
 		/* 20 */ {name: "Грива", // elements/mane
 			info: {"1": "Брызги", "2": "Пятнышки", "3": "Пятна", "4": "Полосы", "5": "Пламенные полосы", "6": "Мрамор", "7": "Ремень", "8": "Узкий ремень", "9": "Налёт", "10": "Затушёвка"}},
@@ -93,23 +93,21 @@ $(function() {
 		/* 22 */ {name: "Усы", // elements/whisker
 			noCombine: true,
 			default: "1/1",
-			palette: 5,
+			palette: 4,
 			info: {"1": "Прямые", "2": "Прямые длинные", "3": "Кудрявые"}}
 	];
 	Kns.backupInfo = JSON.parse(JSON.stringify(Kns.info));
 	Kns.palette = [
-		/* ОСНОВНОЙ ЦВЕТ -- ЭЛЕМЕНТЫ */
-		/* 0 */ {"0": {name: "Не выделяется", image: "+0"},"1": {name: "Кремовый", colour: "#f5e5ce"},"2": {name: "Белоснежный", colour: "#ffffff"},"3": {name: "Белый", colour: "#e6e6e6"},"4": {name: "Серебристый", colour: "#d1d1d1"},"5": {name: "Серый", colour: "#9e9e9e"},"6": {name: "Дымчатый", colour: "#5c5c5c"},"7": {name: "Чёрный", colour: "#242424"},"8": {name: "Угольно-чёрный", colour: "#141414"},"9": {name: "Иссиня-чёрный", colour: "#1d212c"},"10": {name: "Чернобурый", colour: "#2b1d1c"},"11": {name: "Бурый", colour: "#3d1c0b"},"12": {name: "Шоколадный", colour: "#6b3c28"},"13": {name: "Фавн", colour: "#9a715f"},"14": {name: "Медный", colour: "#bd6d32"},"15": {name: "Огненный", colour: "#cb4402"},"16": {name: "Красный", colour: "#e15c0f"},"17": {name: "Рыжий", colour: "#ed9b2d"},"18": {name: "Золотистый", colour: "#e5bd7f"},"19": {name: "Палевый", colour: "#d7ae98"},"20": {name: "Лиловый", colour: "#b19798"},"21": {name: "Голубой", colour: "#a6b4b7"},"22": {name: "Серо-голубой", colour: "#697a8a"},"23": {name: "Дымчато-голубой", colour: "#465165"},"24": {name: "Черничный", colour: "#323d51"}},
-		/* ОСНОВНОЙ ЦВЕТ -- БАЗЫ */
-		/* 1 */ {'0': {name: '', colour: ""},"1": {name: "Кремовый", colour: "#f5e5ce"},"2": {name: "Белоснежный", colour: "#ffffff"},"3": {name: "Белый", colour: "#e6e6e6"},"4": {name: "Серебристый", colour: "#d1d1d1"},"5": {name: "Серый", colour: "#9e9e9e"},"6": {name: "Дымчатый", colour: "#5c5c5c"},"7": {name: "Чёрный", colour: "#242424"},"8": {name: "Угольно-чёрный", colour: "#141414"},"9": {name: "Иссиня-чёрный", colour: "#1d212c"},"10": {name: "Чернобурый", colour: "#2b1d1c"},"11": {name: "Бурый", colour: "#3d1c0b"},"12": {name: "Шоколадный", colour: "#6b3c28"},"13": {name: "Фавн", colour: "#9a715f"},"14": {name: "Медный", colour: "#bd6d32"},"15": {name: "Огненный", colour: "#cb4402"},"16": {name: "Красный", colour: "#e15c0f"},"17": {name: "Рыжий", colour: "#ed9b2d"},"18": {name: "Золотистый", colour: "#e5bd7f"},"19": {name: "Палевый", colour: "#d7ae98"},"20": {name: "Лиловый", colour: "#b19798"},"21": {name: "Голубой", colour: "#a6b4b7"},"22": {name: "Серо-голубой", colour: "#697a8a"},"23": {name: "Дымчато-голубой", colour: "#465165"},"24": {name: "Черничный", colour: "#323d51"}},
+		/* ОСНОВНОЙ ЦВЕТ -- ЭЛЕМЕНТЫ И БАЗЫ*/
+		/* 0 */ {"0": {name: "", image: "+0"},"1": {name: "Кремовый", colour: "#f5e5ce"},"2": {name: "Белоснежный", colour: "#ffffff"},"3": {name: "Белый", colour: "#e6e6e6"},"4": {name: "Серебристый", colour: "#d1d1d1"},"5": {name: "Серый", colour: "#9e9e9e"},"6": {name: "Дымчатый", colour: "#5c5c5c"},"7": {name: "Чёрный", colour: "#242424"},"8": {name: "Угольно-чёрный", colour: "#141414"},"9": {name: "Иссиня-чёрный", colour: "#1d212c"},"10": {name: "Чернобурый", colour: "#2b1d1c"},"11": {name: "Бурый", colour: "#3d1c0b"},"12": {name: "Шоколадный", colour: "#6b3c28"},"13": {name: "Фавн", colour: "#9a715f"},"14": {name: "Медный", colour: "#bd6d32"},"15": {name: "Огненный", colour: "#cb4402"},"16": {name: "Красный", colour: "#e15c0f"},"17": {name: "Рыжий", colour: "#ed9b2d"},"18": {name: "Золотистый", colour: "#e5bd7f"},"19": {name: "Палевый", colour: "#d7ae98"},"20": {name: "Лиловый", colour: "#b19798"},"21": {name: "Голубой", colour: "#a6b4b7"},"22": {name: "Серо-голубой", colour: "#697a8a"},"23": {name: "Дымчато-голубой", colour: "#465165"},"24": {name: "Черничный", colour: "#323d51"}},
 		/* ГЛАЗА */
-		/* 2 */ {'0': {name: '', colour: ""},"1": {name: "Медный", colour: "#9C7941"},"2": {name: "Карий", colour: "#362121"},"3": {name: "Чёрно-красный", colour: "#612322"},"4": {name: "Оранжевый", colour: "#D6700B"},"5": {name: "Янтарный", colour: "#FCB10D"},"6": {name: "Жёлтый", colour: "#FCDF00"},"7": {name: "Оливковый", colour: "#B3B059"},"8": {name: "Лайм", colour: "#A8AB0C"},"9": {name: "Зелёный", colour: "#2FA12D"},"10": {name: "Салатовый", colour: "#7DC210"},"11": {name: "Бирюзовый", colour: "#0ECC90"},"12": {name: "Голубой", colour: "#87C3D4"},"13": {name: "Васильковый", colour: "#148CCC"},"14": {name: "Синий", colour: "#192580"},"15": {name: "Серый", colour: "#7D8996"}},
+		/* 1 */ {'0': {name: '', colour: ""},"1": {name: "Медный", colour: "#9C7941"},"2": {name: "Карий", colour: "#362121"},"3": {name: "Чёрно-красный", colour: "#612322"},"4": {name: "Оранжевый", colour: "#D6700B"},"5": {name: "Янтарный", colour: "#FCB10D"},"6": {name: "Жёлтый", colour: "#FCDF00"},"7": {name: "Оливковый", colour: "#B3B059"},"8": {name: "Лайм", colour: "#A8AB0C"},"9": {name: "Зелёный", colour: "#2FA12D"},"10": {name: "Салатовый", colour: "#7DC210"},"11": {name: "Бирюзовый", colour: "#0ECC90"},"12": {name: "Голубой", colour: "#87C3D4"},"13": {name: "Васильковый", colour: "#148CCC"},"14": {name: "Синий", colour: "#192580"},"15": {name: "Серый", colour: "#7D8996"}},
 		/* УНИКАЛЬНЫЕ ОКРАСЫ */
-		/* 11(3) */ {'0': {name: '', colour: ""},"1": {name: "Кремовый", colour: "#f5e5ce"},"2": {name: "Белоснежный", colour: "#ffffff"},"3": {name: "Белый", colour: "#e6e6e6"},"4": {name: "Серебристый", colour: "#d1d1d1"},"5": {name: "Серый", colour: "#9e9e9e"},"6": {name: "Дымчатый", colour: "#5c5c5c"},"7": {name: "Чёрный", colour: "#242424"},"8": {name: "Угольно-чёрный", colour: "#141414"},"9": {name: "Иссиня-чёрный", colour: "#1d212c"},"10": {name: "Чернобурый", colour: "#2b1d1c"},"11": {name: "Бурый", colour: "#3d1c0b"},"12": {name: "Шоколадный", colour: "#6b3c28"},"13": {name: "Фавн", colour: "#9a715f"},"14": {name: "Медный", colour: "#bd6d32"},"15": {name: "Огненный", colour: "#cb4402"},"16": {name: "Красный", colour: "#e15c0f"},"17": {name: "Рыжий", colour: "#ed9b2d"},"18": {name: "Золотистый", colour: "#e5bd7f"},"19": {name: "Палевый", colour: "#d7ae98"},"20": {name: "Лиловый", colour: "#b19798"},"21": {name: "Голубой", colour: "#a6b4b7"},"22": {name: "Серо-голубой", colour: "#697a8a"},"23": {name: "Дымчато-голубой", colour: "#465165"},"24": {name: "Черничный", colour: "#323d51"},"25": {name: "\r\nУникальный окрас", image: "+1"},"26": {name: "Уникальный окрас", image: "+2"},"27": {name: "Уникальный окрас", image: "+3"},"28": {name: "Уникальный окрас", image: "+4"},"29": {name: "Уникальный окрас", image: "+5"},"30": {name: "Уникальный окрас", image: "+6"},"31": {name: "Уникальный окрас", image: "+7"},"32": {name: "Уникальный окрас", image: "+8"},"33": {name: "Уникальный окрас", image: "+9"},"34": {name: "Уникальный окрас", image: "+10"},"35": {name: "Уникальный окрас", image: "+11"},"36": {name: "Уникальный окрас", image: "+12"},"37": {name: "Уникальный окрас", image: "+13"},"38": {name: "Уникальный окрас", image: "+14"},"39": {name: "Уникальный окрас", image: "+15"},"40": {name: "Уникальный окрас", image: "+16"},"41": {name: "Уникальный окрас", image: "+17"},"42": {name: "Уникальный окрас", image: "+18"},"43": {name: "Уникальный окрас", image: "+19"},"44": {name: "Уникальный окрас", image: "+20"},"45": {name: "Уникальный окрас", image: "+21"},"46": {name: "Уникальный окрас", image: "+22"}},
+		/* 2 */ {'0': {name: '', colour: ""},"1": {name: "Кремовый", colour: "#f5e5ce"},"2": {name: "Белоснежный", colour: "#ffffff"},"3": {name: "Белый", colour: "#e6e6e6"},"4": {name: "Серебристый", colour: "#d1d1d1"},"5": {name: "Серый", colour: "#9e9e9e"},"6": {name: "Дымчатый", colour: "#5c5c5c"},"7": {name: "Чёрный", colour: "#242424"},"8": {name: "Угольно-чёрный", colour: "#141414"},"9": {name: "Иссиня-чёрный", colour: "#1d212c"},"10": {name: "Чернобурый", colour: "#2b1d1c"},"11": {name: "Бурый", colour: "#3d1c0b"},"12": {name: "Шоколадный", colour: "#6b3c28"},"13": {name: "Фавн", colour: "#9a715f"},"14": {name: "Медный", colour: "#bd6d32"},"15": {name: "Огненный", colour: "#cb4402"},"16": {name: "Красный", colour: "#e15c0f"},"17": {name: "Рыжий", colour: "#ed9b2d"},"18": {name: "Золотистый", colour: "#e5bd7f"},"19": {name: "Палевый", colour: "#d7ae98"},"20": {name: "Лиловый", colour: "#b19798"},"21": {name: "Голубой", colour: "#a6b4b7"},"22": {name: "Серо-голубой", colour: "#697a8a"},"23": {name: "Дымчато-голубой", colour: "#465165"},"24": {name: "Черничный", colour: "#323d51"},"25": {name: "\r\nУникальный окрас", image: "+1"},"26": {name: "Уникальный окрас", image: "+2"},"27": {name: "Уникальный окрас", image: "+3"},"28": {name: "Уникальный окрас", image: "+4"},"29": {name: "Уникальный окрас", image: "+5"},"30": {name: "Уникальный окрас", image: "+6"},"31": {name: "Уникальный окрас", image: "+7"},"32": {name: "Уникальный окрас", image: "+8"},"33": {name: "Уникальный окрас", image: "+9"},"34": {name: "Уникальный окрас", image: "+10"},"35": {name: "Уникальный окрас", image: "+11"},"36": {name: "Уникальный окрас", image: "+12"},"37": {name: "Уникальный окрас", image: "+13"},"38": {name: "Уникальный окрас", image: "+14"},"39": {name: "Уникальный окрас", image: "+15"},"40": {name: "Уникальный окрас", image: "+16"},"41": {name: "Уникальный окрас", image: "+17"},"42": {name: "Уникальный окрас", image: "+18"},"43": {name: "Уникальный окрас", image: "+19"},"44": {name: "Уникальный окрас", image: "+20"},"45": {name: "Уникальный окрас", image: "+21"},"46": {name: "Уникальный окрас", image: "+22"}},
 		/* ФИОЛЕТОВЫЕ ГЛАЗА */
-		/* 12(4) */ {'0': {name: '', colour: ""},"1": {name: "Медный", colour: "#9C7941"},"2": {name: "Карий", colour: "#362121"},"3": {name: "Чёрно-красный", colour: "#612322"},"4": {name: "Оранжевый", colour: "#D6700B"},"5": {name: "Янтарный", colour: "#FCB10D"},"6": {name: "Жёлтый", colour: "#FCDF00"},"7": {name: "Оливковый", colour: "#B3B059"},"8": {name: "Лайм", colour: "#A8AB0C"},"9": {name: "Зелёный", colour: "#2FA12D"},"10": {name: "Салатовый", colour: "#7DC210"},"11": {name: "Бирюзовый", colour: "#0ECC90"},"12": {name: "Голубой", colour: "#87C3D4"},"13": {name: "Васильковый", colour: "#148CCC"},"14": {name: "Синий", colour: "#192580"},"15": {name: "Серый", colour: "#7D8996"}, "16": {name: "Фиолетовый", colour: "#734563"}},
+		/* 3 */ {'0': {name: '', colour: ""},"1": {name: "Медный", colour: "#9C7941"},"2": {name: "Карий", colour: "#362121"},"3": {name: "Чёрно-красный", colour: "#612322"},"4": {name: "Оранжевый", colour: "#D6700B"},"5": {name: "Янтарный", colour: "#FCB10D"},"6": {name: "Жёлтый", colour: "#FCDF00"},"7": {name: "Оливковый", colour: "#B3B059"},"8": {name: "Лайм", colour: "#A8AB0C"},"9": {name: "Зелёный", colour: "#2FA12D"},"10": {name: "Салатовый", colour: "#7DC210"},"11": {name: "Бирюзовый", colour: "#0ECC90"},"12": {name: "Голубой", colour: "#87C3D4"},"13": {name: "Васильковый", colour: "#148CCC"},"14": {name: "Синий", colour: "#192580"},"15": {name: "Серый", colour: "#7D8996"}, "16": {name: "Фиолетовый", colour: "#734563"}},
 		/* УСЫ */
-		/* 5 */ {'0': {name: '', colour: ""},"1": {name: "Светлые", colour: "#ffffff"}, "2": {name: "Тёмные", colour: "#5c5c5c"}},
+		/* 4 */ {'0': {name: '', colour: ""},"1": {name: "Светлые", colour: "#ffffff"}, "2": {name: "Тёмные", colour: "#5c5c5c"}},
 	];
 	Kns.error_tm = 0;
 	Kns.warning = 3; // убрать, когда будут действия
@@ -261,11 +259,11 @@ $(function() {
 							name = name.name;
 						}
 						style += ' style="border-width: 1px; border-style: solid;' + Kns.getPreviewStyle(selectedList[i] || 0) + '"';
-						html += '<tr><td style="width: 0;"></td><td style="width: 10px; height: 32px;">' + moveup + '<br>' + movedown + '</td>';
-						html += '<td><div' + style + ' onclick="Kns.clickedDetail(this);" data-num="' + i + '" data-value="' + (selectedList[i] || 0) + '" id="select' + i + '" title="' + name + '"/></td></tr>';
+						html += '<tr><td class="tdarrow"></td><td class="tdarrow">' + moveup + '<br>' + movedown + '</td>';
+						html += '<td><div' + style + ' onclick="Kns.clickedDetail(this);" data-num="' + i + '" data-value="' + (selectedList[i] || 0) + '" id="select' + i + '" title="' + name + '"/></td>';
 						break;
 					default:
-						html += '<tr><td style="width:10px;">' + moveup + '</td><td style="width:10px;">' + movedown + '</td>';
+						html += '<tr><td class="tdarrow">' + moveup + '</td><td class="tdarrow">' + movedown + '</td>';
 						html += '<td><select style="width:100px;"' + style + ' onchange="Kns.selectedDetail(this);" onclick="Kns.clickedDetail(this);" data-num="' + i + '" id="select' + i + '">';
 						for (id in info) {
 							if (!info.hasOwnProperty(id)) {
@@ -281,18 +279,23 @@ $(function() {
 							var selected = selectedList[i] == id ? ' selected' : '';
 							html += '<option value="' + id + '"' + selected + '>' + name + '</option>';
 						}
-						html += "</select></td></tr>";
+						html += "</select></td>";
 						break;
 				}
+				html += '<td class="td_x">';
+				if (numObligatory.indexOf(Sel.now) === -1) {
+					html += '<a class="a_none" onclick="Kns.removeDetail(' + i + ');">✖</a>';
+				}
+				html += '</td></tr>';
 			}
 			if (canAdd) {
-				html += '<tr><td></td><td></td><td><a onclick="Kns.addDetail();" style="font-size: 20px;" class="a_none"><b>+</b></a></td></tr>';
+				html += '<tr><td class="tdarrow"></td><td class="td_plus" colspan="2"><a onclick="Kns.addDetail();" class="a_none">+</a></td></tr>';
 			}
 			html += "</table></td>";
 			switch (Kns.detailVariant) {
 				case 1:
 					if (dataNum >= 0 && dataNum < selectedList.length) {
-						html += '<td><div style="margin-left: 5px; solid; box-sizing: border-box; border: 0; width: 130px; height: 300px; overflow: auto;"><table style="border-width: 2; margin: auto;" class="tabledetail"><tr>';
+						html += '<td><div class="detailslist""><table style="margin: auto;" class="tabledetail"><tr>';
 						var line = 0;
 						for (id in info) {
 							if (!info.hasOwnProperty(id)) {
@@ -387,7 +390,12 @@ $(function() {
 		data[0] = Sel.nowSelected;
 		Sel.main[Sel.now][dataNum] = data.join('/');
 		Kns.refresh(false, true, false, false, true);
-		$('.sel').css('background-image', menu.style.backgroundImage);
+		var selected = $('.sel');
+		selected.css('background-image', menu.style.backgroundImage);
+		var name = Kns.info[Sel.now].info[Sel.nowSelected];
+		name = name.name || name;
+		selected.attr('title', name);
+		$("[title]").tipTip();
 	};
 
 	Kns.clickedDetail = function(menu) {
@@ -439,8 +447,18 @@ $(function() {
 		}
 	};
 
+	Kns.removeDetail = function(index) {
+		if (Sel.main[Sel.now].length <= index) {
+			return;
+		}
+		Sel.main[Sel.now][index] = 0;
+		//Sel.main[Sel.now].splice(index, 1);
+		Kns.cleanMain(Sel.now);
+		Kns.refresh(false, true, false, false, true);
+	};
+
 	Kns.drawPalette = function() {
-		var html = '<table style="border: 0 solid black; box-sizing: border-box;"><tr>';
+		var html = '<table style="border: 0 solid black;"><tr>';
 		var p;
 		try {p = Kns.info[Sel.now].info[Sel.nowSelected].palette;} catch(e) {}
 		try {p = p || Kns.info[Sel.now].info["+" + Sel.nowSelected].palette;} catch(e) {}
@@ -475,7 +493,7 @@ $(function() {
 				html += '</tr><tr>';
 				width = 0;
 			}
-			html += '<td><div style="background: ' + bg + ' center no-repeat; border-width: 1px; box-sizing: border-box; border-style: solid" title="' + name + '" data-num="' + i + '"' + (i == colour ? ' class="selected_colour"' : '') + '> </div></td>';
+			html += '<td><div style="background: ' + bg + ' center no-repeat; border-width: 1px; border-style: solid;" title="' + name + '" data-num="' + i + '"' + (i == colour ? ' class="selected_colour"' : '') + '> </div></td>';
 			width += 32;
 		}
 		html += '</tr></table>';
@@ -579,12 +597,12 @@ $(function() {
 		if (vipLevel < 2) {
 			return;
 		}
-		Kns.info[numBase].palette = 3;
+		Kns.info[numBase].palette = paletteSpecialBases;
 		if (vipLevel < 3) {
 			return;
 		}
-		Kns.info[numLeftEye].palette = 4;
-		Kns.info[numRightEye].palette = 4;
+		Kns.info[numLeftEye].palette = paletteVioletEyes;
+		Kns.info[numRightEye].palette = paletteVioletEyes;
 	};
 	Kns.error = function(text) {
 		if (Sel.random) {
@@ -779,8 +797,14 @@ $(function() {
 			}
 		}
 		if (Sel.now == numBase && Sel.main[numBase][0] > normalBases && num <= normalBases) {
-			Sel.main[numTailBase] = [Kns.info[numTailBase].default];
-			Sel.main[numEarBase] = [Kns.info[numEarBase].default];
+			for (i = 0; i < numObligatory.length; i++) {
+				if (numObligatory[i] == numBase || Sel.main[numObligatory[i]] != 0) {
+					continue;
+				}
+				if (Kns.info[numObligatory[i]].default) {
+					Sel.main[numObligatory[i]] = [Kns.info[numObligatory[i]].default];
+				}
+			}
 		}
 		if (Sel.main[numBase][0] > normalBases && numSpecialEdits.indexOf(Sel.now) === -1 && num > 0) {
 			Kns.error("На особых окрасах нельзя выбирать какие-либо элементы.");
