@@ -67,7 +67,7 @@ $(function() {
 			noCombine: true,
 			type: true,
 			default: "1/1",
-			palette: 1,
+			palette: 0,
 			info: {1: "Куцый", 2: "Тонкий", 3: "Умеренный", 4: "Пушистый", 5: "Пышный"}},
 		/* 16 */ {name: "Грива", // base_mane
 			noCombine: true,
@@ -92,9 +92,9 @@ $(function() {
 		info: {"1": "Левая", "2": "Правая", "3": "Брызги слева", "4": "Брызги справа", "5": "Пятна слева", "6": "Пятна справа", "7": "Полосы слева", "8": "Полосы справа"}},
 		/* 22 */ {name: "Усы", // elements/whisker
 			noCombine: true,
-			default: "1/1",
+			default: "2/1",
 			palette: 4,
-			info: {"1": "Прямые", "2": "Прямые длинные", "3": "Кудрявые"}}
+			info: {"1": "Прямые короткие", "2": "Прямые", "3": "Прямые длинные", "4": "Кудрявые"}}
 	];
 	Kns.backupInfo = JSON.parse(JSON.stringify(Kns.info));
 	Kns.palette = [
