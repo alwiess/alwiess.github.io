@@ -19,14 +19,15 @@ $(function() {
 	var numRightEye = 19;
 	var numRightHindPaw = 14;
 	var numWhisker = 22;
+	var numNose = 23;
 	var numSpecialEdits = [numBase, numLeftEye, numRightEye];
-	var numObligatory = [numBase, numTailBase, numEarBase, numLeftEye, numWhisker];
+	var numObligatory = [numBase, numTailBase, numEarBase, numLeftEye, numWhisker, numNose];
 	var paletteSpecialBases = 2;
 	var paletteVioletEyes = 3;
 	var detailsMax = 8;
 	Kns.detailVariant = 1;
-	Kns.result  = [0, 1, 5, 6, 3, 2, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
-	Kns.blocks  = [["Основа", [0, 22, 16], 15, 18, 17], ["Шея и морда", [1, 19, 7, 8, 10, 20, 21], 2, 11], ["Туловище", 3, 9, 12], ["Лапы и хвост", 4, 5, 6, 13, 14]];
+	Kns.result  = [0, 1, 5, 6, 3, 2, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+	Kns.blocks  = [["Основа", [0, 22, 23, 16], 15, 18, 17], ["Шея и морда", [1, 19, 7, 8, 10, 20, 21], 2, 11], ["Туловище", 3, 9, 12], ["Лапы и хвост", 4, 5, 6, 13, 14]];
 	Kns.actions = [0, 1];
 	Kns.info    = [
 		/* 0 */ {name: "Основной цвет", // base
@@ -95,7 +96,9 @@ $(function() {
 			noCombine: true,
 			default: "2/1",
 			palette: 4,
-			info: {"1": "Прямые короткие", "2": "Прямые", "3": "Прямые длинные", "4": "Кудрявые"}}
+		info: {"1": "Прямые короткие", "2": "Прямые", "3": "Прямые длинные", "4": "Кудрявые"}},
+		/* 23 */ {name: "Нос", // elements/nose
+			info: {"1": "Полностью", "2": "Половина", "3": "Кайма"}}
 	];
 	Kns.backupInfo = JSON.parse(JSON.stringify(Kns.info));
 	Kns.palette = [
