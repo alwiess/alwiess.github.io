@@ -73,12 +73,12 @@ $(function() {
 		/* 16 */ {name: "Грива", // base_mane
 			noCombine: true,
 			type: true,
-			info: [{id: "1", name: "Умеренная"}, {id: "2", name: "Пышная"}]},
+			info: [{id: "1", name: "Умеренная"}, {id: "2", name: "Пушистая"}, {id: "3", name: "Пышная"}]},
 		/* 17 */ {name: "Уши", // base_ears
 			noCombine: true,
 			type: true,
 			default: "1/1",
-			info: [{id: "1", name: "Торчком"}, {id: "2", name: "Висячие"}, {id: "3", name: "Длинные"}]},
+			info: [{id: "1", name: "Торчком"}, {id: "2", name: "Висячие"}, {id: "3", name: "Длинные"}, {id: "4", name: "Кручёные"}]},
 		/* 18 */ {name: "Шерсть", // base_hair
 			noCombine: true,
 			type: true,
@@ -110,7 +110,7 @@ $(function() {
 		/* ФИОЛЕТОВЫЕ ГЛАЗА */
 		/* 3 */ [{id: "0", name: '', colour: ""},{id: "1", name: "Медный", colour: "#9C7941"},{id: "2", name: "Карий", colour: "#362121"},{id: "3", name: "Чёрно-красный", colour: "#612322"},{id: "4", name: "Оранжевый", colour: "#D6700B"},{id: "5", name: "Янтарный", colour: "#FCB10D"},{id: "6", name: "Жёлтый", colour: "#FCDF00"},{id: "7", name: "Оливковый", colour: "#B3B059"}, {id: "16", name: "Фиолетовый", colour: "#734563"},{id: "8", name: "Лайм", colour: "#A8AB0C"},{id: "9", name: "Зелёный", colour: "#2FA12D"},{id: "10", name: "Салатовый", colour: "#7DC210"},{id: "11", name: "Бирюзовый", colour: "#0ECC90"},{id: "12", name: "Голубой", colour: "#87C3D4"},{id: "13", name: "Васильковый", colour: "#148CCC"},{id: "14", name: "Синий", colour: "#192580"},{id: "15", name: "Серый", colour: "#7D8996"}],
 		/* УСЫ */
-		/* 4 */ [{id: "0", name: '', colour: ""},{id: "1", name: "Светлые", colour: "#ffffff"}, {id: "2", name: "Тёмные", colour: "#5c5c5c"}],
+		/* 4 */ [{id: "0", name: '', colour: ""},{id: "1", name: "Светлые", colour: "#ffffff"}, {id: "2", name: "Тёмные", colour: "#5c5c5c"}, {id: "3", name: "Чёрные", colour: "#242424"}],
 	];
 	Kns.error_tm = 0;
 	Kns.warning = 3; // убрать, когда будут действия
