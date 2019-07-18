@@ -1,7 +1,7 @@
 var Func = {folders: {}};
 Func.folders.static = ["costume", "dirt", "wound", "drown", "poisoning", "disease"];
-Func.folders.animationCode = ["base", "eyes", "forepaw_left", "forepaw_right", "body", "head", "tail", "ear_left", "ear_right", "breast", "tuft", "neck", "belly", "hindpaw_left", "hindpaw_right", "base_tail", "base_mane", "base_ears", "base_hair", "eye_right", "mane", "hair", "whisker"];
-Func.folders.animationLayers = ["base", "hindpaw_left", "hindpaw_right", "body", "forepaw_left", "forepaw_right", "belly", "breast", "neck", "base_mane", "mane", "head",  "base_hair", "hair", "tuft", "base_ears", "ear_left", "ear_right", "eyes", "eye_right", "whisker", "base_tail", "tail", "costume", "dirt", "wound", "drown", "poisoning", "disease"];
+Func.folders.animationCode = ["base", "eyes", "forepaw_left", "forepaw_right", "body", "head", "tail", "ear_left", "ear_right", "breast", "tuft", "neck", "belly", "hindpaw_left", "hindpaw_right", "base_tail", "base_mane", "base_ears", "base_hair", "eye_right", "mane", "hair", "whisker", "nose"];
+Func.folders.animationLayers = ["base", "hindpaw_left", "hindpaw_right", "body", "forepaw_left", "forepaw_right", "belly", "breast", "neck", "base_mane", "mane", "head",  "base_hair", "hair", "tuft", "base_ears", "ear_left", "ear_right", "eyes", "eye_right", "whisker", "base_tail", "tail", "nose", "costume", "dirt", "wound", "drown", "poisoning", "disease"];
 Func.type = {tail: "base_tail", mane: "base_mane", hair: "base_hair", ear_left: "base_ears", ear_right: "base_ears", tuft: "base_ears"};
 
 //"base", "hindpaw_left", "hindpaw_right", "body", "forepaw_left", "forepaw_right", "belly", "head", "breast", "neck", "base_mane", "mane", "tuft", "base_ears", "ear_left", "ear_right", "base_hair", "hair", "base_tail", "tail", "eyes", "eye_right", "costume", "dirt", "wound", "drown", "poisoning", "disease"
