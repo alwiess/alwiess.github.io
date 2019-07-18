@@ -78,7 +78,7 @@ $(function() {
 			noCombine: true,
 			type: true,
 			default: "1/1",
-			info: {1: "Торчком", 2: "Висячие", 3: "Длинные"}},
+			info: {1: "Торчком", 2: "Висячие", 3: "Длинные", 4: "Кручёные"}},
 		/* 18 */ {name: "Шерсть", // base_hair
 			noCombine: true,
 			type: true,
