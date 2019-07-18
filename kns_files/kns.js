@@ -74,7 +74,7 @@ $(function() {
 		/* 16 */ {name: "Грива", // base_mane
 			noCombine: true,
 			type: true,
-			info: {1: "Умеренная", 2: "Пышная"}},
+			info: {1: "Умеренная", 2: "Пушистая", 3: "Пышная"}},
 		/* 17 */ {name: "Уши", // base_ears
 			noCombine: true,
 			type: true,
@@ -111,7 +111,7 @@ $(function() {
 		/* ФИОЛЕТОВЫЕ ГЛАЗА */
 		/* 3 */ {'0': {name: '', colour: ""},"1": {name: "Медный", colour: "#9C7941"},"2": {name: "Карий", colour: "#362121"},"3": {name: "Чёрно-красный", colour: "#612322"},"4": {name: "Оранжевый", colour: "#D6700B"},"5": {name: "Янтарный", colour: "#FCB10D"},"6": {name: "Жёлтый", colour: "#FCDF00"},"7": {name: "Оливковый", colour: "#B3B059"},"8": {name: "Лайм", colour: "#A8AB0C"},"9": {name: "Зелёный", colour: "#2FA12D"},"10": {name: "Салатовый", colour: "#7DC210"},"11": {name: "Бирюзовый", colour: "#0ECC90"},"12": {name: "Голубой", colour: "#87C3D4"},"13": {name: "Васильковый", colour: "#148CCC"},"14": {name: "Синий", colour: "#192580"},"15": {name: "Серый", colour: "#7D8996"}, "16": {name: "Фиолетовый", colour: "#734563"}},
 		/* УСЫ */
-		/* 4 */ {'0': {name: '', colour: ""},"1": {name: "Светлые", colour: "#ffffff"}, "2": {name: "Тёмные", colour: "#5c5c5c"}},
+		/* 4 */ {'0': {name: '', colour: ""},"1": {name: "Светлые", colour: "#ffffff"}, "2": {name: "Тёмные", colour: "#5c5c5c"}, "3": {name: "Чёрные", colour: "#242424"}},
 	];
 	Kns.error_tm = 0;
 	Kns.warning = 3; // убрать, когда будут действия
