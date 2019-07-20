@@ -2,7 +2,6 @@ var Kns = {};
 
 $(function() {
 	////константы
-	var normalBases = 24;
 	var numBase = 0;
 	var numTailBase = 15;
 	var numTailElement = 4;
@@ -15,30 +14,34 @@ $(function() {
 	var numEarRight = 8;
 	var numEarLay = 2;
 	var numEarTufts = 10;
+	var numEarTuftsNormal = "1";
 	var numLeftEye = 1;
 	var numRightEye = 19;
 	var numRightHindPaw = 14;
-	var numWhisker = 22;
-	var numNose = 23;
-	var numSpecialEdits = [numBase, numLeftEye, numRightEye];
-	var numObligatory = [numBase, numTailBase, numEarBase, numLeftEye, numWhisker];
-	var paletteSpecialBases = 2;
-	var paletteVioletEyes = 3;
+	var paletteNormalBases = 0;
+	var isBaseSpecial = function(base) { return !(Kns.palette[paletteNormalBases].filter(function(el) { return base == el.id; })[0])};
+	var paletteNormalEyes = 1;
+	var isEyesSpecial = function(eye) { return !(Kns.palette[paletteNormalEyes].filter(function(el) { return eye == el.id; })[0])};
 	var detailsMax = 8;
+	var vipLevel = 0;
 	Kns.detailVariant = 1;
-	Kns.result  = [0, 1, 5, 6, 3, 2, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 	Kns.blocks  = [["Основа", [0, 22, 23, 16], 15, 18, 17], ["Шея и морда", [1, 19, 7, 8, 10, 20, 21], 2, 11], ["Туловище", 3, 9, 12], ["Лапы и хвост", 4, 5, 6, 13, 14]];
 	Kns.actions = [0, 1];
 	Kns.parts    = [
 		/* 0 */ {name: "Основной цвет", // base
 			noCombine: true,
 			default: 1,
-			noVariations: true},
+			palette: 2,
+			noVariations: true,
+			special: true,
+			obligatory: true},
 		/* 1 */ {name: "Глаза", // elements/eyes
 			noCombine: true,
 			default: 12,
-			palette: 1,
-			noVariations: true},
+			palette: 3,
+			noVariations: true,
+			special: true,
+			obligatory: true},
 		/* 2 */ {name: "Морда", // elements/head
 			info: [{id: "1", name: "Полосочки"}, {id: "2", name: "Полосы"}, {id: "3", name: "Извилистые полосы"}, {id: "4", name: "Полосы от щёк"}, {id: "5", name: "Разорванные полосы от щёк"}, {id: "6", name: "Полосы вокруг бровей"}, {id: "7", name: "Полосы до глаз"}, {id: "8", name: "Пламенные полосы"}, {id: "9", name: "Полосы на лбу"}, {id: "10", name: "Разорванные полосы на лбу"}, {id: "11", name: "Полосы на носу"}, {id: "12", name: "Мрамор"}, {id: "13", name: "Ремень"}, {id: "14", name: "Узкий ремень"}, {id: "15", name: "Половина ремня"}, {id: "16", name: "Половина узкого ремня"}, {id: "17", name: "Брызги"}, {id: "18", name: "Брызги на носу"}, {id: "19", name: "Пятнышки"}, {id: "20", name: "Пятнышки под глазами"}, {id: "21", name: "Пятна"}, {id: "22", name: "Леопардовые пятнышки"}, {id: "23", name: "Маленькая маска"}, {id: "24", name: "Маска"}, {id: "25", name: "Маска без глаз"}, {id: "26", name: "Маска с глазами"}, {id: "27", name: "Бородка"}, {id: "28", name: "Бородка с щеками"}, {id: "29", name: "Подбородок"}, {id: "30", name: "Подбородок с щеками"}, {id: "31", name: "Брови"}, {id: "32", name: "Рысьи брови"}, {id: "33", name: "Вибриссы"}, {id: "34", name: "Отметина под носом"}, {id: "35", name: "Внешняя сторона губ"}, {id: "36", name: "Губы"}, {id: "37", name: "Щипец"}, {id: "38", name: "Пятно меж глаз"}, {id: "39", name: "Переносица"}, {id: "40", name: "Клякса на нос"}, {id: "41", name: "Отметины на скулах"}, {id: "42", name: "Щёки полностью"}, {id: "43", name: "Макушка"}, {id: "44", name: "Шапка"}, {id: "45", name: "Подпалины на лбу"}, {id: "46", name: "Отметина справа морды"}, {id: "47", name: "Отметина на глазу"}, {id: "48", name: "Слеза"}, {id: "49", name: "Пятно на лбу"}, {id: "50", name: "Отметины над глазами №1"}, {id: "51", name: "Отметины над глазами №2"}, {id: "52", name: "Отметины под глазами №1"}, {id: "53", name: "Отметины под глазами №2"}, {id: "54", name: "Отметина в половину носа"}, {id: "55", name: "Отметина на нос"}, {id: "56", name: "Левая половина морды №1"}, {id: "57", name: "Левая половина морды №2"}, {id: "58", name: "Левая половина морды №3"}, {id: "59", name: "Левая половина морды №4"}, {id: "60", name: "Правая половина морды №1"}, {id: "61", name: "Правая половина морды №2"}, {id: "62", name: "Правая половина морды №3"}, {id: "63", name: "Правая половина морды №4"}, {id: "64", name: "Большое пятно №1"}, {id: "65", name: "Большое пятно №2"}, {id: "66", name: "Большое пятно №3"}, {id: "67", name: "Большое пятно №4"}, {id: "68", name: "Большое пятно №5"}, {id: "69", name: "Слабый налёт"}, {id: "70", name: "Налёт"}, {id: "71", name: "Слабая затушёвка"}, {id: "72", name: "Затушёвка"}]},
 		/* 3 */ {name: "Туловище", // elements/body
@@ -69,7 +72,8 @@ $(function() {
 			noCombine: true,
 			type: true,
 			default: "1/1",
-			info: [{id: "1", name: "Куцый"}, {id: "2", name: "Тонкий"}, {id: "3", name: "Умеренный"}, {id: "4", name: "Пушистый"}, {id: "5", name: "Пышный"}]},
+			info: [{id: "1", name: "Куцый"}, {id: "2", name: "Тонкий"}, {id: "3", name: "Умеренный"}, {id: "4", name: "Пушистый"}, {id: "5", name: "Пышный"}],
+			obligatory: true},
 		/* 16 */ {name: "Грива", // base_mane
 			noCombine: true,
 			type: true,
@@ -78,15 +82,17 @@ $(function() {
 			noCombine: true,
 			type: true,
 			default: "1/1",
-			info: [{id: "1", name: "Торчком"}, {id: "2", name: "Висячие"}, {id: "3", name: "Длинные"}, {id: "4", name: "Кручёные"}]},
+			info: [{id: "1", name: "Торчком"}, {id: "2", name: "Висячие"}, {id: "3", name: "Длинные"}, {id: "4", name: "Кручёные"}],
+			obligatory: true},
 		/* 18 */ {name: "Шерсть", // base_hair
 			noCombine: true,
 			type: true,
 			info: [{id: "1", name: "На щёках №1"}, {id: "2", name: "На щёках №2"}, {id: "3", name: "На щёках №3"}]},
 		/* 19 */ {name: "Правый глаз", // elements/eye_right
 			noCombine: true,
-			palette: 1,
-			noVariations: true},
+			palette: 3,
+			noVariations: true,
+			special: true},
 		/* 20 */ {name: "Грива", // elements/mane
 			info: [{id: "1", name: "Брызги"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Пятна"}, {id: "4", name: "Полосы"}, {id: "5", name: "Пламенные полосы"}, {id: "6", name: "Мрамор"}, {id: "7", name: "Ремень"}, {id: "8", name: "Узкий ремень"}, {id: "9", name: "Налёт"}, {id: "10", name: "Затушёвка"}]},
 		/* 21 */ {name: "Шерсть", // elements/hair
@@ -95,7 +101,8 @@ $(function() {
 			noCombine: true,
 			default: "2/1",
 			palette: 4,
-			info: [{id: "1", name: "Прямые короткие"}, {id: "2", name: "Прямые"}, {id: "3", name: "Прямые длинные"}, {id: "4", name: "Кудрявые"}]},
+			info: [{id: "1", name: "Прямые короткие"}, {id: "2", name: "Прямые"}, {id: "3", name: "Прямые длинные"}, {id: "4", name: "Кудрявые"}],
+			obligatory: true},
 		/* 23 */ {name: "Нос", // elements/nose
 			palette: 5,
 			info: [{id: "1", name: "Полностью"}, {id: "2", name: "Половина"}, {id: "3", name: "Кайма", palette: 6}]}
@@ -119,24 +126,17 @@ $(function() {
 	];
 	Kns.error_tm = 0;
 	Kns.warning = 3; // убрать, когда будут действия
-	Kns.unresult = function(id) {
-		for (var i = 0; i < Kns.result.length; i++) {
-			if (Kns.result[i] == id) {
-				return i;
-			}
-		}
-		return 0;
-	};
 	
 	Kns.start = function() {
 		Kns.vip();
 		Kns.drawBlocks();
 		Kns.refresh(true);
 	};
+
 	Kns.code = function() {
 		var code = [];
-		for (var i = 0; i < Kns.result.length; i++) {
-			var now = Sel.main[Kns.result[i]];
+		for (var i = 0; i < Kns.parts.length; i++) {
+			var now = Sel.main[i];
 			if (now instanceof Array) {
 				now = now.join("-") || "0";
 			}
@@ -184,33 +184,26 @@ $(function() {
 	};
 	Kns.adaptBlocks = function() {
 		for (var block = 0; block < Kns.blocks.length; block++) {
-			if (block === 0 || block == 1) {
-				for (var i = 1; i < Kns.blocks[block].length; i++) {
-					var all_n = Kns.blocks[block][i];
-					if (!(all_n instanceof Array)) {
-						all_n = [all_n];
-					}
-					for (var j = 0; j < all_n.length; j++) {
-						var n = all_n[j];
-						var hide = Sel.main[numBase] > normalBases && numSpecialEdits.indexOf(n) === -1;
-						hide |= !Sel.main[numManeBase][0] && n == numManeElement;
-						hide |= !Sel.main[numTuftBase][0] && n == numTuftElement;
-						try {
-							hide |= Sel.main[numEarBase][0].split('/')[0] == numEarLay && n == numEarTufts;
-						} catch (e) {}
-						if (hide) {
-							$("#part" + n).hide();
-						} else {
-							$("#part" + n).show();
-						}
+			var showAny = false;
+			for (var i = 1; i < Kns.blocks[block].length; i++) {
+				var all_n = Kns.blocks[block][i];
+				if (!(all_n instanceof Array)) {
+					all_n = [all_n];
+				}
+				for (var j = 0; j < all_n.length; j++) {
+					var n = all_n[j];
+					if (Kns.partAvailable(false, n)){
+						showAny = true;
+						$("#part" + n).show();
+					} else {
+						$("#part" + n).hide();
 					}
 				}
+			}
+			if (showAny) {
+				$("#block" + block).show();
 			} else {
-				if (Sel.main[numBase][0] > normalBases) {
-					$("#block" + block).hide();
-				} else {
-					$("#block" + block).show();
-				}
+				$("#block" + block).hide();
 			}
 		}
 	};
@@ -222,10 +215,9 @@ $(function() {
 		if (!newSelect) {
 			dataNum = $(".sel").attr("data-num") || dataNum;
 		}
-		var info = Kns.parts[Sel.now].info;
-		if (info) {
+		var info = [];
+		if (Kns.parts[Sel.now].info) {
 			var selectedList = [];
-			var canAdd = false;
 			if (Sel.main[Sel.now].length > 0) {
 				for (var l = 0; l < Sel.main[Sel.now].length; l++) {
 					selectedList[l] = Sel.main[Sel.now][l].split("/")[0];
@@ -234,12 +226,21 @@ $(function() {
 			if (dataNum >= selectedList.length) {
 				dataNum = selectedList.length - 1;
 			}
-			for (var n = 0; n < info.length; n++) {
-				if (info[n].id == selectedList[dataNum]) {
-					Sel.nowSelected = n;
-					break;
+			for (var n = 0; n < Kns.parts[Sel.now].info.length; n++) {
+				if (!Kns.partAvailable(false, Sel.now, Kns.parts[Sel.now].info[n].id)) {
+					continue;
 				}
+				if (Kns.parts[Sel.now].info[n].id == selectedList[dataNum]) {
+					Sel.nowSelected = n;
+				}
+				var data = {};
+				data.num = n;
+				data.data = Kns.parts[Sel.now].info[n];
+				info.push(data);
 			}
+		}
+		if (info.length > 0) {
+			var canAdd = false;
 			var max = 1;
 			if (!Kns.parts[Sel.now].noCombine && !Kns.parts[Sel.now].noVariations) {
 				max = detailsMax;
@@ -263,8 +264,8 @@ $(function() {
 				var name;
 				switch (Kns.detailVariant) {
 					case 1:
-						name = info.filter(function(el) { return el.id == selectedList[i]; })[0];
-						name = name ? name.name : '';
+						name = info.filter(function(el) { return el.data.id == selectedList[i]; })[0];
+						name = name ? name.data.name : '';
 						style += ' style="border-width: 1px; border-style: solid;' + Kns.getPreviewStyle(selectedList[i] || 0) + '"';
 						html += '<tr><td class="tdarrow"></td><td class="tdarrow">' + moveup + '<br>' + movedown + '</td>';
 						html += '<td><div' + style + ' onclick="Kns.clickedDetail(this);" data-num="' + i + '" data-value="' + (selectedList[i] || 0) + '" id="select' + i + '" title="' + name + '"/></td>';
@@ -273,19 +274,19 @@ $(function() {
 						html += '<tr><td class="tdarrow">' + moveup + '</td><td class="tdarrow">' + movedown + '</td>';
 						html += '<td><select style="width:100px;"' + style + ' onchange="Kns.selectedDetail(this);" onclick="Kns.clickedDetail(this);" data-num="' + i + '" id="select' + i + '">';
 						for (var j = 0; j < info.length; j++) {
-							var id = info[j].id;
+							var id = info[j].data.id;
 							if (selectedList.indexOf(id) !== -1 && selectedList[i] != id) {
 								continue;
 							}
-							name = info[j].name;
+							name = info[j].data.name;
 							var selected = selectedList[i] == id ? ' selected' : '';
-							html += '<option value="' + j + '"' + selected + '>' + name + '</option>';
+							html += '<option value="' + info[j].num + '"' + selected + '>' + name + '</option>';
 						}
 						html += "</select></td>";
 						break;
 				}
 				html += '<td class="td_x">';
-				if (numObligatory.indexOf(Sel.now) === -1 || selectedList.length > 1) {
+				if (!Kns.parts[Sel.now].obligatory || selectedList.length > 1) {
 					html += '<a class="a_none" onclick="Kns.removeDetail(' + i + ');">✖</a>';
 				}
 				html += '</td></tr>';
@@ -300,12 +301,12 @@ $(function() {
 						html += '<td><div class="detailslist""><table style="margin: auto;" class="tabledetail"><tr>';
 						var line = 0;
 						for (j = 0; j < info.length; j++) {
-							id = info[j].id;
+							id = info[j].data.id;
 							if (selectedList.indexOf(id) !== -1 && id != selectedList[dataNum]) {
 								continue;
 							}
-							name = info[j].name;
-							html += '<td><div data-num="' + dataNum + '" data-value="' + j + '" style="border-width: 1px; border-style: solid;' + Kns.getPreviewStyle(id) + '" onclick="Kns.selectedDetail(this)" title="' + name + '"/></td>';
+							name = info[j].data.name;
+							html += '<td><div data-num="' + dataNum + '" data-value="' + info[j].num + '" style="border-width: 1px; border-style: solid;' + Kns.getPreviewStyle(id) + '" onclick="Kns.selectedDetail(this)" title="' + name + '"/></td>';
 							line++;
 							if (line >= 3) {
 								line = 0;
@@ -349,7 +350,7 @@ $(function() {
 				id = parent + '/' + id;
 			}
 		}
-		return Func.getUrlStyle(0, Func.folders.animationCode[Kns.unresult(Sel.now)], id) + 'background-size: 100%;';
+		return Func.getUrlStyle(0, Func.folders.animationCode[Sel.now], id) + 'background-size: 100%;';
 	};
 
 	Kns.refresh = function(allnew, detailnotnew, noblocks, newselect, nodetail, nocats) {
@@ -385,7 +386,21 @@ $(function() {
 		}
 		var data = Sel.main[Sel.now][dataNum].split('/');
 		data[0] = Kns.parts[Sel.now].info[Sel.nowSelected].id;
+		var palette = Kns.parts[Sel.now].info[Sel.nowSelected].palette || Kns.parts[Sel.now].palette || 0;
+		if (Kns.palette[palette].filter(function(el) { return el.id == data[1]; }).length < 1) {
+			for (var c = 0; c < Kns.palette[palette].length; c++) {
+				if (+Kns.palette[palette][c].id === 0) {
+					continue;
+				}
+				if (!Kns.partAvailable(false, Sel.now, data[0], Kns.palette[palette][c].id)) {
+					continue;
+				}
+				data[1] = Kns.palette[palette][c].id;
+				break;
+			}
+		}
 		Sel.main[Sel.now][dataNum] = data.join('/');
+		Kns.cleanMain(Sel.now);
 		Kns.refresh(false, true, false, false, true);
 		var selected = $('.sel');
 		selected.css('background-image', menu.style.backgroundImage);
@@ -422,9 +437,15 @@ $(function() {
 			if (selectedList.indexOf(info[j].id) !== -1) {
 				continue;
 			}
+			if (!Kns.partAvailable(false, Sel.now, info[j].id)) {
+				continue;
+			}
 			var palette = info[j].palette || Kns.parts[Sel.now].palette || 0;
 			for (var c = 0; c < Kns.palette[palette].length; c++) {
 				if (+Kns.palette[palette][c].id === 0) {
+					continue;
+				}
+				if (!Kns.partAvailable(false, Sel.now, info[j].id, Kns.palette[palette][c].id)) {
 					continue;
 				}
 				data = info[j].id + '/' + Kns.palette[palette][c].id;
@@ -436,7 +457,7 @@ $(function() {
 			Sel.main[Sel.now].push(data);
 			Kns.drawDetail(false);
 			$('#select' + (Sel.main[Sel.now].length - 1)).click();
-			Kns.refresh(false, true, true, false);
+			Kns.refresh(false, true);
 		}
 	};
 
@@ -467,8 +488,12 @@ $(function() {
 		}
 		var width = 0;
 		var maxWidth = $('#main').width() - 32;
+		var detailId = (Kns.parts[Sel.now].info && Kns.parts[Sel.now].info[Sel.nowSelected]) ? Kns.parts[Sel.now].info[Sel.nowSelected].id : 0;
 		for (var i = 0; Kns.palette[p] && i < Kns.palette[p].length; i++) {
 			if (Kns.palette[p][i].name === '') {
+				continue;
+			}
+			if (!Kns.partAvailable(false, Sel.now, detailId, Kns.palette[p][i].id)) {
 				continue;
 			}
 			var bg = (Kns.palette[p][i].colour ? Kns.palette[p][i].colour : "url(cats/palette/" + +Kns.palette[p][i].image + ".png)");
@@ -493,15 +518,40 @@ $(function() {
 		if (!(Sel.main[el] instanceof Array)) {
 			return;
 		}
-		var newArr = [];
-		for (var i = 0; i < Sel.main[el].length; i++) {
-			var val = Sel.main[el][i];
-			if (val > 0 || (val != "" && val != "0")) {
-				newArr.push(val);
+		var isNew = false;
+		for (var i = 0; i < Kns.parts.length; i++) {
+			if (!Kns.partAvailable(false, i)) {
+				Sel.main[i] = [];
+				continue;
+			}
+			var newArr = [];
+			for (var j = 0; j < Sel.main[i].length; j++) {
+				var partdetail = (Sel.main[i][j] + '').split('/');
+				var partcolour = '';
+				if (partdetail.length > 1) {
+					partcolour = partdetail[1];
+					partdetail = partdetail[0];
+				} else {
+					partcolour = partdetail[0];
+					partdetail = 0;
+				}
+				if (!Kns.partAvailable(false, i, partdetail, partcolour)) {
+					Sel.main[i][j] = 0;
+					continue;
+				}
+				if (!(Sel.main[i][j] > 0 || (Sel.main[i][j] != "" && Sel.main[i][j] != "0"))) {
+					continue;
+				}
+				newArr.push(Sel.main[i][j]);
+			}
+			if (el == i) {
+				isNew = Sel.main[i].length != newArr.length;
+			}
+			Sel.main[i] = newArr;
+			if (!Sel.main[i].length && Kns.parts[i].default) {
+				Sel.main[i] = [Kns.parts[i].default];
 			}
 		}
-		var isNew = Sel.main[el].length != newArr.length;
-		Sel.main[el] = newArr;
 		if (isNew) {
 			Kns.drawDetail(false);
 		}
@@ -519,72 +569,158 @@ $(function() {
 		}
 		Sel.random = true;
 		Kns.reset();
-		for (var i = 0; i < Kns.parts.length; i++) {
-			Sel.main[i] = [];
-			var pastParts = [];
-			if (i == 19) {
-				pastParts = [];
-			}
-			if (!Kns.parts[i] || !Kns.parts[i].name) {
-				continue;
-			}
-			for (var dataNum = 0; dataNum < ((Kns.parts[i].noVariations || Kns.parts[i].noCombine) ? 1 : detailsMax); dataNum++) {
-				if (Math.random() >= coeff && numObligatory.indexOf(i) === -1 || Sel.main[numBase][0] > normalBases && numSpecialEdits.indexOf(i) === -1) {
+		for (var mode = 0; mode < 2; mode++) {
+			for (var i = 0; i < Kns.parts.length; i++) {
+				if ((Kns.parts[i].type || Kns.parts[i].noVariations) && mode !== 0) {
 					continue;
 				}
-				var result = [];
-				var palette = Kns.parts[i].palette || 0;
-				if (Kns.parts[i].info) {
-					var parts = [];
-					for (var one = 0; one < Kns.parts[i].info.length; one++) {
-						if (pastParts.indexOf(Kns.parts[i].info[one].id) !== -1) {
-							continue;
-						}
-						parts.push(Kns.parts[i].info[one]);
-					}
-					if (parts.length < 1) {
-						break;
-					}
-					var part = Math.floor(Math.random() * parts.length);
-					result.push(parts[part].id);
-					pastParts.push(parts[part].id);
-					palette = parts[part].palette || palette;
+				Sel.main[i] = [];
+				var pastParts = [];
+				if (!Kns.parts[i] || !Kns.parts[i].name || !Kns.partAvailable(false, i)) {
+					continue;
 				}
-				var colours = [];
-				for (var c = 0; c < Kns.palette[palette].length; c++) {
-					if (+Kns.palette[palette][c].id === 0 || +Kns.palette[palette][c].name === 0) {
+				for (var dataNum = 0; dataNum < ((Kns.parts[i].noVariations || Kns.parts[i].noCombine || !Kns.parts[i].info) ? 1 : detailsMax); dataNum++) {
+					if (Math.random() >= coeff && !Kns.parts[i].obligatory) {
 						continue;
 					}
-					colours.push(Kns.palette[palette][c].id);
+					var result = [];
+					var palette = Kns.parts[i].palette || 0;
+					var detail = 0;
+					if (Kns.parts[i].info) {
+						var parts = [];
+						for (var one = 0; one < Kns.parts[i].info.length; one++) {
+							if (pastParts.indexOf(Kns.parts[i].info[one].id) !== -1) {
+								continue;
+							}
+							if (!Kns.partAvailable(false, i, Kns.parts[i].info[one].id)) {
+								continue;
+							}
+							parts.push(Kns.parts[i].info[one]);
+						}
+						if (parts.length < 1) {
+							break;
+						}
+						var part = Math.floor(Math.random() * parts.length);
+						result.push(parts[part].id);
+						pastParts.push(parts[part].id);
+						palette = parts[part].palette || palette;
+						detail = parts[part].id;
+					}
+					var colours = [];
+					for (var c = 0; c < Kns.palette[palette].length; c++) {
+						if (+Kns.palette[palette][c].id === 0 || +Kns.palette[palette][c].name === 0) {
+							continue;
+						}
+						if (!Kns.partAvailable(false, i, detail, Kns.palette[palette][c].id)) {
+							continue;
+						}
+						colours.push(Kns.palette[palette][c].id);
+					}
+					var colourNum = Math.floor(Math.random() * colours.length);
+					result.push(colours[colourNum]);
+					Sel.main[i].push(result.join("/"));
 				}
-				var colourNum = Math.floor(Math.random() * colours.length);
-				result.push(colours[colourNum]);
-				Sel.main[i].push(result.join("/"));
 			}
 		}
 		Kns.refresh(true);
 		Sel.random = false;
 	};
+
+	Kns.partAvailable = function (showError, block, detail, colour) {
+		if (block === undefined) {
+			return true;
+		}
+		// анализ блоков
+		if (vipLevel < 1 && block == numRightEye) { //правые глаза не разрешены в любом случае, если vip < 1
+			if (showError) {
+				Kns.error("Невозможно выбирать правые глаза.");
+			}
+			return false;
+		}
+		if (isBaseSpecial(Sel.main[numBase][0])) {
+			if (!Kns.parts[block].special) {
+				if (showError) {
+					Kns.error("На особых окрасах нельзя выбирать какие-либо элементы.");
+				}
+				return false;
+			}
+		}
+
+		switch (block) {
+			case numManeElement:
+				if (!Sel.main[numManeBase][0]) {
+					if (showError) {
+						Kns.error("Выберите сперва гриву-основу.");
+					}
+					return false;
+				}
+				break;
+			case numTuftElement:
+				if (!Sel.main[numTuftBase][0]) {
+					if (showError) {
+						Kns.error("Выберите сперва шерсть-основу.");
+					}
+					return false;
+				}
+				break;
+		}
+		if (detail === undefined) {
+			return true;
+		}
+
+		// анализ частей, показываемых в блоке
+		switch (block) {
+			case numEarTufts:
+				var numEar = Sel.main[numEarBase][0].split('/')[0];
+				if (numEar == numEarLay) {
+					if (detail == numEarTuftsNormal) {
+						if (showError) {
+							Kns.error("Вислоухим не доступны кисточки.");
+						}
+						return false;
+					}
+				}
+				break;
+		}
+
+		if (colour === undefined) {
+			return true;
+		}
+
+		// анализ цветов
+		switch (block) {
+			case numLeftEye:
+			case numRightEye:
+				if (isEyesSpecial(colour)) {
+					if (vipLevel < 3) {
+						if (showError) {
+							Kns.error("Вам не доступны фиолетовые глаза.");
+						}
+						return false;
+					}
+				}
+				break;
+			case numBase:
+				if (isBaseSpecial(colour)) {
+					if (vipLevel < 2) {
+						if (showError) {
+							Kns.error("Вам не доступны специальные окрасы.");
+						}
+						return false;
+					}
+				}
+				break;
+		}
+
+		return true;
+	};
+
 	Kns.vip = function(temp) {
-		var vipLevel = +$("#main").data("vip");
-		if (temp) {
+		vipLevel = +$("#main").data("vip");
+		if (temp !== undefined) {
 			vipLevel = +temp;
 			Kns.parts = JSON.parse(JSON.stringify(Kns.backupInfo));
 		}
-		if (vipLevel < 1) {
-			Kns.parts[numRightEye] = {};
-			return;
-		}
-		Kns.parts[numLeftEye].name = "Глаза";
-		if (vipLevel < 2) {
-			return;
-		}
-		Kns.parts[numBase].palette = paletteSpecialBases;
-		if (vipLevel < 3) {
-			return;
-		}
-		Kns.parts[numLeftEye].palette = paletteVioletEyes;
-		Kns.parts[numRightEye].palette = paletteVioletEyes;
 	};
 	Kns.error = function(text) {
 		if (Sel.random) {
@@ -615,24 +751,23 @@ $(function() {
 	Kns.parseCode = function(input) {
 		var code = input.value;
 		var blocks = code.split(" ");
-		for (var i = 0; i < Kns.result.length; i++) {
-			var num = Kns.result[i];
-			if (i >= blocks.length) {
+		for (var num = 0; num < Kns.parts.length; num++) {
+			if (num >= blocks.length) {
 				if (Kns.parts[num] && Kns.parts[num].default) {
 					Sel.main[num] = [Kns.parts[num].default];
 				} else {
 					Sel.main[num] = [];
 				}
-				if (Sel.main[numBase] > normalBases && numSpecialEdits.indexOf(num) === -1) {
+				if (isBaseSpecial(Sel.main[numBase][0]) && !Kns.parts[num].special) {
 					Sel.main[num] = [];
 				}
 				continue;
 			}
-			blocks[i] = (blocks[i]+'').split("-");
+			blocks[num] = (blocks[num]+'').split("-");
 
 			Sel.main[num] = [];
-			for (var inter = 0; inter < blocks[i].length; inter++) {
-				var part = blocks[i][inter];
+			for (var inter = 0; inter < blocks[num].length; inter++) {
+				var part = blocks[num][inter];
 				if (+part !== 0) {
 					Sel.main[num].push(part);
 				}
@@ -683,46 +818,48 @@ $(function() {
 		Kns.confirm("Сохранить окрас?", function() {
 			//validate
 			try {
-				for (var i = 0; i < Kns.result.length; i++) {
-					if (!(Sel.main[Kns.result[i]] instanceof Array)) {
-						Sel.main[Kns.result[i]] = (Sel.main[Kns.result[i]] + '').split('-');
+				for (var i = 0; i < Kns.parts.length; i++) {
+					if (!(Sel.main[i] instanceof Array)) {
+						Sel.main[i] = (Sel.main[i] + '').split('-');
 					}
-					var now = Sel.main[Kns.result[i]];
-					var info = Kns.parts[Kns.result[i]];
-					if (now.length > (info.noVariations || info.noCombine ? 1 : detailsMax)) {
-						Kns.error("Ошибочная строка, сохранение невозможно: слишком много элементов");
+					var now = Sel.main[i];
+					var info = Kns.parts[i];
+					var max = Kns.partAvailable(false, i) ? (info.noCombine ? 1 : detailsMax) : 0;
+					if (now.length > max) {
+						Kns.error("Сохранение невозможно: слишком много элементов");
 						return;
 					}
-					var obligatory = numObligatory.indexOf(Kns.result[i]) !== -1 && (Sel.main[numBase][0] <= normalBases || Sel.main[numBase][0] > normalBases && numSpecialEdits.indexOf(Kns.result[i]) !== -1);
+					var obligatory = Kns.parts[i].obligatory && max > 0;
 					if (now.length < 1 && obligatory) {
-						Kns.error("Ошибочная строка, сохранение невозможно: не выбраны обязательные элементы");
+						Kns.error("Сохранение невозможно: не выбраны обязательные элементы");
 						return;
 					}
 					var oldLayers = [];
 					for (var layer = 0; layer < now.length; layer++) {
 						if ((now[layer] === 0 || now[layer] === '' || now[layer] === '0')) {
 							if (obligatory) {
-								Kns.error("Ошибочная строка, сохранение невозможно: не выбраны обязательные элементы");
+								Kns.error("Сохранение невозможно: не выбраны обязательные элементы");
 								return;
 							}
 							continue;
 						}
 						var parts = (now[layer] + '').split('/');
 						if (parts.length != (info.noVariations ? 1 : 2)) {
-							Kns.error("Ошибочная строка, сохранение невозможно: некорректный код элемента");
+							Kns.error("Сохранение невозможно: некорректный код элемента");
 							return;
 						}
 						var palette = info.palette | 0;
+						var detail = 0;
 						if (info.info) {
-							var detail = info.info.filter(function(el) { return el.id == parts[0]; })[0];
-							if (detail) {
+							detail = info.info.filter(function(el) { return el.id == parts[0]; })[0];
+							if (detail && Kns.partAvailable(false, i, detail)) {
 								palette = detail.palette | 0;
 							} else {
-								Kns.error("Ошибочная строка, сохранение невозможно: неверный элемент");
+								Kns.error("Сохранение невозможно: неверный элемент");
 								return;
 							}
 							if (oldLayers.indexOf(parts[0]) !== -1) {
-								Kns.error("Ошибочная строка, сохранение невозможно: повторяющийся элемент");
+								Kns.error("Сохранение невозможно: повторяющийся элемент");
 								return;
 							}
 							oldLayers.push(parts[0]);
@@ -730,8 +867,8 @@ $(function() {
 						if (info.noVariations) {
 							parts[1] = parts[0];
 						}
-						if (!Kns.palette[palette].filter(function(el) { return el.id == parts[1]; })[0] || +parts[1] === 0) {
-							Kns.error("Ошибочная строка, сохранение невозможно: неверный цвет");
+						if (!Kns.palette[palette].filter(function(el) { return el.id == parts[1]; })[0] || +parts[1] === 0 || !Kns.partAvailable(false, i, detail, parts[1])) {
+							Kns.error("Сохранение невозможно: неверный цвет");
 							return;
 						}
 					}
@@ -756,55 +893,18 @@ $(function() {
 	});
 	
 	$("#color").on("click", function(e) {
-		var num = $(e.target).attr("data-num");
-		if (!num && +num !== 0) {
+		var colour = $(e.target).attr("data-num");
+		if (!colour && +colour !== 0) {
 			return;
 		}
 
-		if (Sel.now == numEarTufts && Sel.main[numEarBase][0] == 2 && num !== 0) {
-			Kns.error("Нельзя выбирать кисточки при висячих ушах.");
+		var detail = (Kns.parts[Sel.now].info && Kns.parts[Sel.now].info[Sel.nowSelected]) ? Kns.parts[Sel.now].info[Sel.nowSelected].id : 0;
+
+		if (!Kns.partAvailable(true, Sel.now, detail, colour)) {
 			return;
 		}
-		if (Sel.now == numEarBase && Kns.parts[numEarBase].info[Sel.nowSelected].id == numEarLay && Sel.main[numEarTufts].length > 0) {
-			Sel.main[numEarTufts] = [];
-		}
-		if (Sel.now == numBase && num > normalBases) {
-			for (var i = 0; i < Kns.parts.length; i++) {
-				if (numSpecialEdits.indexOf(i) !== -1) {
-					continue;
-				}
-				Sel.main[i] = [];
-			}
-		}
-		if (Sel.now == numBase && Sel.main[numBase][0] > normalBases && !(num > normalBases)) {
-			for (i = 0; i < numObligatory.length; i++) {
-				if (numObligatory[i] == numBase || Sel.main[numObligatory[i]] != 0) {
-					continue;
-				}
-				if (Kns.parts[numObligatory[i]].default) {
-					Sel.main[numObligatory[i]] = [Kns.parts[numObligatory[i]].default];
-				}
-			}
-		}
-		if (Sel.main[numBase][0] > normalBases && numSpecialEdits.indexOf(Sel.now) === -1 && +num !== 0) {
-			Kns.error("На особых окрасах нельзя выбирать какие-либо элементы.");
-			return;
-		}
-		if (!Sel.main[numManeBase][0] && Sel.now == numManeElement && +num !== 0) {
-			Kns.error("Выберите сперва гриву-основу.");
-			return;
-		}
-		if (Sel.now == numManeBase && +num === 0) {
-			Sel.main[numManeElement] = [];
-		}
-		if (!Sel.main[numTuftBase][0] && Sel.now == numTuftElement && +num !== 0) {
-			Kns.error("Выберите сперва шерсть-основу.");
-			return;
-		}
-		if (Sel.now == numTuftBase && +num === 0) {
-			Sel.main[numTuftElement] = [];
-		}
-		if (Sel.now == numRightHindPaw && +num !== 0 && Kns.warning > 0) { // убрать, когда будут действия
+
+		if (Sel.now == numRightHindPaw && +colour !== 0 && Kns.warning > 0) { // убрать, когда будут действия
 			Kns.error("Некоторые элементы на задней правой лапе будут видны только на действиях.");
 			Kns.warning--;
 		}
@@ -814,12 +914,13 @@ $(function() {
 			dataNum = $(".sel").attr("data-num");
 		}
 		if (!Kns.parts[Sel.now].noVariations) {
-			num = (num ? Kns.parts[Sel.now].info[Sel.nowSelected].id + "/" + num : 0);
+			colour = (colour ? Kns.parts[Sel.now].info[Sel.nowSelected].id + "/" + colour : 0);
 		}
 		if (!(Sel.main[Sel.now] instanceof Array)) {
 			Sel.main[Sel.now] = [Sel.main[Sel.now]];
 		}
-		Sel.main[Sel.now][dataNum] = num;
+		Sel.main[Sel.now][dataNum] = colour;
+
 		Kns.cleanMain(Sel.now);
 		Kns.refresh(false, true, false, false, true);
 	});
