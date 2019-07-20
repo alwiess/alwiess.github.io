@@ -50,9 +50,9 @@ $(function() {
 		/* 6 */ {name: "Правая лапа", // elements/forepaw_right
 			info: [{id: "1", name: "Брызги"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Леопардовые пятнышки"}, {id: "4", name: "Тонкие полосы"}, {id: "5", name: "Полосы"}, {id: "6", name: "Разорванные полосы"}, {id: "7", name: "Пламенные полосы"}, {id: "8", name: "Мрамор"}, {id: "9", name: "Пальцы"}, {id: "10", name: "Носок"}, {id: "11", name: "Гольф"}, {id: "12", name: "Чулок"}, {id: "13", name: "Лапа"}, {id: "14", name: "Низ"}, {id: "15", name: "Низ с носком"}, {id: "16", name: "Слабый налёт"}, {id: "17", name: "Сильный налёт"}]},
 		/* 7 */ {name: "Левое ухо", // elements/ear_left
-			info: [{id: "1", name: "Кончик уха"}, {id: "2", name: "Кайма"}, {id: "3", name: "Полностью"}]},
+			info: [{id: "1", name: "Кончик"}, {id: "2", name: "Кайма"}, {id: "3", name: "Полностью"}, {id: "4", name: "Шерсть внутри", palette: 5}]},
 		/* 8 */ {name: "Правое ухо", // elements/ear_right
-			info: [{id: "1", name: "Кончик уха"}, {id: "2", name: "Кайма"}, {id: "3", name: "Полностью"}]},
+			info: [{id: "1", name: "Кончик"}, {id: "2", name: "Кайма"}, {id: "3", name: "Полностью"}, {id: "4", name: "Шерсть внутри", palette: 5}]},
 		/* 9 */ {name: "Грудь", // elements/breast
 			info: [{id: "1", name: "Пятнышки"}, {id: "2", name: "Пятна"}, {id: "3", name: "Мрамор"}, {id: "4", name: "Маленький медальон"}, {id: "5", name: "Средний медальон"}, {id: "6", name: "Медальон"}, {id: "7", name: "Подпалины"}, {id: "8", name: "Область под шеей"}, {id: "9", name: "Полностью"}, {id: "10", name: "Грудь с горлом"}]},
 		/* 10 */ {name: "Кисточки", // elements/tuft
@@ -112,8 +112,8 @@ $(function() {
 		/* 3 */ [{id: "0", name: '', colour: ""},{id: "1", name: "Медный", colour: "#9C7941"},{id: "2", name: "Карий", colour: "#362121"},{id: "3", name: "Чёрно-красный", colour: "#612322"},{id: "4", name: "Оранжевый", colour: "#D6700B"},{id: "5", name: "Янтарный", colour: "#FCB10D"},{id: "6", name: "Жёлтый", colour: "#FCDF00"},{id: "7", name: "Оливковый", colour: "#B3B059"},{id: "8", name: "Лайм", colour: "#A8AB0C"},{id: "9", name: "Зелёный", colour: "#2FA12D"},{id: "10", name: "Салатовый", colour: "#7DC210"},{id: "11", name: "Бирюзовый", colour: "#0ECC90"},{id: "12", name: "Голубой", colour: "#87C3D4"},{id: "13", name: "Васильковый", colour: "#148CCC"},{id: "14", name: "Синий", colour: "#192580"},{id: "15", name: "Серый", colour: "#7D8996"}, {id: "16", name: "Фиолетовый", colour: "#734563"}],
 		/* УСЫ */
 		/* 4 */ [{id: "0", name: '', colour: ""}, {id: "1", name: "Светлые", colour: "#ffffff"}, {id: "2", name: "Тёмные", colour: "#5c5c5c"}, {id: "3", name: "Чёрные", colour: "#242424"}],
-		/* НОС */
-		/* 4 */ [{id: "0", name: '', colour: ""}, {id: "1", name: "Кремовый", colour: "#f5e5ce"}, {id: "2", name: "Белый", colour: "#ffffff"}, {id: "3", name: "Серый", colour: "#9e9e9e"}, {id: "4", name: "Чёрный", colour: "#242424"}, {id: "5", name: "Бурый", colour: "#3d1c0b"}, {id: "6", name: "Шоколадный", colour: "#6b3c28"}, {id: "7", name: "Фавн", colour: "#9a715f"}, {id: "8", name: "Медный", colour: "#bd6d32"}, {id: "9", name: "Красный", colour: "#e15c0f"}, {id: "10", name: "Розовый", colour: "#ffffff"}, {id: "11", name: "Ярко-розовый", colour: "#ffffff"}, {id: "12", name: "Лиловый", colour: "#b19798"}, {id: "13", name: "Дымчато-голубой", colour: "#465165"}],
+		/* НОС И ШЕРСТЬ ВНУТРИ УШЕЙ */
+		/* 5 */ [{id: "0", name: '', colour: ""}, {id: "1", name: "Кремовый", colour: "#f5e5ce"}, {id: "2", name: "Белый", colour: "#ffffff"}, {id: "3", name: "Серый", colour: "#9e9e9e"}, {id: "4", name: "Чёрный", colour: "#242424"}, {id: "5", name: "Бурый", colour: "#3d1c0b"}, {id: "6", name: "Шоколадный", colour: "#6b3c28"}, {id: "7", name: "Фавн", colour: "#9a715f"}, {id: "8", name: "Медный", colour: "#bd6d32"}, {id: "9", name: "Красный", colour: "#e15c0f"}, {id: "10", name: "Розовый", colour: "#cc8370"}, {id: "11", name: "Ярко-розовый", colour: "#e67a6e"}, {id: "12", name: "Лиловый", colour: "#b19798"}, {id: "13", name: "Дымчато-голубой", colour: "#465165"}],
 		/* ЭЛЕМЕНТ КАЙМА НОСА */
 		/* 6 */ [{id: "0", name: '', colour: ""}, {id: "1", name: "Чёрный", colour: "#242424"}],
 	];
