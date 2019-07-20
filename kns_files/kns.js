@@ -69,7 +69,7 @@ $(function() {
 			noCombine: true,
 			type: true,
 			default: "1/1",
-			info: [{id: "1", name: "Куцый"}, {id: "3", name: "Умеренный"}, {id: "4", name: "Пушистый"}, {id: "5", name: "Пышный"}, {id: "2", name: "Тонкий"}]},
+			info: [{id: "1", name: "Куцый"}, {id: "2", name: "Тонкий"}, {id: "3", name: "Умеренный"}, {id: "4", name: "Пушистый"}, {id: "5", name: "Пышный"}]},
 		/* 16 */ {name: "Грива", // base_mane
 			noCombine: true,
 			type: true,
@@ -97,7 +97,8 @@ $(function() {
 			palette: 4,
 			info: [{id: "1", name: "Прямые короткие"}, {id: "2", name: "Прямые"}, {id: "3", name: "Прямые длинные"}, {id: "4", name: "Кудрявые"}]},
 		/* 23 */ {name: "Нос", // elements/nose
-			info: [{id: "2", name: "Половина"}, {id: "3", name: "Кайма"}, {id: "1", name: "Полностью"}]}
+			palette: 5,
+			info: [{id: "1", name: "Полностью"}, {id: "2", name: "Половина"}, {id: "3", name: "Кайма", palette: 6}]}
 	];
 	Kns.backupInfo = JSON.parse(JSON.stringify(Kns.parts));
 	Kns.palette = [
@@ -108,9 +109,13 @@ $(function() {
 		/* УНИКАЛЬНЫЕ ОКРАСЫ */
 		/* 2 */ [{id: "0", name: '', colour: ""},{id: "1", name: "Кремовый", colour: "#f5e5ce"},{id: "2", name: "Белоснежный", colour: "#ffffff"},{id: "3", name: "Белый", colour: "#e6e6e6"},{id: "4", name: "Серебристый", colour: "#d1d1d1"},{id: "5", name: "Серый", colour: "#9e9e9e"},{id: "6", name: "Дымчатый", colour: "#5c5c5c"},{id: "7", name: "Чёрный", colour: "#242424"},{id: "8", name: "Угольно-чёрный", colour: "#141414"},{id: "9", name: "Иссиня-чёрный", colour: "#1d212c"},{id: "10", name: "Чернобурый", colour: "#2b1d1c"},{id: "11", name: "Бурый", colour: "#3d1c0b"},{id: "12", name: "Шоколадный", colour: "#6b3c28"},{id: "13", name: "Фавн", colour: "#9a715f"},{id: "14", name: "Медный", colour: "#bd6d32"},{id: "15", name: "Огненный", colour: "#cb4402"},{id: "16", name: "Красный", colour: "#e15c0f"},{id: "17", name: "Рыжий", colour: "#ed9b2d"},{id: "18", name: "Золотистый", colour: "#e5bd7f"},{id: "19", name: "Палевый", colour: "#d7ae98"},{id: "20", name: "Лиловый", colour: "#b19798"},{id: "21", name: "Голубой", colour: "#a6b4b7"},{id: "22", name: "Серо-голубой", colour: "#697a8a"},{id: "23", name: "Дымчато-голубой", colour: "#465165"},{id: "24", name: "Черничный", colour: "#323d51"},{id: "25", name: "\r\nУникальный окрас", image: "+1"},{id: "26", name: "Уникальный окрас", image: "+2"},{id: "27", name: "Уникальный окрас", image: "+3"},{id: "28", name: "Уникальный окрас", image: "+4"},{id: "29", name: "Уникальный окрас", image: "+5"},{id: "30", name: "Уникальный окрас", image: "+6"},{id: "31", name: "Уникальный окрас", image: "+7"},{id: "32", name: "Уникальный окрас", image: "+8"},{id: "33", name: "Уникальный окрас", image: "+9"},{id: "34", name: "Уникальный окрас", image: "+10"},{id: "35", name: "Уникальный окрас", image: "+11"},{id: "36", name: "Уникальный окрас", image: "+12"},{id: "37", name: "Уникальный окрас", image: "+13"},{id: "38", name: "Уникальный окрас", image: "+14"},{id: "39", name: "Уникальный окрас", image: "+15"},{id: "40", name: "Уникальный окрас", image: "+16"},{id: "41", name: "Уникальный окрас", image: "+17"},{id: "42", name: "Уникальный окрас", image: "+18"},{id: "43", name: "Уникальный окрас", image: "+19"},{id: "44", name: "Уникальный окрас", image: "+20"},{id: "45", name: "Уникальный окрас", image: "+21"},{id: "46", name: "Уникальный окрас", image: "+22"}],
 		/* ФИОЛЕТОВЫЕ ГЛАЗА */
-		/* 3 */ [{id: "0", name: '', colour: ""},{id: "1", name: "Медный", colour: "#9C7941"},{id: "2", name: "Карий", colour: "#362121"},{id: "3", name: "Чёрно-красный", colour: "#612322"},{id: "4", name: "Оранжевый", colour: "#D6700B"},{id: "5", name: "Янтарный", colour: "#FCB10D"},{id: "6", name: "Жёлтый", colour: "#FCDF00"},{id: "7", name: "Оливковый", colour: "#B3B059"}, {id: "16", name: "Фиолетовый", colour: "#734563"},{id: "8", name: "Лайм", colour: "#A8AB0C"},{id: "9", name: "Зелёный", colour: "#2FA12D"},{id: "10", name: "Салатовый", colour: "#7DC210"},{id: "11", name: "Бирюзовый", colour: "#0ECC90"},{id: "12", name: "Голубой", colour: "#87C3D4"},{id: "13", name: "Васильковый", colour: "#148CCC"},{id: "14", name: "Синий", colour: "#192580"},{id: "15", name: "Серый", colour: "#7D8996"}],
+		/* 3 */ [{id: "0", name: '', colour: ""},{id: "1", name: "Медный", colour: "#9C7941"},{id: "2", name: "Карий", colour: "#362121"},{id: "3", name: "Чёрно-красный", colour: "#612322"},{id: "4", name: "Оранжевый", colour: "#D6700B"},{id: "5", name: "Янтарный", colour: "#FCB10D"},{id: "6", name: "Жёлтый", colour: "#FCDF00"},{id: "7", name: "Оливковый", colour: "#B3B059"},{id: "8", name: "Лайм", colour: "#A8AB0C"},{id: "9", name: "Зелёный", colour: "#2FA12D"},{id: "10", name: "Салатовый", colour: "#7DC210"},{id: "11", name: "Бирюзовый", colour: "#0ECC90"},{id: "12", name: "Голубой", colour: "#87C3D4"},{id: "13", name: "Васильковый", colour: "#148CCC"},{id: "14", name: "Синий", colour: "#192580"},{id: "15", name: "Серый", colour: "#7D8996"}, {id: "16", name: "Фиолетовый", colour: "#734563"}],
 		/* УСЫ */
-		/* 4 */ [{id: "0", name: '', colour: ""},{id: "1", name: "Светлые", colour: "#ffffff"}, {id: "2", name: "Тёмные", colour: "#5c5c5c"}, {id: "3", name: "Чёрные", colour: "#242424"}],
+		/* 4 */ [{id: "0", name: '', colour: ""}, {id: "1", name: "Светлые", colour: "#ffffff"}, {id: "2", name: "Тёмные", colour: "#5c5c5c"}, {id: "3", name: "Чёрные", colour: "#242424"}],
+		/* НОС */
+		/* 4 */ [{id: "0", name: '', colour: ""}, {id: "1", name: "Кремовый", colour: "#f5e5ce"}, {id: "2", name: "Белый", colour: "#ffffff"}, {id: "3", name: "Серый", colour: "#9e9e9e"}, {id: "4", name: "Чёрный", colour: "#242424"}, {id: "5", name: "Бурый", colour: "#3d1c0b"}, {id: "6", name: "Шоколадный", colour: "#6b3c28"}, {id: "7", name: "Фавн", colour: "#9a715f"}, {id: "8", name: "Медный", colour: "#bd6d32"}, {id: "9", name: "Красный", colour: "#e15c0f"}, {id: "10", name: "Розовый", colour: "#ffffff"}, {id: "11", name: "Ярко-розовый", colour: "#ffffff"}, {id: "12", name: "Лиловый", colour: "#b19798"}, {id: "13", name: "Дымчато-голубой", colour: "#465165"}],
+		/* ЭЛЕМЕНТ КАЙМА НОСА */
+		/* 6 */ [{id: "0", name: '', colour: ""}, {id: "1", name: "Чёрный", colour: "#242424"}],
 	];
 	Kns.error_tm = 0;
 	Kns.warning = 3; // убрать, когда будут действия
