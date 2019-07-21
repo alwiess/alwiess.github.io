@@ -120,7 +120,7 @@ $(function() {
 		/* УСЫ */
 		/* 4 */ [{id: "0", name: '', colour: ""}, {id: "1", name: "Светлые", colour: "#ffffff"}, {id: "2", name: "Тёмные", colour: "#5c5c5c"}, {id: "3", name: "Чёрные", colour: "#242424"}],
 		/* НОС И ШЕРСТЬ ВНУТРИ УШЕЙ */
-		/* 5 */ [{id: "0", name: '', colour: ""}, {id: "1", name: "Кремовый", colour: "#f5e5ce"}, {id: "2", name: "Белый", colour: "#ffffff"}, {id: "3", name: "Серый", colour: "#9e9e9e"}, {id: "4", name: "Чёрный", colour: "#242424"}, {id: "5", name: "Бурый", colour: "#3d1c0b"}, {id: "6", name: "Шоколадный", colour: "#6b3c28"}, {id: "7", name: "Фавн", colour: "#9a715f"}, {id: "8", name: "Медный", colour: "#bd6d32"}, {id: "9", name: "Красный", colour: "#e15c0f"}, {id: "10", name: "Розовый", colour: "#cc8370"}, {id: "11", name: "Ярко-розовый", colour: "#e67a6e"}, {id: "12", name: "Лиловый", colour: "#b19798"}, {id: "13", name: "Дымчато-голубой", colour: "#465165"}],
+		/* 5 */ [{id: "0", name: '', colour: ""}, {id: "1", name: "Кремовый", colour: "#f5e5ce"}, {id: "2", name: "Белый", colour: "#ffffff"}, {id: "3", name: "Серый", colour: "#9e9e9e"}, {id: "4", name: "Чёрный", colour: "#242424"}, {id: "5", name: "Бурый", colour: "#3d1c0b"}, {id: "6", name: "Шоколадный", colour: "#6b3c28"}, {id: "7", name: "Фавн", colour: "#9a715f"}, {id: "8", name: "Медный", colour: "#bd6d32"}, {id: "9", name: "Красный", colour: "#e15c0f"}, {id: "10", name: "Розовый", colour: "#cc8370"}, {id: "11", name: "Лиловый", colour: "#b19798"}, {id: "12", name: "Дымчато-голубой", colour: "#465165"}],
 		/* ЭЛЕМЕНТ КАЙМА НОСА */
 		/* 6 */ [{id: "0", name: '', colour: ""}, {id: "1", name: "Чёрный", colour: "#242424"}],
 	];
