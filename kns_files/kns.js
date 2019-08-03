@@ -750,6 +750,15 @@ $(function() {
 		}
 
 		// анализ цветов
+		//смотрим полупрозрачность
+		var colourWithOpacity = colour.split('|');
+		if (Kns.parts[block].opaque && colourWithOpacity[1]) {
+			if (showError) {
+				Kns.error("Некорректное значение непрозрачности.");
+			}
+			return false;
+		}
+		colour = colourWithOpacity[0];
 		switch (block) {
 			case numLeftEye:
 			case numRightEye:
