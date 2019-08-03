@@ -32,6 +32,7 @@ td {
 }
 #main {
 	margin: auto;
+	display: table;
 }
 #color div, #area td, .tabledetail div {
 	width: 30px;

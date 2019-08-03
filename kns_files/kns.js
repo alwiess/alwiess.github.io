@@ -34,14 +34,16 @@ $(function() {
 			palette: 2,
 			noVariations: true,
 			special: true,
-			obligatory: true},
+			obligatory: true,
+			opaque: true},
 		/* 1 */ {name: "Глаза", // elements/eyes
 			noCombine: true,
 			default: 12,
 			palette: 3,
 			noVariations: true,
 			special: true,
-			obligatory: true},
+			obligatory: true,
+			opaque: true},
 		/* 2 */ {name: "Левая лапа", // elements/forepaw_left
 			info: [{id: "1", name: "Брызги"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Леопардовые пятнышки"}, {id: "4", name: "Тонкие полосы"}, {id: "5", name: "Полосы"}, {id: "6", name: "Разорванные полосы"}, {id: "7", name: "Пламенные полосы"}, {id: "8", name: "Мрамор"}, {id: "9", name: "Пальцы"}, {id: "10", name: "Носок"}, {id: "11", name: "Гольф"}, {id: "12", name: "Чулок"}, {id: "13", name: "Лапа"}, {id: "14", name: "Низ"}, {id: "15", name: "Низ с носком"}, {id: "16", name: "Слабый налёт"}, {id: "17", name: "Сильный налёт"}]},
 		/* 3 */ {name: "Правая лапа", // elements/forepaw_right
@@ -59,7 +61,8 @@ $(function() {
 		/* 9 */ {name: "Грудь", // elements/breast
 			info: [{id: "1", name: "Пятнышки"}, {id: "2", name: "Пятна"}, {id: "3", name: "Мрамор"}, {id: "4", name: "Маленький медальон"}, {id: "5", name: "Средний медальон"}, {id: "6", name: "Медальон"}, {id: "7", name: "Подпалины"}, {id: "8", name: "Область под шеей"}, {id: "9", name: "Полностью"}, {id: "10", name: "Грудь с горлом"}]},
 		/* 10 */ {name: "Кисточки", // elements/tuft
-			info: [{id: "1", name: "Кисточки"}, {id: "2", name: "Маленькие кисточки"}]},
+			info: [{id: "1", name: "Кисточки"}, {id: "2", name: "Маленькие кисточки"}],
+			opaque: true},
 		/* 11 */ {name: "Шея", // elements/neck
 			info: [{id: "1", name: "Пятнышки"}, {id: "2", name: "Пятна"}, {id: "3", name: "Отметины"}, {id: "4", name: "Леопардовые пятнышки"}, {id: "5", name: "Большое пятно №1"}, {id: "6", name: "Большое пятно №2"}, {id: "7", name: "Полоски"}, {id: "8", name: "Полосы"}, {id: "9", name: "Пламенные полосы"}, {id: "10", name: "Разорванные полосы"}, {id: "11", name: "Мрамор"}, {id: "12", name: "Мраморные полосы"}, {id: "13", name: "Полосатый мрамор"}, {id: "14", name: "Ремень"}, {id: "15", name: "Узкий ремень"}, {id: "16", name: "Полностью"}, {id: "17", name: "Слабый налёт"}, {id: "18", name: "Налёт"}, {id: "19", name: "Затушёвка"}]},
 		/* 12 */ {name: "Живот", // elements/belly
@@ -73,26 +76,31 @@ $(function() {
 			type: true,
 			default: "1/1",
 			info: [{id: "1", name: "Куцый"}, {id: "2", name: "Тонкий"}, {id: "3", name: "Умеренный"}, {id: "4", name: "Пушистый"}, {id: "5", name: "Пышный"}],
-			obligatory: true},
+			obligatory: true,
+			opaque: true},
 		/* 16 */ {name: "Грива", // base_mane
 			noCombine: true,
 			type: true,
-			info: [{id: "1", name: "Умеренная"}, {id: "2", name: "Пушистая"}, {id: "3", name: "Пышная"}]},
+			info: [{id: "1", name: "Умеренная"}, {id: "2", name: "Пушистая"}, {id: "3", name: "Пышная"}],
+			opaque: true},
 		/* 17 */ {name: "Уши", // base_ears
 			noCombine: true,
 			type: true,
 			default: "1/1",
 			info: [{id: "1", name: "Торчком"}, {id: "2", name: "Висячие"}, {id: "3", name: "Длинные"}, {id: "4", name: "Кручёные"}],
-			obligatory: true},
+			obligatory: true,
+			opaque: true},
 		/* 18 */ {name: "Шерсть", // base_hair
 			noCombine: true,
 			type: true,
-			info: [{id: "1", name: "На щёках №1"}, {id: "2", name: "На щёках №2"}, {id: "3", name: "На щёках №3"}]},
+			info: [{id: "1", name: "На щёках №1"}, {id: "2", name: "На щёках №2"}, {id: "3", name: "На щёках №3"}],
+			opaque: true},
 		/* 19 */ {name: "Правый глаз", // elements/eye_right
 			noCombine: true,
 			palette: 3,
 			noVariations: true,
-			special: true},
+			special: true,
+			opaque: true},
 		/* 20 */ {name: "Грива", // elements/mane
 			info: [{id: "1", name: "Брызги"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Пятна"}, {id: "4", name: "Полосы"}, {id: "5", name: "Пламенные полосы"}, {id: "6", name: "Мрамор"}, {id: "7", name: "Ремень"}, {id: "8", name: "Узкий ремень"}, {id: "11", name: "Низ"}, {id: "9", name: "Налёт"}, {id: "10", name: "Затушёвка"}]},
 		/* 21 */ {name: "Шерсть", // elements/hair
@@ -102,7 +110,8 @@ $(function() {
 			default: "2/1",
 			palette: 4,
 			info: [{id: "1", name: "Прямые короткие"}, {id: "2", name: "Прямые"}, {id: "3", name: "Прямые длинные"}, {id: "4", name: "Кудрявые"}],
-			obligatory: true},
+			obligatory: true,
+			opaque: true},
 		/* 23 */ {name: "Нос", // elements/nose
 			palette: 5,
 			info: [{id: "1", name: "Полностью"}, {id: "2", name: "Половина"}, {id: "3", name: "Кайма", palette: 6}]}
@@ -151,7 +160,7 @@ $(function() {
 	Kns.drawCat = function() {
 		var html = "";
 		for (var i = 0; i < Kns.actions.length; i++) {
-			html += "<td>" + Func.showCat(Kns.code(), 4.5, 0, Kns.actions[i]) + "</td>";
+			html += "<td>" + Func.showCat(Kns.code(), 4.5, 0, Kns.actions[i], {"costume": 0, "dirt": 0, "wound": 0, "drown": 0, "poisoning": 0, "disease": 0}) + "</td>";
 		}
 		html = "<table><tr>" + html + "</tr></table>";
 		$("#cat").html(html);
@@ -357,7 +366,7 @@ $(function() {
 		return Func.getUrlStyle(0, Func.folders.animationCode[Sel.now], id) + 'background-size: 100%;';
 	};
 
-	Kns.refresh = function(allnew, detailnotnew, noblocks, newselect, nodetail, nocats) {
+	Kns.refresh = function(allnew, detailnotnew, noblocks, newselect, nodetail, nocats, nopalette) {
 		if (!noblocks) {
 			if (newselect) {
 				Kns.drawBlocks();
@@ -370,7 +379,9 @@ $(function() {
 		if (!nocats) {
 			Kns.drawCat();
 		}
-		Kns.drawPalette();
+		if (!nopalette) {
+			Kns.drawPalette();
+		}
 		if (allnew) {
 			$(".edit0").click();
 		}
@@ -388,7 +399,8 @@ $(function() {
 		if (Sel.main[Sel.now].length <= dataNum) {
 			return;
 		}
-		var data = Sel.main[Sel.now][dataNum].split('/');
+		var imgWithOpacity = Sel.main[Sel.now][dataNum].split('|');
+		var data = imgWithOpacity[0].split('/');
 		data[0] = Kns.parts[Sel.now].info[Sel.nowSelected].id;
 		var palette = Kns.parts[Sel.now].info[Sel.nowSelected].palette || Kns.parts[Sel.now].palette || 0;
 		if (Kns.palette[palette].filter(function(el) { return el.id == data[1]; }).length < 1) {
@@ -403,7 +415,8 @@ $(function() {
 				break;
 			}
 		}
-		Sel.main[Sel.now][dataNum] = data.join('/');
+		imgWithOpacity[0] = data.join('/');
+		Sel.main[Sel.now][dataNum] = imgWithOpacity.join('|');
 		Kns.cleanMain(Sel.now);
 		Kns.refresh(false, true, false, false, true);
 		var selected = $('.sel');
@@ -411,6 +424,34 @@ $(function() {
 		var name = Kns.parts[Sel.now].info[Sel.nowSelected].name;
 		selected.attr('title', name);
 		$("[title]").tipTip();
+	};
+
+	Kns.selectedOpacity = function(opacity)
+	{
+		var dataNum = Kns.parts[Sel.now].info ? $(".sel").attr("data-num") : 0;
+		if (dataNum === undefined) {
+			return;
+		}
+		if (Sel.main[Sel.now] === 0 || Sel.main[Sel.now] === '') {
+			return;
+		}
+		if (Sel.main[Sel.now].length <= dataNum) {
+			return;
+		}
+		var imgWithOpacity = (Sel.main[Sel.now][dataNum]+'').split('|');
+		var opacityPresent = imgWithOpacity[1]
+		opacityPresent = opacityPresent ? Func.getOpacityFromCode(opacityPresent) * 100 : 100;
+		if (opacityPresent == opacity) {
+			return;
+		}
+		if (opacity >= 100) {
+			imgWithOpacity = [imgWithOpacity[0]];
+		} else {
+			opacity = Func.getOpacityForCode(opacity);
+			imgWithOpacity[1] = opacity;
+		}
+		Sel.main[Sel.now][dataNum] = imgWithOpacity.join("|");
+		Kns.refresh(false, false, true, true, true, false, true);
 	};
 
 	Kns.clickedDetail = function(menu) {
@@ -488,7 +529,7 @@ $(function() {
 		if (dataNum === undefined) {
 			p = -1;
 		}
-		var colour = (Sel.main[Sel.now][dataNum] + '' || '').split('/');
+		var colour = ((Sel.main[Sel.now][dataNum] + '' || '').split('|')[0] || '').split('/');
 		if (colour.length >= 2) {
 			colour = +colour[1];
 		} else {
@@ -518,6 +559,13 @@ $(function() {
 			width += 32;
 		}
 		html += '</tr></table>';
+		if (!Kns.parts[Sel.now].opaque && Kns.palette[p]) {
+			var opacity = (Sel.main[Sel.now][dataNum] + '' || '').split('|')[1] || 10;
+			opacity = Func.getOpacityFromCode(opacity) * 100;
+			var minOpacity = Func.getOpacityFromCode(0) * 100;
+			var stepOpacity = (100 - minOpacity) / Func.getOpacityForCode(100);
+			html += "<br><label>Непрозрачность: <input type='range' max='100' min='" + minOpacity + "' step='" + stepOpacity + "' value='" + opacity + "' onchange='Kns.selectedOpacity(this.value);' oninput='Kns.selectedOpacity(this.value);' id='opacity_range'></label>";
+		}
 		$("#color").html(html);
 		$("[title]").tipTip();
 	};
@@ -626,7 +674,15 @@ $(function() {
 					}
 					var colourNum = Math.floor(Math.random() * colours.length);
 					result.push(colours[colourNum]);
-					Sel.main[i].push(result.join("/"));
+					result = result.join("/");
+					if (!Kns.parts[i].opaque) {
+						var maxOpacity = Func.getOpacityForCode(100);
+						var opacity = Math.floor(Math.random() * (maxOpacity + 1));
+						if (opacity < maxOpacity) {
+							result += "|" + opacity;
+						}
+					}
+					Sel.main[i].push(result);
 				}
 			}
 		}
@@ -696,6 +752,15 @@ $(function() {
 		}
 
 		// анализ цветов
+		//смотрим полупрозрачность
+		var colourWithOpacity = colour.split('|');
+		if (Kns.parts[block].opaque && colourWithOpacity[1]) {
+			if (showError) {
+				Kns.error("Некорректное значение непрозрачности.");
+			}
+			return false;
+		}
+		colour = colourWithOpacity[0];
 		switch (block) {
 			case numLeftEye:
 			case numRightEye:
@@ -776,6 +841,9 @@ $(function() {
 			Sel.main[num] = [];
 			for (var inter = 0; inter < blocks[num].length; inter++) {
 				var part = blocks[num][inter];
+				if (Kns.parts[num].opaque) {
+					part = (part + '').split('|')[0] || 0;
+				}
 				if (+part !== 0) {
 					Sel.main[num].push(part);
 				}
@@ -921,6 +989,14 @@ $(function() {
 		}
 		if (!(Sel.main[Sel.now] instanceof Array)) {
 			Sel.main[Sel.now] = [Sel.main[Sel.now]];
+		}
+		var opacity = $("#opacity_range");
+		if (opacity) {
+			opacity = $("#opacity_range").val();
+			if (opacity < 100) {
+				opacity = Func.getOpacityForCode(opacity);
+				colour += "|" + opacity;
+			}
 		}
 		Sel.main[Sel.now][dataNum] = colour;
 
