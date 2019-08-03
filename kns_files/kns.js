@@ -490,7 +490,7 @@ $(function() {
 	};
 
 	Kns.addDetail = function() {
-		if (Kns.parts[Sel.now].noCombine) {
+		if (Kns.parts[Sel.now].noCombine && Kns.parts[Sel.now][0]) {
 			Kns.error("Невозможно добавить элемент.");
 			return;
 		}
