@@ -366,7 +366,7 @@ $(function() {
 		return Func.getUrlStyle(0, Func.folders.animationCode[Sel.now], id) + 'background-size: 100%;';
 	};
 
-	Kns.refresh = function(allnew, detailnotnew, noblocks, newselect, nodetail, nocats) {
+	Kns.refresh = function(allnew, detailnotnew, noblocks, newselect, nodetail, nocats, nopalette) {
 		if (!noblocks) {
 			if (newselect) {
 				Kns.drawBlocks();
@@ -379,7 +379,9 @@ $(function() {
 		if (!nocats) {
 			Kns.drawCat();
 		}
-		Kns.drawPalette();
+		if (!nopalette) {
+			Kns.drawPalette();
+		}
 		if (allnew) {
 			$(".edit0").click();
 		}
@@ -449,7 +451,7 @@ $(function() {
 			imgWithOpacity[1] = opacity;
 		}
 		Sel.main[Sel.now][dataNum] = imgWithOpacity.join("|");
-		Kns.refresh(false, false, true, true, true);
+		Kns.refresh(false, false, true, true, true, false, true);
 	};
 
 	Kns.clickedDetail = function(menu) {
@@ -562,7 +564,7 @@ $(function() {
 			opacity = Func.getOpacityFromCode(opacity) * 100;
 			var minOpacity = Func.getOpacityFromCode(0) * 100;
 			var stepOpacity = (100 - minOpacity) / Func.getOpacityForCode(100);
-			html += "<br><label>Непрозрачность: <input type='range' max='100' min='" + minOpacity + "' step='" + stepOpacity + "' value='" + opacity + "' onchange='Kns.selectedOpacity(this.value);' id='opacity_range'></label>";
+			html += "<br><label>Непрозрачность: <input type='range' max='100' min='" + minOpacity + "' step='" + stepOpacity + "' value='" + opacity + "' onchange='Kns.selectedOpacity(this.value);' oninput='Kns.selectedOpacity(this.value);' id='opacity_range'></label>";
 		}
 		$("#color").html(html);
 		$("[title]").tipTip();
