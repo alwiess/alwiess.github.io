@@ -71,6 +71,13 @@ Func.times = {
 	},
 };
 
+Func.getOpacityForCode = function(procent) {
+	return (procent - 50) / 5;
+};
+Func.getOpacityFromCode = function(code) {
+	return (code * 5 + 50) / 100;
+};
+
 Func.getHTML = function(name, id, size, cl, act, i, arr) {
 	if (id == "0") {
 		return;
@@ -98,7 +105,17 @@ Func.getHTML = function(name, id, size, cl, act, i, arr) {
 	var isAnimation = !!times;
 	var frames = (isAnimation ? times.length : 1);
 
-	result += "<div style=\"" + Func.getUrlStyle(act, name, id) + (isAnimation ? "width:" + size + "px;" : "" ) + "background-size:" + frames * 100 + "%\"";
+	var opacity = (id + '').split('|')[1] || 10;
+	id = (id + '').split('|')[0] || '';
+	opacity = Func.getOpacityFromCode(opacity);
+
+	result += "<div style=\"position: absolute;" + Func.getUrlStyle(act, name, id) + (isAnimation ? "width:" + size + "px;" : "" ) + "background-size:" + frames * 100 + ";";
+	if (opacity < 1)
+	{
+		result += "opacity: " + opacity + ";";
+	}
+	result += "%\"";
+
 
 	cl = (i == 1 ? cl : "");
 	cl = (isAnimation ? (cl + " animation").trim() : cl);
@@ -129,7 +146,7 @@ Func.getHTML = function(name, id, size, cl, act, i, arr) {
 		}, times[0]);
 	}
 
-	result += '>';
+	result += '></div>';
 	return result;
 };
 
@@ -138,6 +155,9 @@ Func.generateHTMLofCat = function(arr, size, cl, act, url, layersProperty) {
 	var result = "";
 	if (url) {
 		result = "<div style=\"background-image:url('" + url + "');background-size:" + size + "%;\" class='" + cl + "'>";
+		i++;
+	} else {
+		result = "<div class='" + cl + "'>";
 		i++;
 	}
 
@@ -155,7 +175,6 @@ Func.generateHTMLofCat = function(arr, size, cl, act, url, layersProperty) {
 
 			var html = Func.getHTML(folder, ids[j], size, cl, act, i, arr);
 			if (html) {
-				i++;
 				result += html;
 			}
 		}
