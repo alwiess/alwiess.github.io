@@ -37,13 +37,14 @@ $(function() {
 			obligatory: true,
 			opaque: true},
 		/* 1 */ {name: "Глаза", // elements/eyes
-			noCombine: true,
 			default: 12,
 			palette: 3,
 			noVariations: true,
+			previewImg: "_",
+			maxLayers: 2,
 			special: true,
 			obligatory: true,
-			opaque: true},
+			opaque: false},
 		/* 2 */ {name: "Левая лапа", // elements/forepaw_left
 			info: [{id: "1", name: "Брызги"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Леопардовые пятнышки"}, {id: "4", name: "Тонкие полосы"}, {id: "5", name: "Полосы"}, {id: "6", name: "Разорванные полосы"}, {id: "7", name: "Пламенные полосы"}, {id: "8", name: "Мрамор"}, {id: "9", name: "Пальцы"}, {id: "10", name: "Носок"}, {id: "11", name: "Гольф"}, {id: "12", name: "Чулок"}, {id: "13", name: "Лапа"}, {id: "14", name: "Низ"}, {id: "15", name: "Низ с носком"}, {id: "16", name: "Слабый налёт"}, {id: "17", name: "Сильный налёт"}]},
 		/* 3 */ {name: "Правая лапа", // elements/forepaw_right
@@ -96,11 +97,12 @@ $(function() {
 			info: [{id: "1", name: "На щёках №1"}, {id: "2", name: "На щёках №2"}, {id: "3", name: "На щёках №3"}],
 			opaque: true},
 		/* 19 */ {name: "Правый глаз", // elements/eye_right
-			noCombine: true,
 			palette: 3,
 			noVariations: true,
+			previewImg: "_",
+			maxLayers: 2,
 			special: true,
-			opaque: true},
+			opaque: false},
 		/* 20 */ {name: "Грива", // elements/mane
 			info: [{id: "1", name: "Брызги"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Пятна"}, {id: "4", name: "Полосы"}, {id: "5", name: "Пламенные полосы"}, {id: "6", name: "Мрамор"}, {id: "7", name: "Ремень"}, {id: "8", name: "Узкий ремень"}, {id: "11", name: "Низ"}, {id: "9", name: "Налёт"}, {id: "10", name: "Затушёвка"}]},
 		/* 21 */ {name: "Шерсть", // elements/hair
@@ -225,8 +227,8 @@ $(function() {
 			dataNum = $(".sel").attr("data-num") || dataNum;
 		}
 		var info = [];
+		var selectedList = [];
 		if (Kns.parts[Sel.now].info) {
-			var selectedList = [];
 			if (Sel.main[Sel.now].length > 0) {
 				for (var l = 0; l < Sel.main[Sel.now].length; l++) {
 					selectedList[l] = Sel.main[Sel.now][l].split("/")[0];
@@ -247,13 +249,27 @@ $(function() {
 				data.data = Kns.parts[Sel.now].info[n];
 				info.push(data);
 			}
+		} else if (Kns.parts[Sel.now].maxLayers && Kns.parts[Sel.now].maxLayers > 1) {
+			for (n = 0; n < Kns.parts[Sel.now].maxLayers; n++) {
+				var data = {};
+				data.num = n;
+				data.data = {};
+				data.data.id = n;
+				data.data.name = n + 1;
+				info.push(data);
+			}
+			for (n = 0; n < Sel.main[Sel.now].length; n++) {
+				selectedList.push(n);
+			}
+			Sel.nowSelected = 0;
 		}
 		if (info.length > 0) {
 			var canAdd = false;
 			var max = 1;
-			if (!Kns.parts[Sel.now].noCombine && !Kns.parts[Sel.now].noVariations) {
+			if (!Kns.parts[Sel.now].noCombine) {
 				max = detailsMax;
 			}
+			max = Kns.parts[Sel.now].maxLayers || max;
 			if (selectedList.length < max && selectedList.length < info.length) {
 				canAdd = true;
 			}
@@ -283,14 +299,18 @@ $(function() {
 					default:
 						html += '<tr><td class="tdarrow">' + moveup + '</td><td class="tdarrow">' + movedown + '</td>';
 						html += '<td><select style="width:100px;"' + style + ' onchange="Kns.selectedDetail(this);" onclick="Kns.clickedDetail(this);" data-num="' + i + '" id="select' + i + '">';
-						for (var j = 0; j < info.length; j++) {
-							var id = info[j].data.id;
-							if (selectedList.indexOf(id) !== -1 && selectedList[i] != id) {
-								continue;
+						if (!Kns.parts[Sel.now].noVariations) {
+							for (var j = 0; j < info.length; j++) {
+								var id = info[j].data.id;
+								if (selectedList.indexOf(id) !== -1 && selectedList[i] != id) {
+									continue;
+								}
+								name = info[j].data.name;
+								var selected = selectedList[i] == id ? ' selected' : '';
+								html += '<option value="' + info[j].num + '"' + selected + '>' + name + '</option>';
 							}
-							name = info[j].data.name;
-							var selected = selectedList[i] == id ? ' selected' : '';
-							html += '<option value="' + info[j].num + '"' + selected + '>' + name + '</option>';
+						} else {
+							html += '<option value="' + (+selectedList[i] + 1) + '">' + (+selectedList[i] + 1) + '</option>';
 						}
 						html += "</select></td>";
 						break;
@@ -305,29 +325,31 @@ $(function() {
 				html += '<tr><td class="tdarrow"></td><td class="td_plus" colspan="2"><a onclick="Kns.addDetail();" class="a_none">+</a></td></tr>';
 			}
 			html += "</table></td>";
-			switch (Kns.detailVariant) {
-				case 1:
-					if (dataNum >= 0 && dataNum < selectedList.length) {
-						html += '<td><div class="detailslist""><table style="margin: auto;" class="tabledetail"><tr>';
-						var line = 0;
-						for (j = 0; j < info.length; j++) {
-							id = info[j].data.id;
-							if (selectedList.indexOf(id) !== -1 && id != selectedList[dataNum]) {
-								continue;
+			if (!Kns.parts[Sel.now].noVariations) {
+				switch (Kns.detailVariant) {
+					case 1:
+						if (dataNum >= 0 && dataNum < selectedList.length) {
+							html += '<td><div class="detailslist""><table style="margin: auto;" class="tabledetail"><tr>';
+							var line = 0;
+							for (j = 0; j < info.length; j++) {
+								id = info[j].data.id;
+								if (selectedList.indexOf(id) !== -1 && id != selectedList[dataNum]) {
+									continue;
+								}
+								name = info[j].data.name;
+								html += '<td><div data-num="' + dataNum + '" data-value="' + info[j].num + '" style="border-width: 1px; border-style: solid;' + Kns.getPreviewStyle(id) + '" onclick="Kns.selectedDetail(this)" title="' + name + '"/></td>';
+								line++;
+								if (line >= 3) {
+									line = 0;
+									html += '</tr><tr>';
+								}
 							}
-							name = info[j].data.name;
-							html += '<td><div data-num="' + dataNum + '" data-value="' + info[j].num + '" style="border-width: 1px; border-style: solid;' + Kns.getPreviewStyle(id) + '" onclick="Kns.selectedDetail(this)" title="' + name + '"/></td>';
-							line++;
-							if (line >= 3) {
-								line = 0;
-								html += '</tr><tr>';
-							}
+							html += '</tr></table></div></td>';
 						}
-						html += '</tr></table></div></td>';
-					}
-					break;
-				case 0:
-					break;
+						break;
+					case 0:
+						break;
+				}
 			}
 			html += '</tr></<table>';
 		} else {
@@ -338,7 +360,10 @@ $(function() {
 	};
 
 	Kns.getPreviewStyle = function(part) {
-		var id = part + "/0";
+		var id = Kns.parts[Sel.now].previewImg || "0";
+		if (part !== undefined && !Kns.parts[Sel.now].noVariations) {
+			id = part + "/" + id;
+		}
 		var parent;
 		switch (Sel.now) {
 			case numTuftElement:
@@ -428,7 +453,7 @@ $(function() {
 
 	Kns.selectedOpacity = function(opacity)
 	{
-		var dataNum = Kns.parts[Sel.now].info ? $(".sel").attr("data-num") : 0;
+		var dataNum = Kns.parts[Sel.now].noCombine ? 0 : $(".sel").attr("data-num");
 		if (dataNum === undefined) {
 			return;
 		}
@@ -465,38 +490,52 @@ $(function() {
 	};
 
 	Kns.addDetail = function() {
-		var info = Kns.parts[Sel.now].info;
-		if (!info) {
+		if (Kns.parts[Sel.now].noCombine) {
 			Kns.error("Невозможно добавить элемент.");
 			return;
 		}
-		var selectedList = [];
-		for (var i = 0; i < Sel.main[Sel.now].length; i++) {
-			var type = (Sel.main[Sel.now][i]+'').split('/')[0];
-			if (type) {
-				selectedList.push(type);
+		var info = Kns.parts[Sel.now].info;
+		if (!Kns.parts[Sel.now].noVariations) {
+			var selectedList = [];
+			for (var i = 0; i < Sel.main[Sel.now].length; i++) {
+				var type = (Sel.main[Sel.now][i] + '').split('/')[0];
+				if (type) {
+					selectedList.push(type);
+				}
 			}
-		}
-		var data = 0;
-		for (var j = 0; j < info.length; j++) {
-			if (selectedList.indexOf(info[j].id) !== -1) {
-				continue;
+			var data = 0;
+			for (var j = 0; j < info.length; j++) {
+				if (selectedList.indexOf(info[j].id) !== -1) {
+					continue;
+				}
+				if (!Kns.partAvailable(false, Sel.now, info[j].id)) {
+					continue;
+				}
+				var palette = info[j].palette || Kns.parts[Sel.now].palette || 0;
+				for (var c = 0; c < Kns.palette[palette].length; c++) {
+					if (+Kns.palette[palette][c].id === 0) {
+						continue;
+					}
+					if (!Kns.partAvailable(false, Sel.now, info[j].id, Kns.palette[palette][c].id)) {
+						continue;
+					}
+					data = info[j].id + '/' + Kns.palette[palette][c].id;
+					break;
+				}
+				break;
 			}
-			if (!Kns.partAvailable(false, Sel.now, info[j].id)) {
-				continue;
-			}
-			var palette = info[j].palette || Kns.parts[Sel.now].palette || 0;
-			for (var c = 0; c < Kns.palette[palette].length; c++) {
+		} else {
+			palette = Kns.parts[Sel.now].palette || 0;
+			for ( c = 0; c < Kns.palette[palette].length; c++) {
 				if (+Kns.palette[palette][c].id === 0) {
 					continue;
 				}
-				if (!Kns.partAvailable(false, Sel.now, info[j].id, Kns.palette[palette][c].id)) {
+				if (!Kns.partAvailable(false, Sel.now, 0, Kns.palette[palette][c].id)) {
 					continue;
 				}
-				data = info[j].id + '/' + Kns.palette[palette][c].id;
+				data = Kns.palette[palette][c].id;
 				break;
 			}
-			break;
 		}
 		if (data) {
 			if (Sel.now == numRightHindPaw && Kns.warning > 0) { // убрать, когда будут действия
@@ -525,7 +564,7 @@ $(function() {
 		try {p = Kns.parts[Sel.now].info[Sel.nowSelected].palette;} catch(e) {}
 		p = p || Kns.parts[Sel.now].palette || 0;
 		p = Sel.nowSelected === undefined ? -1 : p;
-		var dataNum = Kns.parts[Sel.now].info ? $(".sel").attr("data-num") : 0;
+		var dataNum = Kns.parts[Sel.now].noCombine ? 0 : $(".sel").attr("data-num");
 		if (dataNum === undefined) {
 			p = -1;
 		}
@@ -635,7 +674,7 @@ $(function() {
 				if (!Kns.parts[i] || !Kns.parts[i].name || !Kns.partAvailable(false, i)) {
 					continue;
 				}
-				for (var dataNum = 0; dataNum < ((Kns.parts[i].noVariations || Kns.parts[i].noCombine || !Kns.parts[i].info) ? 1 : detailsMax); dataNum++) {
+				for (var dataNum = 0; dataNum < ((Kns.parts[i].noCombine) ? 1 : (Kns.parts[i].maxLayers || detailsMax)); dataNum++) {
 					if (Math.random() >= coeff && !Kns.parts[i].obligatory) {
 						continue;
 					}
@@ -853,7 +892,7 @@ $(function() {
 	};
 
 	Kns.moveLine = function(up, line) {
-		if (Kns.parts[Sel.now].noCombine || Kns.parts[Sel.now].noVariations) {
+		if (Kns.parts[Sel.now].noCombine) {
 			return;
 		}
 		if (!(Sel.main[Sel.now] instanceof Array)) {
@@ -981,7 +1020,7 @@ $(function() {
 		}
 
 		var dataNum = 0;
-		if (Sel.now > 1 && !Kns.parts[Sel.now].noCombine) {
+		if (!Kns.parts[Sel.now].noCombine) {
 			dataNum = $(".sel").attr("data-num");
 		}
 		if (!Kns.parts[Sel.now].noVariations) {
