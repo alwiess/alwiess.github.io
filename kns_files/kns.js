@@ -982,7 +982,7 @@ $(function() {
 						if (info.noVariations) {
 							parts[1] = parts[0];
 						}
-						if (!Kns.palette[palette].filter(function(el) { return el.id == parts[1]; })[0] || +parts[1] === 0 || !Kns.partAvailable(false, i, detail, parts[1])) {
+						if (!Kns.palette[palette].filter(function(el) { return el.id == (parts[1]+'').split('|')[0]; })[0] || +parts[1] === 0 || !Kns.partAvailable(false, i, detail, parts[1])) {
 							Kns.error("Сохранение невозможно: неверный цвет");
 							return;
 						}
