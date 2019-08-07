@@ -19,6 +19,7 @@ $(function() {
 	var numRightEye = 19;
 	var numRightHindPaw = 14;
 	var paletteNormalBases = 0;
+	var maxSimilarElements = 2;
 	var isBaseSpecial = function(base) { return !(Kns.palette[paletteNormalBases].filter(function(el) { return base == el.id; })[0])};
 	var paletteNormalEyes = 1;
 	var isEyesSpecial = function(eye) { return !(Kns.palette[paletteNormalEyes].filter(function(el) { return eye == el.id; })[0])};
@@ -302,7 +303,7 @@ $(function() {
 						if (!Kns.parts[Sel.now].noVariations) {
 							for (var j = 0; j < info.length; j++) {
 								var id = info[j].data.id;
-								if (selectedList.indexOf(id) !== -1 && selectedList[i] != id) {
+								if (selectedList.filter(function(el) { return el == id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : maxSimilarElements) && selectedList[i] != id) {
 									continue;
 								}
 								name = info[j].data.name;
@@ -333,7 +334,7 @@ $(function() {
 							var line = 0;
 							for (j = 0; j < info.length; j++) {
 								id = info[j].data.id;
-								if (selectedList.indexOf(id) !== -1 && id != selectedList[dataNum]) {
+								if (selectedList.filter(function(el) { return el == id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : maxSimilarElements) && selectedList[dataNum] != id) {
 									continue;
 								}
 								name = info[j].data.name;
@@ -505,7 +506,7 @@ $(function() {
 			}
 			var data = 0;
 			for (var j = 0; j < info.length; j++) {
-				if (selectedList.indexOf(info[j].id) !== -1) {
+				if (selectedList.filter(function(el) { return el == info[j].id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : maxSimilarElements)) {
 					continue;
 				}
 				if (!Kns.partAvailable(false, Sel.now, info[j].id)) {
@@ -973,7 +974,7 @@ $(function() {
 								Kns.error("Сохранение невозможно: неверный элемент");
 								return;
 							}
-							if (oldLayers.indexOf(parts[0]) !== -1) {
+							if (oldLayers.filter(function(el) { return el == parts[0]; }).length >= (info.opaque ? 1 : maxSimilarElements)) {
 								Kns.error("Сохранение невозможно: повторяющийся элемент");
 								return;
 							}

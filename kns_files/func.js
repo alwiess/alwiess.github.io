@@ -7,7 +7,6 @@ Func.type = {tail: "base_tail", mane: "base_mane", hair: "base_hair", ear_left: 
 //"base", "hindpaw_left", "hindpaw_right", "body", "forepaw_left", "forepaw_right", "belly", "head", "breast", "neck", "base_mane", "mane", "tuft", "base_ears", "ear_left", "ear_right", "base_hair", "hair", "base_tail", "tail", "eyes", "eye_right", "costume", "dirt", "wound", "drown", "poisoning", "disease"
 
 Func.type = {tail: "base_tail", mane: "base_mane", hair: "base_hair", ear_left: "base_ears", ear_right: "base_ears", tuft: "base_ears"};
-Func.isGenerate = false;
 Func.times = {
 	1: {
 		base: {
@@ -109,12 +108,12 @@ Func.getHTML = function(name, id, size, cl, act, i, arr) {
 	id = (id + '').split('|')[0] || '';
 	opacity = Func.getOpacityFromCode(opacity);
 
-	result += "<div style=\"position: absolute;" + Func.getUrlStyle(act, name, id) + (isAnimation ? "width:" + size + "px;" : "" ) + "background-size:" + frames * 100 + ";";
+	result += "<div style=\"position: absolute;" + Func.getUrlStyle(act, name, id) + "background-size:" + frames * 100 + "%; width: inherit;";
 	if (opacity < 1)
 	{
 		result += "opacity: " + opacity + ";";
 	}
-	result += "%\"";
+	result += "\"";
 
 
 	cl = (i == 1 ? cl : "");
@@ -154,10 +153,10 @@ Func.generateHTMLofCat = function(arr, size, cl, act, url, layersProperty) {
 	var i = 1;
 	var result = "";
 	if (url) {
-		result = "<div style=\"background-image:url('" + url + "');background-size:" + size + "%;\" class='" + cl + "'>";
+		result = "<div style=\"background-image:url('" + url + "');width: " + size + "px;background-size: 100%;\" class='" + cl + "'>";
 		i++;
 	} else {
-		result = "<div class='" + cl + "'>";
+		result = "<div class='" + cl + "' style=\"width: " + size + "px;\">";
 		i++;
 	}
 
@@ -193,7 +192,7 @@ Func.showCat = function(code, size, type, act, factors, dirt, costume) {
 	act = act || 0;
 	factors = factors || {};
 
-	var isAnimation = !Func.isGenerate;
+	var isAnimation = !!Func.isAnimation;
 	var layersProperty = (isAnimation ? "animationLayers" : "static");
 	var codeProperty = (isAnimation ? "animationCode" : "static");
 	var url;
