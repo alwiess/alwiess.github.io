@@ -19,6 +19,7 @@ $(function() {
 	var numRightEye = 19;
 	var numRightHindPaw = 14;
 	var paletteNormalBases = 0;
+	var maxSimilarElements = 2;
 	var isBaseSpecial = function(base) { return !(Kns.palette[paletteNormalBases].filter(function(el) { return base == el.id; })[0])};
 	var paletteNormalEyes = 1;
 	var isEyesSpecial = function(eye) { return !(Kns.palette[paletteNormalEyes].filter(function(el) { return eye == el.id; })[0])};
@@ -50,7 +51,7 @@ $(function() {
 		/* 3 */ {name: "Правая лапа", // elements/forepaw_right
 			info: [{id: "1", name: "Брызги"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Леопардовые пятнышки"}, {id: "4", name: "Тонкие полосы"}, {id: "5", name: "Полосы"}, {id: "6", name: "Разорванные полосы"}, {id: "7", name: "Пламенные полосы"}, {id: "8", name: "Мрамор"}, {id: "18", name: "Следок"}, {id: "9", name: "Пальцы"}, {id: "10", name: "Носок"}, {id: "11", name: "Гольф"}, {id: "12", name: "Чулок"}, {id: "13", name: "Лапа"}, {id: "14", name: "Низ"}, {id: "15", name: "Низ с носком"}, {id: "16", name: "Слабый налёт"}, {id: "17", name: "Сильный налёт"}]},
 		/* 4 */ {name: "Туловище", // elements/body
-			info: [{id: "1", name: "Брызги"}, {id: "42", name: "Брызги на плечах"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Пятна"}, {id: "4", name: "Большое пятно №1"}, {id: "5", name: "Большое пятно №2"}, {id: "6", name: "Большое пятно №3"}, {id: "7", name: "Большое пятно №4"}, {id: "8", name: "Большое пятно №5"}, {id: "9", name: "Большое пятно №6"}, {id: "10", name: "Большое пятно №7"}, {id: "11", name: "Большое пятно №8"}, {id: "12", name: "Леопардовые пятнышки"}, {id: "13", name: "Полоски"}, {id: "14", name: "Полосы"}, {id: "15", name: "Тонкие полосы"}, {id: "16", name: "Пламенные полосы"}, {id: "17", name: "Разорванные полосы"}, {id: "18", name: "Полосы с ремнём"}, {id: "19", name: "Мрамор"}, {id: "20", name: "Мраморные отметины "}, {id: "21", name: "Мраморные полосы"}, {id: "22", name: "Облачный мрамор"}, {id: "23", name: "Облачные отметины"}, {id: "24", name: "Узкий ремень"}, {id: "25", name: "Ремень"}, {id: "26", name: "Ремень на плечах"}, {id: "27", name: "Ремень на крестце"}, {id: "28", name: "Пятна на плечах"}, {id: "29", name: "Пятно на плече"}, {id: "30", name: "Отметина на лопатках"}, {id: "31", name: "Отметина на боку"}, {id: "32", name: "Отметина на бедре"}, {id: "33", name: "Отметина на крестце"}, {id: "34", name: "Клякса"}, {id: "35", name: "Слабый налёт"}, {id: "36", name: "Налёт"}, {id: "37", name: "Сильный налёт"}, {id: "38", name: "Слабая затушёвка"}, {id: "39", name: "Затушёвка"}, {id: "40", name: "Чепрак"}, {id: "41", name: "Чепрак с прорезями"}]},
+			info: [{id: "1", name: "Брызги"}, {id: "42", name: "Брызги на плечах"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Пятна"}, {id: "4", name: "Большое пятно №1"}, {id: "5", name: "Большое пятно №2"}, {id: "6", name: "Большое пятно №3"}, {id: "7", name: "Большое пятно №4"}, {id: "8", name: "Большое пятно №5"}, {id: "9", name: "Большое пятно №6"}, {id: "10", name: "Большое пятно №7"}, {id: "11", name: "Большое пятно №8"}, {id: "12", name: "Леопардовые пятнышки"}, {id: "13", name: "Полоски"}, {id: "14", name: "Полосы"}, {id: "15", name: "Тонкие полосы"}, {id: "16", name: "Пламенные полосы"}, {id: "17", name: "Разорванные полосы"}, {id: "18", name: "Полосы с ремнём"}, {id: "19", name: "Мрамор"}, {id: "20", name: "Мраморные отметины "}, {id: "21", name: "Мраморные полосы"}, {id: "22", name: "Облачный мрамор"}, {id: "23", name: "Облачные отметины"}, {id: "24", name: "Узкий ремень"}, {id: "25", name: "Ремень"}, {id: "26", name: "Ремень на плечах"}, {id: "27", name: "Ремень на крестце"}, {id: "28", name: "Пятна на плечах"}, {id: "29", name: "Пятно на плече"}, {id: "30", name: "Отметина на лопатках"}, {id: "31", name: "Отметина на боку"}, {id: "32", name: "Отметина на бедре"}, {id: "33", name: "Отметина на крестце"}, {id: "34", name: "Клякса"}, {id: "35", name: "Слабый налёт"}, {id: "36", name: "Налёт"}, {id: "37", name: "Сильный налёт"}, {id: "38", name: "Слабая затушёвка"}, {id: "39", name: "Затушёвка"}, {id: "40", name: "Чепрак"}, {id: "43", name: "Шерсть слева"}, {id: "44", name: "Шерсть справа"}]},
 		/* 5 */ {name: "Морда", // elements/head
 			info: [{id: "1", name: "Полосочки"}, {id: "2", name: "Полосы"}, {id: "3", name: "Извилистые полосы"}, {id: "4", name: "Полосы от щёк"}, {id: "5", name: "Разорванные полосы от щёк"}, {id: "6", name: "Полосы вокруг бровей"}, {id: "7", name: "Полосы до глаз"}, {id: "8", name: "Пламенные полосы"}, {id: "9", name: "Полосы на лбу"}, {id: "10", name: "Разорванные полосы на лбу"}, {id: "11", name: "Полосы на носу"}, {id: "12", name: "Мрамор"}, {id: "13", name: "Ремень"}, {id: "14", name: "Узкий ремень"}, {id: "15", name: "Половина ремня"}, {id: "16", name: "Половина узкого ремня"}, {id: "17", name: "Брызги"}, {id: "18", name: "Брызги на носу"}, {id: "19", name: "Пятнышки"}, {id: "20", name: "Пятнышки под глазами"}, {id: "21", name: "Пятна"}, {id: "22", name: "Леопардовые пятнышки"}, {id: "23", name: "Маленькая маска"}, {id: "24", name: "Маска"}, {id: "25", name: "Маска без глаз"}, {id: "26", name: "Маска с глазами"}, {id: "27", name: "Бородка"}, {id: "28", name: "Бородка с щеками"}, {id: "29", name: "Подбородок"}, {id: "30", name: "Подбородок с щеками"}, {id: "31", name: "Брови"}, {id: "32", name: "Рысьи брови"}, {id: "33", name: "Вибриссы"}, {id: "34", name: "Отметина под носом"}, {id: "35", name: "Внешняя сторона губ"}, {id: "36", name: "Губы"}, {id: "37", name: "Щипец"}, {id: "38", name: "Пятно меж глаз"}, {id: "39", name: "Переносица"}, {id: "40", name: "Клякса на нос"}, {id: "41", name: "Отметины на скулах"}, {id: "42", name: "Щёки полностью"}, {id: "43", name: "Макушка"}, {id: "44", name: "Шапка"}, {id: "45", name: "Подпалины на лбу"}, {id: "46", name: "Отметина справа морды"}, {id: "47", name: "Отметина на глазу"}, {id: "48", name: "Слеза"}, {id: "49", name: "Пятно на лбу"}, {id: "50", name: "Отметины над глазами №1"}, {id: "51", name: "Отметины над глазами №2"}, {id: "52", name: "Отметины под глазами №1"}, {id: "53", name: "Отметины под глазами №2"}, {id: "54", name: "Отметина в половину носа"}, {id: "55", name: "Отметина на нос"}, {id: "56", name: "Левая половина морды №1"}, {id: "57", name: "Левая половина морды №2"}, {id: "58", name: "Левая половина морды №3"}, {id: "59", name: "Левая половина морды №4"}, {id: "60", name: "Правая половина морды №1"}, {id: "61", name: "Правая половина морды №2"}, {id: "62", name: "Правая половина морды №3"}, {id: "63", name: "Правая половина морды №4"}, {id: "64", name: "Большое пятно №1"}, {id: "65", name: "Большое пятно №2"}, {id: "66", name: "Большое пятно №3"}, {id: "67", name: "Большое пятно №4"}, {id: "68", name: "Большое пятно №5"}, {id: "69", name: "Слабый налёт"}, {id: "70", name: "Налёт"}, {id: "71", name: "Слабая затушёвка"}, {id: "72", name: "Затушёвка"}]},
 		/* 6 */ {name: "Хвост", // elements/tail
@@ -88,7 +89,7 @@ $(function() {
 			noCombine: true,
 			type: true,
 			default: "1/1",
-			info: [{id: "1", name: "Торчком"}, {id: "2", name: "Висячие"}, {id: "3", name: "Длинные"}, {id: "4", name: "Кручёные"}],
+			info: [{id: "1", name: "Торчком"}, {id: "2", name: "Висячие"}, {id: "3", name: "Длинные"}, {id: "4", name: "Раскосые"}, {id: "5", name: "Вывернутые"}],
 			obligatory: true,
 			opaque: true},
 		/* 18 */ {name: "Шерсть", // base_hair
@@ -302,7 +303,7 @@ $(function() {
 						if (!Kns.parts[Sel.now].noVariations) {
 							for (var j = 0; j < info.length; j++) {
 								var id = info[j].data.id;
-								if (selectedList.indexOf(id) !== -1 && selectedList[i] != id) {
+								if (selectedList.filter(function(el) { return el == id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : maxSimilarElements) && selectedList[i] != id) {
 									continue;
 								}
 								name = info[j].data.name;
@@ -333,7 +334,7 @@ $(function() {
 							var line = 0;
 							for (j = 0; j < info.length; j++) {
 								id = info[j].data.id;
-								if (selectedList.indexOf(id) !== -1 && id != selectedList[dataNum]) {
+								if (selectedList.filter(function(el) { return el == id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : maxSimilarElements) && selectedList[dataNum] != id) {
 									continue;
 								}
 								name = info[j].data.name;
@@ -505,7 +506,7 @@ $(function() {
 			}
 			var data = 0;
 			for (var j = 0; j < info.length; j++) {
-				if (selectedList.indexOf(info[j].id) !== -1) {
+				if (selectedList.filter(function(el) { return el == info[j].id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : maxSimilarElements)) {
 					continue;
 				}
 				if (!Kns.partAvailable(false, Sel.now, info[j].id)) {
@@ -973,7 +974,7 @@ $(function() {
 								Kns.error("Сохранение невозможно: неверный элемент");
 								return;
 							}
-							if (oldLayers.indexOf(parts[0]) !== -1) {
+							if (oldLayers.filter(function(el) { return el == parts[0]; }).length >= (info.opaque ? 1 : maxSimilarElements)) {
 								Kns.error("Сохранение невозможно: повторяющийся элемент");
 								return;
 							}
