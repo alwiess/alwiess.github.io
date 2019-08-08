@@ -767,6 +767,14 @@ $(function() {
 					return false;
 				}
 				break;
+			case numTailElement:
+				if (!Sel.main[numTailBase][0]) {
+					if (showError) {
+						Kns.error("Выберите сперва хвост-основу.");
+					}
+					return false;
+				}
+				break;
 		}
 		if (detail === undefined) {
 			return true;
@@ -833,6 +841,10 @@ $(function() {
 		if (temp !== undefined) {
 			vipLevel = +temp;
 			Kns.parts = JSON.parse(JSON.stringify(Kns.backupInfo));
+		}
+		if (vipLevel >= 4) {
+			Kns.parts[numTailBase].obligatory = false;
+			delete Kns.parts[numTailBase].default;
 		}
 	};
 	Kns.error = function(text) {
