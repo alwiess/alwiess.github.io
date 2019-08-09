@@ -67,6 +67,10 @@ td {
 #lock {
 	cursor: pointer;
 }
+input {
+	vertical-align: middle;
+
+}
 #confirm {
 	background: #AD8446;
 	width: 400px;
