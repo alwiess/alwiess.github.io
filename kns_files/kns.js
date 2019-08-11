@@ -1,141 +1,7 @@
 var Kns = {};
 
 $(function() {
-	////константы
-	var numBase = 0;
-	var numTailBase = 15;
-	var numTailElement = 6;
-	var numManeBase = 16;
-	var numManeElement = 20;
-	var numTuftBase = 18;
-	var numTuftElement = 21;
-	var numEarBase = 17;
-	var numEarLeft = 7;
-	var numEarRight = 8;
-	var numEarLay = 2;
-	var numEarTufts = 10;
-	var numEarTuftsNormal = "1";
-	var numLeftEye = 1;
-	var numRightEye = 19;
-	var numRightHindPaw = 14;
-	var paletteNormalBases = 0;
-	var maxSimilarElements = 2;
-	var isBaseSpecial = function(base) { return !(Kns.palette[paletteNormalBases].filter(function(el) { return base == el.id; })[0])};
-	var paletteNormalEyes = 1;
-	var isEyesSpecial = function(eye) { return !(Kns.palette[paletteNormalEyes].filter(function(el) { return eye == el.id; })[0])};
-	var detailsMax = 8;
-	var vipLevel = 0;
-	Kns.detailVariant = 1;
-	Kns.blocks  = [["Основа", [0, 22, 23, 16], 15, 18, 17], ["Шея и морда", [1, 19, 7, 8, 10, 20, 21], 5, 11], ["Туловище", 4, 9, 12], ["Лапы и хвост", 6, 2, 3, 13, 14]];
-	Kns.actions = [0, 1];
-	Kns.parts    = [
-		/* 0 */ {name: "Основной цвет", // base
-			noCombine: true,
-			default: 1,
-			palette: 2,
-			noVariations: true,
-			special: true,
-			obligatory: true,
-			opaque: true},
-		/* 1 */ {name: "Глаза", // elements/eyes
-			default: 12,
-			palette: 3,
-			noVariations: true,
-			previewImg: "_",
-			maxLayers: 2,
-			special: true,
-			obligatory: true,
-			opaque: false},
-		/* 2 */ {name: "Левая лапа", // elements/forepaw_left
-			info: [{id: "1", name: "Брызги"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Леопардовые пятнышки"}, {id: "4", name: "Тонкие полосы"}, {id: "5", name: "Полосы"}, {id: "6", name: "Разорванные полосы"}, {id: "7", name: "Пламенные полосы"}, {id: "8", name: "Мрамор"}, {id: "18", name: "Следок"}, {id: "9", name: "Пальцы"}, {id: "10", name: "Носок"}, {id: "11", name: "Гольф"}, {id: "12", name: "Чулок"}, {id: "13", name: "Лапа"}, {id: "14", name: "Низ"}, {id: "15", name: "Низ с носком"}, {id: "16", name: "Слабый налёт"}, {id: "17", name: "Сильный налёт"}]},
-		/* 3 */ {name: "Правая лапа", // elements/forepaw_right
-			info: [{id: "1", name: "Брызги"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Леопардовые пятнышки"}, {id: "4", name: "Тонкие полосы"}, {id: "5", name: "Полосы"}, {id: "6", name: "Разорванные полосы"}, {id: "7", name: "Пламенные полосы"}, {id: "8", name: "Мрамор"}, {id: "18", name: "Следок"}, {id: "9", name: "Пальцы"}, {id: "10", name: "Носок"}, {id: "11", name: "Гольф"}, {id: "12", name: "Чулок"}, {id: "13", name: "Лапа"}, {id: "14", name: "Низ"}, {id: "15", name: "Низ с носком"}, {id: "16", name: "Слабый налёт"}, {id: "17", name: "Сильный налёт"}]},
-		/* 4 */ {name: "Туловище", // elements/body
-			info: [{id: "1", name: "Брызги"}, {id: "42", name: "Брызги на плечах"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Пятна"}, {id: "4", name: "Большое пятно №1"}, {id: "5", name: "Большое пятно №2"}, {id: "6", name: "Большое пятно №3"}, {id: "7", name: "Большое пятно №4"}, {id: "8", name: "Большое пятно №5"}, {id: "9", name: "Большое пятно №6"}, {id: "10", name: "Большое пятно №7"}, {id: "11", name: "Большое пятно №8"}, {id: "12", name: "Леопардовые пятнышки"}, {id: "13", name: "Полоски"}, {id: "14", name: "Полосы"}, {id: "15", name: "Тонкие полосы"}, {id: "16", name: "Пламенные полосы"}, {id: "17", name: "Разорванные полосы"}, {id: "18", name: "Полосы с ремнём"}, {id: "19", name: "Мрамор"}, {id: "20", name: "Мраморные отметины "}, {id: "21", name: "Мраморные полосы"}, {id: "22", name: "Облачный мрамор"}, {id: "23", name: "Облачные отметины"}, {id: "24", name: "Узкий ремень"}, {id: "25", name: "Ремень"}, {id: "26", name: "Ремень на плечах"}, {id: "27", name: "Ремень на крестце"}, {id: "28", name: "Пятна на плечах"}, {id: "29", name: "Пятно на плече"}, {id: "30", name: "Отметина на лопатках"}, {id: "31", name: "Отметина на боку"}, {id: "32", name: "Отметина на бедре"}, {id: "33", name: "Отметина на крестце"}, {id: "34", name: "Клякса"}, {id: "35", name: "Слабый налёт"}, {id: "36", name: "Налёт"}, {id: "37", name: "Сильный налёт"}, {id: "38", name: "Слабая затушёвка"}, {id: "39", name: "Затушёвка"}, {id: "40", name: "Чепрак"}, {id: "41", name: "Чепрак с прорезями"}, {id: "43", name: "Шерсть слева"}, {id: "44", name: "Шерсть справа"}]},
-		/* 5 */ {name: "Морда", // elements/head
-			info: [{id: "1", name: "Полосочки"}, {id: "2", name: "Полосы"}, {id: "3", name: "Извилистые полосы"}, {id: "4", name: "Полосы от щёк"}, {id: "5", name: "Разорванные полосы от щёк"}, {id: "6", name: "Полосы вокруг бровей"}, {id: "7", name: "Полосы до глаз"}, {id: "8", name: "Пламенные полосы"}, {id: "9", name: "Полосы на лбу"}, {id: "10", name: "Разорванные полосы на лбу"}, {id: "11", name: "Полосы на носу"}, {id: "12", name: "Мрамор"}, {id: "13", name: "Ремень"}, {id: "14", name: "Узкий ремень"}, {id: "15", name: "Половина ремня"}, {id: "16", name: "Половина узкого ремня"}, {id: "17", name: "Брызги"}, {id: "18", name: "Брызги на носу"}, {id: "19", name: "Пятнышки"}, {id: "20", name: "Пятнышки под глазами"}, {id: "21", name: "Пятна"}, {id: "22", name: "Леопардовые пятнышки"}, {id: "23", name: "Маленькая маска"}, {id: "24", name: "Маска"}, {id: "25", name: "Маска без глаз"}, {id: "26", name: "Маска с глазами"}, {id: "27", name: "Бородка"}, {id: "28", name: "Бородка с щеками"}, {id: "29", name: "Подбородок"}, {id: "30", name: "Подбородок с щеками"}, {id: "31", name: "Брови"}, {id: "32", name: "Рысьи брови"}, {id: "33", name: "Вибриссы"}, {id: "34", name: "Отметина под носом"}, {id: "35", name: "Внешняя сторона губ"}, {id: "36", name: "Губы"}, {id: "37", name: "Щипец"}, {id: "38", name: "Пятно меж глаз"}, {id: "39", name: "Переносица"}, {id: "40", name: "Клякса на нос"}, {id: "41", name: "Отметины на скулах"}, {id: "42", name: "Щёки полностью"}, {id: "43", name: "Макушка"}, {id: "44", name: "Шапка"}, {id: "45", name: "Подпалины на лбу"}, {id: "46", name: "Отметина справа морды"}, {id: "47", name: "Отметина на глазу"}, {id: "48", name: "Слеза"}, {id: "49", name: "Пятно на лбу"}, {id: "50", name: "Отметины над глазами №1"}, {id: "51", name: "Отметины над глазами №2"}, {id: "52", name: "Отметины под глазами №1"}, {id: "53", name: "Отметины под глазами №2"}, {id: "54", name: "Отметина в половину носа"}, {id: "55", name: "Отметина на нос"}, {id: "56", name: "Левая половина морды №1"}, {id: "57", name: "Левая половина морды №2"}, {id: "58", name: "Левая половина морды №3"}, {id: "59", name: "Левая половина морды №4"}, {id: "60", name: "Правая половина морды №1"}, {id: "61", name: "Правая половина морды №2"}, {id: "62", name: "Правая половина морды №3"}, {id: "63", name: "Правая половина морды №4"}, {id: "64", name: "Большое пятно №1"}, {id: "65", name: "Большое пятно №2"}, {id: "66", name: "Большое пятно №3"}, {id: "67", name: "Большое пятно №4"}, {id: "68", name: "Большое пятно №5"}, {id: "69", name: "Слабый налёт"}, {id: "70", name: "Налёт"}, {id: "71", name: "Слабая затушёвка"}, {id: "72", name: "Затушёвка"}]},
-		/* 6 */ {name: "Хвост", // elements/tail
-			info: [{id: "1", name: "Кольцо"}, {id: "2", name: "Кольца"}, {id: "3", name: "Кончик"}, {id: "4", name: "Кончик с пятнами"}, {id: "5", name: "Кисточка"}, {id: "6", name: "Начало хвоста"}, {id: "7", name: "Половина хвоста"}, {id: "8", name: "Низ"}, {id: "9", name: "Низ с кончиком"}, {id: "10", name: "Брызги"}, {id: "11", name: "Пятнышки"}, {id: "12", name: "Пятна"}, {id: "13", name: "Большие пятна"}, {id: "14", name: "Полоски"}, {id: "15", name: "Полосы"}, {id: "16", name: "Пламенные полосы"}, {id: "17", name: "Мрамор"}, {id: "18", name: "Ремень"}, {id: "19", name: "Ремень с кончиком"}, {id: "20", name: "Узкий ремень"}, {id: "21", name: "Налёт"}, {id: "22", name: "Затушёвка"}]},
-		/* 7 */ {name: "Левое ухо", // elements/ear_left
-			info: [{id: "1", name: "Кончик"}, {id: "2", name: "Кайма"}, {id: "3", name: "Полностью"}, {id: "4", name: "Шерсть внутри", palette: 5}]},
-		/* 8 */ {name: "Правое ухо", // elements/ear_right
-			info: [{id: "1", name: "Кончик"}, {id: "2", name: "Кайма"}, {id: "3", name: "Полностью"}, {id: "4", name: "Шерсть внутри", palette: 5}]},
-		/* 9 */ {name: "Грудь", // elements/breast
-			info: [{id: "1", name: "Пятнышки"}, {id: "2", name: "Пятна"}, {id: "3", name: "Мрамор"}, {id: "4", name: "Маленький медальон"}, {id: "5", name: "Средний медальон"}, {id: "6", name: "Медальон"}, {id: "7", name: "Подпалины"}, {id: "8", name: "Область под шеей"}, {id: "9", name: "Полностью"}, {id: "10", name: "Грудь с горлом"}]},
-		/* 10 */ {name: "Кисточки", // elements/tuft
-			info: [{id: "1", name: "Кисточки"}, {id: "2", name: "Маленькие кисточки"}],
-			opaque: true},
-		/* 11 */ {name: "Шея", // elements/neck
-			info: [{id: "1", name: "Пятнышки"}, {id: "2", name: "Пятна"}, {id: "3", name: "Отметины"}, {id: "4", name: "Леопардовые пятнышки"}, {id: "5", name: "Большое пятно №1"}, {id: "6", name: "Большое пятно №2"}, {id: "7", name: "Полоски"}, {id: "8", name: "Полосы"}, {id: "9", name: "Пламенные полосы"}, {id: "10", name: "Разорванные полосы"}, {id: "11", name: "Мрамор"}, {id: "12", name: "Мраморные полосы"}, {id: "13", name: "Полосатый мрамор"}, {id: "14", name: "Ремень"}, {id: "15", name: "Узкий ремень"}, {id: "16", name: "Полностью"}, {id: "17", name: "Слабый налёт"}, {id: "18", name: "Налёт"}, {id: "19", name: "Затушёвка"}]},
-		/* 12 */ {name: "Живот", // elements/belly
-			info: [{id: "1", name: "Пятна"}, {id: "2", name: "Полосы"}, {id: "3", name: "Неполный живот"}, {id: "4", name: "Полностью"}]},
-		/* 13 */ {name: "Задняя левая лапа", // elements/hindpaw_left
-			info: [{id: "1", name: "Брызги"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Пятна"}, {id: "4", name: "Большие пятна"}, {id: "5", name: "Леопардовые пятнышки"}, {id: "6", name: "Полосочки"}, {id: "7", name: "Полоски"}, {id: "8", name: "Полосы"}, {id: "9", name: "Разорванные полосы"}, {id: "10", name: "Тонкие полосы"}, {id: "11", name: "Пламенные полосы"}, {id: "12", name: "Извилистые полосы"}, {id: "13", name: "Мрамор"}, {id: "14", name: "Мраморные отметины"}, {id: "27", name: "Следок"}, {id: "15", name: "Пальцы"}, {id: "16", name: "Носок"}, {id: "17", name: "Стопа"}, {id: "18", name: "Гольф"}, {id: "19", name: "Чулок"}, {id: "20", name: "Низ"}, {id: "21", name: "Внешняя сторона лапы"}, {id: "22", name: "Лапа"}, {id: "23", name: "Слабый налёт"}, {id: "24", name: "Налёт"}, {id: "25", name: "Сильный налёт"}, {id: "26", name: "Затушёвка"}]},
-		/* 14 */ {name: "Задняя правая лапа", // elements/hindpaw_right
-			info: [{id: "1", name: "Брызги"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Пятна"}, {id: "4", name: "Большие пятна"}, {id: "5", name: "Леопардовые пятнышки"}, {id: "6", name: "Полосочки"}, {id: "7", name: "Полоски"}, {id: "8", name: "Полосы"}, {id: "9", name: "Разорванные полосы"}, {id: "10", name: "Тонкие полосы"}, {id: "11", name: "Пламенные полосы"}, {id: "12", name: "Извилистые полосы"}, {id: "13", name: "Мрамор"}, {id: "14", name: "Мраморные отметины"}, {id: "27", name: "Следок"}, {id: "15", name: "Пальцы"}, {id: "16", name: "Носок"}, {id: "17", name: "Стопа"}, {id: "18", name: "Гольф"}, {id: "19", name: "Чулок"}, {id: "20", name: "Низ"}, {id: "21", name: "Внешняя сторона лапы"}, {id: "22", name: "Лапа"}, {id: "23", name: "Слабый налёт"}, {id: "24", name: "Налёт"}, {id: "25", name: "Сильный налёт"}, {id: "26", name: "Затушёвка"}]},
-		/* 15 */ {name: "Хвост", // base_tail
-			noCombine: true,
-			type: true,
-			default: "1/1",
-			info: [{id: "1", name: "Куцый"}, {id: "2", name: "Тонкий"}, {id: "3", name: "Умеренный"}, {id: "4", name: "Пушистый"}, {id: "5", name: "Пышный"}, {id: "6", name: "Беличий"}],
-			obligatory: true,
-			opaque: true},
-		/* 16 */ {name: "Грива", // base_mane
-			noCombine: true,
-			type: true,
-			info: [{id: "1", name: "Умеренная"}, {id: "2", name: "Пушистая"}, {id: "3", name: "Пышная"}],
-			opaque: true},
-		/* 17 */ {name: "Уши", // base_ears
-			noCombine: true,
-			type: true,
-			default: "1/1",
-			info: [{id: "1", name: "Торчком"}, {id: "2", name: "Висячие"}, {id: "3", name: "Длинные"}, {id: "4", name: "Раскосые"}, {id: "5", name: "Вывернутые"}],
-			obligatory: true,
-			opaque: true},
-		/* 18 */ {name: "Шерсть", // base_hair
-			noCombine: true,
-			type: true,
-			info: [{id: "1", name: "На щёках №1"}, {id: "2", name: "На щёках №2"}, {id: "3", name: "На щёках №3"}],
-			opaque: true},
-		/* 19 */ {name: "Правый глаз", // elements/eye_right
-			palette: 3,
-			noVariations: true,
-			previewImg: "_",
-			maxLayers: 2,
-			special: true,
-			opaque: false},
-		/* 20 */ {name: "Грива", // elements/mane
-			info: [{id: "1", name: "Брызги"}, {id: "2", name: "Пятнышки"}, {id: "3", name: "Пятна"}, {id: "4", name: "Полосы"}, {id: "5", name: "Пламенные полосы"}, {id: "6", name: "Мрамор"}, {id: "7", name: "Ремень"}, {id: "8", name: "Узкий ремень"}, {id: "11", name: "Низ"}, {id: "9", name: "Налёт"}, {id: "10", name: "Затушёвка"}]},
-		/* 21 */ {name: "Шерсть", // elements/hair
-			info: [{id: "1", name: "Левая"}, {id: "2", name: "Правая"}, {id: "3", name: "Брызги слева"}, {id: "4", name: "Брызги справа"}, {id: "5", name: "Пятна слева"}, {id: "6", name: "Пятна справа"}, {id: "7", name: "Полосы слева"}, {id: "8", name: "Полосы справа"}]},
-		/* 22 */ {name: "Усы", // elements/whisker
-			noCombine: true,
-			default: "2/1",
-			palette: 4,
-			info: [{id: "1", name: "Прямые короткие"}, {id: "2", name: "Прямые"}, {id: "3", name: "Прямые длинные"}, {id: "4", name: "Кудрявые"}],
-			obligatory: true,
-			opaque: true},
-		/* 23 */ {name: "Нос", // elements/nose
-			palette: 5,
-			info: [{id: "1", name: "Полностью"}, {id: "2", name: "Половина"}, {id: "3", name: "Кайма", palette: 6}]}
-	];
-	Kns.backupInfo = JSON.parse(JSON.stringify(Kns.parts));
-	Kns.palette = [
-		/* ОСНОВНОЙ ЦВЕТ -- ЭЛЕМЕНТЫ И БАЗЫ*/
-		/* 0 */ [{id: "0", name: "", image: "+0"},{id: "1", name: "Кремовый", colour: "#f5e5ce"},{id: "2", name: "Белоснежный", colour: "#ffffff"},{id: "3", name: "Белый", colour: "#e6e6e6"},{id: "4", name: "Серебристый", colour: "#d1d1d1"},{id: "5", name: "Серый", colour: "#9e9e9e"},{id: "6", name: "Дымчатый", colour: "#5c5c5c"},{id: "7", name: "Чёрный", colour: "#242424"},{id: "8", name: "Угольно-чёрный", colour: "#141414"},{id: "9", name: "Иссиня-чёрный", colour: "#1d212c"},{id: "10", name: "Чернобурый", colour: "#2b1d1c"},{id: "11", name: "Бурый", colour: "#3d1c0b"},{id: "12", name: "Шоколадный", colour: "#6b3c28"},{id: "13", name: "Фавн", colour: "#9a715f"},{id: "14", name: "Медный", colour: "#bd6d32"},{id: "15", name: "Огненный", colour: "#cb4402"},{id: "16", name: "Красный", colour: "#e15c0f"},{id: "17", name: "Рыжий", colour: "#ed9b2d"},{id: "18", name: "Золотистый", colour: "#e5bd7f"},{id: "19", name: "Палевый", colour: "#d7ae98"},{id: "20", name: "Лиловый", colour: "#b19798"},{id: "21", name: "Голубой", colour: "#a6b4b7"},{id: "22", name: "Серо-голубой", colour: "#697a8a"},{id: "23", name: "Дымчато-голубой", colour: "#465165"},{id: "24", name: "Черничный", colour: "#323d51"}],
-		/* ГЛАЗА */
-		/* 1 */ [{id: "0", name: '', colour: ""},{id: "1", name: "Медный", colour: "#9C7941"},{id: "2", name: "Карий", colour: "#362121"},{id: "3", name: "Чёрно-красный", colour: "#612322"},{id: "4", name: "Оранжевый", colour: "#D6700B"},{id: "5", name: "Янтарный", colour: "#FCB10D"},{id: "6", name: "Жёлтый", colour: "#FCDF00"},{id: "7", name: "Оливковый", colour: "#B3B059"},{id: "8", name: "Лайм", colour: "#A8AB0C"},{id: "9", name: "Зелёный", colour: "#2FA12D"},{id: "10", name: "Салатовый", colour: "#7DC210"},{id: "11", name: "Бирюзовый", colour: "#0ECC90"},{id: "12", name: "Голубой", colour: "#87C3D4"},{id: "13", name: "Васильковый", colour: "#148CCC"},{id: "14", name: "Синий", colour: "#192580"},{id: "15", name: "Серый", colour: "#7D8996"}],
-		/* УНИКАЛЬНЫЕ ОКРАСЫ */
-		/* 2 */ [{id: "0", name: '', colour: ""},{id: "1", name: "Кремовый", colour: "#f5e5ce"},{id: "2", name: "Белоснежный", colour: "#ffffff"},{id: "3", name: "Белый", colour: "#e6e6e6"},{id: "4", name: "Серебристый", colour: "#d1d1d1"},{id: "5", name: "Серый", colour: "#9e9e9e"},{id: "6", name: "Дымчатый", colour: "#5c5c5c"},{id: "7", name: "Чёрный", colour: "#242424"},{id: "8", name: "Угольно-чёрный", colour: "#141414"},{id: "9", name: "Иссиня-чёрный", colour: "#1d212c"},{id: "10", name: "Чернобурый", colour: "#2b1d1c"},{id: "11", name: "Бурый", colour: "#3d1c0b"},{id: "12", name: "Шоколадный", colour: "#6b3c28"},{id: "13", name: "Фавн", colour: "#9a715f"},{id: "14", name: "Медный", colour: "#bd6d32"},{id: "15", name: "Огненный", colour: "#cb4402"},{id: "16", name: "Красный", colour: "#e15c0f"},{id: "17", name: "Рыжий", colour: "#ed9b2d"},{id: "18", name: "Золотистый", colour: "#e5bd7f"},{id: "19", name: "Палевый", colour: "#d7ae98"},{id: "20", name: "Лиловый", colour: "#b19798"},{id: "21", name: "Голубой", colour: "#a6b4b7"},{id: "22", name: "Серо-голубой", colour: "#697a8a"},{id: "23", name: "Дымчато-голубой", colour: "#465165"},{id: "24", name: "Черничный", colour: "#323d51"},{id: "25", name: "\r\nУникальный окрас", image: "+1"},{id: "26", name: "Уникальный окрас", image: "+2"},{id: "27", name: "Уникальный окрас", image: "+3"},{id: "28", name: "Уникальный окрас", image: "+4"},{id: "29", name: "Уникальный окрас", image: "+5"},{id: "30", name: "Уникальный окрас", image: "+6"},{id: "31", name: "Уникальный окрас", image: "+7"},{id: "32", name: "Уникальный окрас", image: "+8"},{id: "33", name: "Уникальный окрас", image: "+9"},{id: "34", name: "Уникальный окрас", image: "+10"},{id: "35", name: "Уникальный окрас", image: "+11"},{id: "36", name: "Уникальный окрас", image: "+12"},{id: "37", name: "Уникальный окрас", image: "+13"},{id: "38", name: "Уникальный окрас", image: "+14"},{id: "39", name: "Уникальный окрас", image: "+15"},{id: "40", name: "Уникальный окрас", image: "+16"},{id: "41", name: "Уникальный окрас", image: "+17"},{id: "42", name: "Уникальный окрас", image: "+18"},{id: "43", name: "Уникальный окрас", image: "+19"},{id: "44", name: "Уникальный окрас", image: "+20"},{id: "45", name: "Уникальный окрас", image: "+21"},{id: "46", name: "Уникальный окрас", image: "+22"},{id: "47", name: "Уникальный окрас", image: "+23"},{id: "48", name: "Уникальный окрас", image: "+24"}],
-		/* ФИОЛЕТОВЫЕ ГЛАЗА */
-		/* 3 */ [{id: "0", name: '', colour: ""},{id: "1", name: "Медный", colour: "#9C7941"},{id: "2", name: "Карий", colour: "#362121"},{id: "3", name: "Чёрно-красный", colour: "#612322"},{id: "4", name: "Оранжевый", colour: "#D6700B"},{id: "5", name: "Янтарный", colour: "#FCB10D"},{id: "6", name: "Жёлтый", colour: "#FCDF00"},{id: "7", name: "Оливковый", colour: "#B3B059"},{id: "8", name: "Лайм", colour: "#A8AB0C"},{id: "9", name: "Зелёный", colour: "#2FA12D"},{id: "10", name: "Салатовый", colour: "#7DC210"},{id: "11", name: "Бирюзовый", colour: "#0ECC90"},{id: "12", name: "Голубой", colour: "#87C3D4"},{id: "13", name: "Васильковый", colour: "#148CCC"},{id: "14", name: "Синий", colour: "#192580"},{id: "15", name: "Серый", colour: "#7D8996"}, {id: "16", name: "Фиолетовый", colour: "#734563"}],
-		/* УСЫ */
-		/* 4 */ [{id: "0", name: '', colour: ""}, {id: "1", name: "Светлые", colour: "#ffffff"}, {id: "2", name: "Тёмные", colour: "#5c5c5c"}, {id: "3", name: "Чёрные", colour: "#242424"}],
-		/* НОС И ШЕРСТЬ ВНУТРИ УШЕЙ */
-		/* 5 */ [{id: "0", name: '', colour: ""}, {id: "1", name: "Кремовый", colour: "#f5e5ce"}, {id: "2", name: "Белый", colour: "#ffffff"}, {id: "3", name: "Серый", colour: "#9e9e9e"}, {id: "4", name: "Чёрный", colour: "#242424"}, {id: "5", name: "Бурый", colour: "#3d1c0b"}, {id: "6", name: "Шоколадный", colour: "#6b3c28"}, {id: "7", name: "Фавн", colour: "#9a715f"}, {id: "8", name: "Медный", colour: "#bd6d32"}, {id: "9", name: "Красный", colour: "#e15c0f"}, {id: "10", name: "Розовый", colour: "#cc8370"}, {id: "11", name: "Лиловый", colour: "#b19798"}, {id: "12", name: "Дымчато-голубой", colour: "#465165"}],
-		/* ЭЛЕМЕНТ КАЙМА НОСА */
-		/* 6 */ [{id: "0", name: '', colour: ""}, {id: "1", name: "Чёрный", colour: "#242424"}],
-	];
+	defines(Kns);
 	Kns.error_tm = 0;
 	Kns.warning = 3; // убрать, когда будут действия
 	
@@ -148,22 +14,216 @@ $(function() {
 	Kns.code = function() {
 		var code = [];
 		for (var i = 0; i < Kns.parts.length; i++) {
-			var now = Sel.main[i];
-			if (now instanceof Array) {
-				now = now.join("-") || "0";
+			var now = [];
+			for (var el in Sel.main[i]) {
+				if (!Sel.main[i].hasOwnProperty(el)) continue;
+				var arr = Sel.main[i][el];
+				var line;
+				if (arr.id === undefined) {
+					line = arr.colour;
+				} else {
+					line = arr.id + "/" + arr.colour;
+				}
+				if (arr.opacity !== undefined && arr.opacity < Kns.getOpacityForCode(100)) {
+					line += "|" + arr.opacity;
+				}
+				now.push(line);
 			}
-			if (Kns.parts[i].type) {
-				now = (now || "0").replace("-", "/");
+			now = now.join("-");
+			if (now == "") {
+				now = 0;
 			}
 			code.push(now);
 		}
 		code = code.join(" ");
 		return code;
 	};
+	
+	Kns.getOpacityForCode = function(procent) {
+		return (procent - 50) / 5;
+	};
+	Kns.getOpacityFromCode = function(code) {
+		return (code * 5 + 50) / 100;
+	};
+
+	Kns.getHTML = function(name, id, size, cl, act, arr) {
+		var isCat = Sel.main.hasOwnProperty(id);
+		if (id == "0" && !isCat) {
+			return;
+		}
+		var result = "";
+
+		var opacity = 1;
+
+		var isAnimation = false;
+		var frames = 1;
+		var times;
+		if (isCat) {
+			if (id >= Sel.main[name].length) {
+				return;
+			}
+			var parent = Kns.parts[name];
+			parent = parent ? parent.parent : undefined;
+			var baseType;
+			if (parent !== undefined) {
+				baseType = Sel.main[parent][0];
+				baseType = baseType ? baseType.id : 0;
+				baseType = Kns.parts[parent].info.filter(function (el) {
+					return el.id == baseType;
+				})[0];
+				if (baseType) {
+					baseType = baseType[Kns.parts[name].folder] || baseType.elements || baseType.id;
+				}
+			}
+
+			if (Kns.parts[name].info) {
+				times = Kns.parts[name].info.filter(function(el) { return el.id == Sel.main[name][id].id; })[0];
+				times = times ? times.times : times;
+			}
+			times = times || Kns.parts[name].times;
+			times = times ? times[act] : times;
+			isAnimation = !!times;
+			frames = (isAnimation ? times.length : 1);
+
+			opacity = Sel.main[name][id].opacity || 10;
+			if (Sel.main[name][id].id === undefined) {
+				id = Sel.main[name][id].colour;
+			} else {
+				id = Sel.main[name][id].id + "/" + Sel.main[name][id].colour;
+			}
+			if (baseType) {
+				id = baseType + "/" + id;
+			}
+			name = Kns.parts[name].folder;
+			opacity = Kns.getOpacityFromCode(opacity);
+		}
+		result += "<div style=\"position: absolute;" + Kns.getUrlStyle(act, name, id) + "background-size:" + frames * 100 + "%; width: inherit;";
+		if (opacity < 1) {
+			result += "opacity: " + opacity + ";";
+		}
+		result += "\"";
+
+		if (isCat) {
+			cl = "";
+			cl = (isAnimation && isCat ? (cl + " animation").trim() : cl);
+			if (cl) {
+				result += " class='" + cl + "'";
+			}
+
+			if (isAnimation) {
+				var uniqid = "anim" + (Math.random() + "").substr(2);
+				result += ' id="' + uniqid + '"';
+				var frame = 0, el;
+				setTimeout(function anim() {
+					if (!el) {
+						el = $("#" + uniqid);
+						if (el.length < 1) {
+							return;
+						}
+						el.removeAttr("id");
+					}
+
+					frame++;
+					if (frame >= times.length) {
+						frame = 0;
+					}
+					el.css("background-position", -frame * size + "px 0");
+
+					setTimeout(anim, times[frame]);
+				}, times[0]);
+			}
+		}
+
+		result += '></div>';
+		return result;
+	};
+
+	Kns.generateHTMLofCat = function(arr, size, cl, act, url, layersProperty) {
+		var result = "";
+		if (url) {
+			result = "<div style=\"background-image:url('" + url + "');width: " + size + "px;background-size: 100%;\" class='" + cl + "'>";
+		} else {
+			result = "<div class='" + cl + "' style=\"width: " + size + "px;\">";
+		}
+
+		for (var a in Kns.folders[layersProperty]) {
+			if (!Kns.folders[layersProperty].hasOwnProperty(a)) {
+				continue;
+			}
+			var folder = Kns.folders[layersProperty][a];
+			var ids = arr[folder];
+			if (ids === undefined) {
+				continue;
+			}
+
+			for (var j = ids.length - 1; j >= 0; j--) {
+				if (ids[j] === undefined) {
+					continue;
+				}
+
+				if (Sel.main.hasOwnProperty(folder)) {
+					ids[j] = j;
+				}
+
+				var html = Kns.getHTML(folder, ids[j], size, cl, act, arr);
+				if (html) {
+					result += html;
+				}
+			}
+		}
+
+		result += '</div>';
+		return result;
+	};
+
+	Kns.showCat = function(size, type, act, factors, dirt, costume) {
+		size = 55 + 10 * (isNaN(size) ? 4.5 : size);
+		size = Math.round(size);
+		var cl = ['d', 'e', 'f'][type || 0];
+		act = act || 0;
+		factors = factors || {};
+
+		var isAnimation = !!Kns.isAnimation;
+		var layersProperty = (isAnimation ? "animationLayers" : "static");
+		var url;
+		var code = Kns.code();
+		if (!isAnimation) {
+			url = "/compositeByCode?code=" + code + "&act=" + act;
+		}
+		code = code.split(" ");
+
+		var arr = {};
+		for (var i = 0; i < Kns.folders[layersProperty].length; i++) {
+			var folder = Kns.folders[layersProperty][i];
+			var val = 0;
+			if (folder == "costume") {
+				val = costume || 0;
+			} else if (folder == "dirt") {
+				val = dirt || 0;
+			} else if (folder in factors) {
+				val = factors[folder] || 0;
+			} else {
+				val = code[folder];
+			}
+
+			if (typeof val === "string" || typeof val === "number") {
+				val = (val + "").split("-");
+			}
+
+			arr[folder] = val;
+		}
+
+		return Kns.generateHTMLofCat(arr, size, cl, act, url, layersProperty);
+	};
+
+	Kns.getUrlStyle = function(act, name, id) {
+		return "background-image:url('cats/" + act + "/" + name + "/" + id + ".png');";
+	};
+
 	Kns.drawCat = function() {
 		var html = "";
 		for (var i = 0; i < Kns.actions.length; i++) {
-			html += "<td>" + Func.showCat(Kns.code(), 4.5, 0, Kns.actions[i], {"costume": 0, "dirt": 0, "wound": 0, "drown": 0, "poisoning": 0, "disease": 0}) + "</td>";
+			html += "<td>" + Kns.showCat(4.5, 0, Kns.actions[i], {"costume": 0, "dirt": 0, "wound": 0, "drown": 0, "poisoning": 0, "disease": 0}) + "</td>";
 		}
 		html = "<table><tr>" + html + "</tr></table>";
 		$("#cat").html(html);
@@ -229,10 +289,11 @@ $(function() {
 		}
 		var info = [];
 		var selectedList = [];
-		if (Kns.parts[Sel.now].info) {
+		if (Kns.parts[Sel.now].info && !Kns.parts[Sel.now].noVariations) {
 			if (Sel.main[Sel.now].length > 0) {
-				for (var l = 0; l < Sel.main[Sel.now].length; l++) {
-					selectedList[l] = Sel.main[Sel.now][l].split("/")[0];
+				for (var l in Sel.main[Sel.now]) {
+					if (!Sel.main[Sel.now].hasOwnProperty(l)) continue;
+					selectedList[l] = Sel.main[Sel.now][l].id;
 				}
 			}
 			if (dataNum >= selectedList.length) {
@@ -252,7 +313,7 @@ $(function() {
 			}
 		} else if (Kns.parts[Sel.now].maxLayers && Kns.parts[Sel.now].maxLayers > 1) {
 			for (n = 0; n < Kns.parts[Sel.now].maxLayers; n++) {
-				var data = {};
+				data = {};
 				data.num = n;
 				data.data = {};
 				data.data.id = n;
@@ -268,7 +329,7 @@ $(function() {
 			var canAdd = false;
 			var max = 1;
 			if (!Kns.parts[Sel.now].noCombine) {
-				max = detailsMax;
+				max = Kns.detailsMax;
 			}
 			max = Kns.parts[Sel.now].maxLayers || max;
 			if (selectedList.length < max && selectedList.length < info.length) {
@@ -303,7 +364,7 @@ $(function() {
 						if (!Kns.parts[Sel.now].noVariations) {
 							for (var j = 0; j < info.length; j++) {
 								var id = info[j].data.id;
-								if (selectedList.filter(function(el) { return el == id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : maxSimilarElements) && selectedList[i] != id) {
+								if (selectedList.filter(function(el) { return el == id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : Kns.maxSimilarElements) && selectedList[i] != id) {
 									continue;
 								}
 								name = info[j].data.name;
@@ -334,7 +395,7 @@ $(function() {
 							var line = 0;
 							for (j = 0; j < info.length; j++) {
 								id = info[j].data.id;
-								if (selectedList.filter(function(el) { return el == id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : maxSimilarElements) && selectedList[dataNum] != id) {
+								if (selectedList.filter(function(el) { return el == id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : Kns.maxSimilarElements) && selectedList[dataNum] != id) {
 									continue;
 								}
 								name = info[j].data.name;
@@ -365,31 +426,16 @@ $(function() {
 		if (part !== undefined && !Kns.parts[Sel.now].noVariations) {
 			id = part + "/" + id;
 		}
-		var parent;
-		switch (Sel.now) {
-			case numTuftElement:
-				parent = numTuftBase;
-				break;
-			case numEarTufts:
-			case numEarLeft:
-			case numEarRight:
-				parent = numEarBase;
-				break;
-			case numManeElement:
-				parent = numManeBase;
-				break;
-			case numTailElement:
-				parent = numTailBase;
-				break;
-		}
-		if (parent) {
-			parent = Sel.main[parent][0];
-			parent = (parent+'').split('/')[0];
+		var parent = Kns.parts[Sel.now].parent;
+		if (parent !== undefined) {
+			parent = Kns.parts[parent].info.filter(function (el) {
+				return el.id == Sel.main[parent][0].id;
+			})[0];
 			if (parent) {
-				id = parent + '/' + id;
+				id = parent.id + '/' + id;
 			}
 		}
-		return Func.getUrlStyle(0, Func.folders.animationCode[Sel.now], id) + 'background-size: 100%;';
+		return Kns.getUrlStyle(0, Kns.parts[Sel.now].folder, id) + 'background-size: 100%;';
 	};
 
 	Kns.refresh = function(allnew, detailnotnew, noblocks, newselect, nodetail, nocats, nopalette) {
@@ -416,33 +462,10 @@ $(function() {
 	Kns.selectedDetail = function(menu) {
 		Sel.nowSelected = menu.value || menu.getAttribute('data-value') || '1';
 		var dataNum = menu.getAttribute("data-num");
-		if (Sel.main[Sel.now] === 0 || Sel.main[Sel.now] === '') {
-			return;
-		}
-		if (!(Sel.main[Sel.now] instanceof Array)) {
-			Sel.main[Sel.now] = Sel.main[Sel.now].split('-');
-		}
 		if (Sel.main[Sel.now].length <= dataNum) {
 			return;
 		}
-		var imgWithOpacity = Sel.main[Sel.now][dataNum].split('|');
-		var data = imgWithOpacity[0].split('/');
-		data[0] = Kns.parts[Sel.now].info[Sel.nowSelected].id;
-		var palette = Kns.parts[Sel.now].info[Sel.nowSelected].palette || Kns.parts[Sel.now].palette || 0;
-		if (Kns.palette[palette].filter(function(el) { return el.id == data[1]; }).length < 1) {
-			for (var c = 0; c < Kns.palette[palette].length; c++) {
-				if (+Kns.palette[palette][c].id === 0) {
-					continue;
-				}
-				if (!Kns.partAvailable(false, Sel.now, data[0], Kns.palette[palette][c].id)) {
-					continue;
-				}
-				data[1] = Kns.palette[palette][c].id;
-				break;
-			}
-		}
-		imgWithOpacity[0] = data.join('/');
-		Sel.main[Sel.now][dataNum] = imgWithOpacity.join('|');
+		Sel.main[Sel.now][dataNum].id = Kns.parts[Sel.now].info[Sel.nowSelected].id;
 		Kns.cleanMain(Sel.now);
 		Kns.refresh(false, true, false, false, true);
 		var selected = $('.sel');
@@ -458,25 +481,19 @@ $(function() {
 		if (dataNum === undefined) {
 			return;
 		}
-		if (Sel.main[Sel.now] === 0 || Sel.main[Sel.now] === '') {
-			return;
-		}
 		if (Sel.main[Sel.now].length <= dataNum) {
 			return;
 		}
-		var imgWithOpacity = (Sel.main[Sel.now][dataNum]+'').split('|');
-		var opacityPresent = imgWithOpacity[1]
-		opacityPresent = opacityPresent ? Func.getOpacityFromCode(opacityPresent) * 100 : 100;
+		var opacityPresent = Sel.main[Sel.now][dataNum].opacity;
+		opacityPresent = opacityPresent !== undefined ? Kns.getOpacityFromCode(opacityPresent) * 100 : 100;
 		if (opacityPresent == opacity) {
 			return;
 		}
 		if (opacity >= 100) {
-			imgWithOpacity = [imgWithOpacity[0]];
+			delete Sel.main[Sel.now][dataNum].opacity;
 		} else {
-			opacity = Func.getOpacityForCode(opacity);
-			imgWithOpacity[1] = opacity;
+			Sel.main[Sel.now][dataNum].opacity = opacity;
 		}
-		Sel.main[Sel.now][dataNum] = imgWithOpacity.join("|");
 		Kns.refresh(false, false, true, true, true, false, true);
 	};
 
@@ -499,14 +516,14 @@ $(function() {
 		if (!Kns.parts[Sel.now].noVariations) {
 			var selectedList = [];
 			for (var i = 0; i < Sel.main[Sel.now].length; i++) {
-				var type = (Sel.main[Sel.now][i] + '').split('/')[0];
+				var type = Sel.main[Sel.now][i].id;
 				if (type) {
 					selectedList.push(type);
 				}
 			}
-			var data = 0;
+			var data = {};
 			for (var j = 0; j < info.length; j++) {
-				if (selectedList.filter(function(el) { return el == info[j].id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : maxSimilarElements)) {
+				if (selectedList.filter(function(el) { return el == info[j].id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : Kns.maxSimilarElements)) {
 					continue;
 				}
 				if (!Kns.partAvailable(false, Sel.now, info[j].id)) {
@@ -520,26 +537,40 @@ $(function() {
 					if (!Kns.partAvailable(false, Sel.now, info[j].id, Kns.palette[palette][c].id)) {
 						continue;
 					}
-					data = info[j].id + '/' + Kns.palette[palette][c].id;
+					data = {id: info[j].id, colour: Kns.palette[palette][c].id};
 					break;
 				}
 				break;
 			}
 		} else {
 			palette = Kns.parts[Sel.now].palette || 0;
-			for ( c = 0; c < Kns.palette[palette].length; c++) {
-				if (+Kns.palette[palette][c].id === 0) {
-					continue;
+			var palList = [palette];
+			if (info) {
+				for (var dat in info) {
+					if (!info.hasOwnProperty(dat)) continue;
+					palette = info[dat].palette;
+					if (palette !== undefined && palList.indexOf(palette) === -1) {
+						palList.push(palette);
+					}
 				}
-				if (!Kns.partAvailable(false, Sel.now, 0, Kns.palette[palette][c].id)) {
-					continue;
+			}
+			for (var p in palList) {
+				if (!palList.hasOwnProperty(p)) continue;
+				palette = palList[p];
+				for (c = 0; c < Kns.palette[palette].length; c++) {
+					if (+Kns.palette[palette][c].id === 0) {
+						continue;
+					}
+					if (!Kns.partAvailable(false, Sel.now, 0, Kns.palette[palette][c].id)) {
+						continue;
+					}
+					data = {colour: Kns.palette[palette][c].id};
+					break;
 				}
-				data = Kns.palette[palette][c].id;
-				break;
 			}
 		}
 		if (data) {
-			if (Sel.now == numRightHindPaw && Kns.warning > 0) { // убрать, когда будут действия
+			if (Sel.now == Kns.num.RightHindPaw && Kns.warning > 0) { // убрать, когда будут действия
 				Kns.error("Некоторые элементы на задней правой лапе будут видны только на действиях.");
 				Kns.warning--;
 			}
@@ -566,44 +597,63 @@ $(function() {
 		p = p || Kns.parts[Sel.now].palette || 0;
 		p = Sel.nowSelected === undefined ? -1 : p;
 		var dataNum = Kns.parts[Sel.now].noCombine ? 0 : $(".sel").attr("data-num");
+		var pList = [{palette: p, id: 1}];
 		if (dataNum === undefined) {
 			p = -1;
+			pList = [];
 		}
-		var colour = ((Sel.main[Sel.now][dataNum] + '' || '').split('|')[0] || '').split('/');
-		if (colour.length >= 2) {
-			colour = +colour[1];
-		} else {
-			colour = +colour[0] || 0;
+		var colour = Sel.main[Sel.now][dataNum];
+		colour = colour ? colour.colour : colour;
+
+		if (Kns.parts[Sel.now].info && Kns.parts[Sel.now].noVariations) {
+			for (var data in Kns.parts[Sel.now].info) {
+				if (!Kns.parts[Sel.now].info.hasOwnProperty(data)) continue;
+				p = Kns.parts[Sel.now].info[data].palette;
+				if (p !== undefined && pList.indexOf(p) === -1) {
+					p = {palette: p, id: Kns.parts[Sel.now].info[data].id};
+					pList.push(p);
+				}
+			}
 		}
+
 		var width = 0;
 		var maxWidth = $('#main').width() - 32;
 		var detailId = (Kns.parts[Sel.now].info && Kns.parts[Sel.now].info[Sel.nowSelected]) ? Kns.parts[Sel.now].info[Sel.nowSelected].id : 0;
-		for (var i = 0; Kns.palette[p] && i < Kns.palette[p].length; i++) {
-			if (Kns.palette[p][i].name === '') {
-				continue;
+		for (var j in pList) {
+			if (!pList.hasOwnProperty(j)) continue;
+			p = pList[j].palette;
+			for (var i = 0; Kns.palette[p] && i < Kns.palette[p].length; i++) {
+				if (Kns.palette[p][i].name === '') {
+					continue;
+				}
+				if (!Kns.partAvailable(false, Sel.now, detailId, Kns.palette[p][i].id)) {
+					continue;
+				}
+				var bg = (Kns.palette[p][i].colour ? Kns.palette[p][i].colour : "url(cats/palette/" + +Kns.palette[p][i].image + ".png)");
+				var name = Kns.palette[p][i].name;
+				if (name.trim() != name) {
+					name = name.trim();
+					html += '</tr><tr>';
+					width = 0;
+				} else if (width >= maxWidth) {
+					html += '</tr><tr>';
+					width = 0;
+				}
+				var id = Kns.palette[p][i].id;
+				if (Kns.parts[Sel.now].info && Kns.parts[Sel.now].noVariations) {
+					id = pList[j].id + "/" + id;
+				}
+				html += '<td><div style="background: ' + bg + ' center no-repeat; border-width: 1px; border-style: solid;" title="' + name + '" data-num="' + id + '"' + (Kns.palette[p][i].id == colour ? ' class="selected_colour"' : '') + '> </div></td>';
+				width += 32;
 			}
-			if (!Kns.partAvailable(false, Sel.now, detailId, Kns.palette[p][i].id)) {
-				continue;
-			}
-			var bg = (Kns.palette[p][i].colour ? Kns.palette[p][i].colour : "url(cats/palette/" + +Kns.palette[p][i].image + ".png)");
-			var name = Kns.palette[p][i].name;
-			if (name.trim() != name) {
-				name = name.trim();
-				html += '</tr><tr>';
-				width = 0;
-			} else if (width >= maxWidth) {
-				html += '</tr><tr>';
-				width = 0;
-			}
-			html += '<td><div style="background: ' + bg + ' center no-repeat; border-width: 1px; border-style: solid;" title="' + name + '" data-num="' + Kns.palette[p][i].id + '"' + (Kns.palette[p][i].id == colour ? ' class="selected_colour"' : '') + '> </div></td>';
-			width += 32;
 		}
+		p = pList[0];
 		html += '</tr></table>';
 		if (!Kns.parts[Sel.now].opaque && Kns.palette[p]) {
-			var opacity = (Sel.main[Sel.now][dataNum] + '' || '').split('|')[1] || 10;
-			opacity = Func.getOpacityFromCode(opacity) * 100;
-			var minOpacity = Func.getOpacityFromCode(0) * 100;
-			var stepOpacity = (100 - minOpacity) / Func.getOpacityForCode(100);
+			var opacity = Sel.main[Sel.now][dataNum].opacity;
+			opacity = Kns.getOpacityFromCode(opacity) * 100;
+			var minOpacity = Kns.getOpacityFromCode(0) * 100;
+			var stepOpacity = (100 - minOpacity) / Kns.getOpacityForCode(100);
 			html += "<br><label><b>Непрозрачность: </b><input type='range' max='100' min='" + minOpacity + "' step='" + stepOpacity + "' value='" + opacity + "' onchange='Kns.selectedOpacity(this.value);' oninput='Kns.selectedOpacity(this.value);' id='opacity_range'></label>";
 		}
 		$("#color").html(html);
@@ -622,18 +672,10 @@ $(function() {
 			}
 			var newArr = [];
 			for (var j = 0; j < Sel.main[i].length; j++) {
-				var partdetail = (Sel.main[i][j] + '').split('/');
-				var partcolour = '';
-				if (partdetail.length > 1) {
-					partcolour = partdetail[1];
-					partdetail = partdetail[0];
-				} else {
-					partcolour = partdetail[0];
-					partdetail = 0;
-				}
+				var partdetail = Sel.main[i][j].id || 0;
+				var partcolour = Sel.main[i][j].colour;
 				if (!Kns.partAvailable(false, i, partdetail, partcolour)) {
 					Sel.main[i][j] = 0;
-					continue;
 				}
 				if (!(Sel.main[i][j] > 0 || (Sel.main[i][j] != "" && Sel.main[i][j] != "0"))) {
 					continue;
@@ -644,7 +686,7 @@ $(function() {
 				isNew = Sel.main[i].length != newArr.length;
 			}
 			Sel.main[i] = newArr;
-			if (!Sel.main[i].length && Kns.parts[i].default) {
+			if (!Sel.main[i].length && Kns.parts[i].obligatory && Kns.parts[i].default) {
 				Sel.main[i] = [Kns.parts[i].default];
 			}
 		}
@@ -675,11 +717,11 @@ $(function() {
 				if (!Kns.parts[i] || !Kns.parts[i].name || !Kns.partAvailable(false, i)) {
 					continue;
 				}
-				for (var dataNum = 0; dataNum < ((Kns.parts[i].noCombine) ? 1 : (Kns.parts[i].maxLayers || detailsMax)); dataNum++) {
+				for (var dataNum = 0; dataNum < ((Kns.parts[i].noCombine) ? 1 : (Kns.parts[i].maxLayers || Kns.detailsMax)); dataNum++) {
 					if (Math.random() >= coeff && !Kns.parts[i].obligatory) {
 						continue;
 					}
-					var result = [];
+					var result = {};
 					var palette = Kns.parts[i].palette || 0;
 					var detail = 0;
 					if (Kns.parts[i].info) {
@@ -697,7 +739,7 @@ $(function() {
 							break;
 						}
 						var part = Math.floor(Math.random() * parts.length);
-						result.push(parts[part].id);
+						result.id = parts[part].id;
 						pastParts.push(parts[part].id);
 						palette = parts[part].palette || palette;
 						detail = parts[part].id;
@@ -713,13 +755,12 @@ $(function() {
 						colours.push(Kns.palette[palette][c].id);
 					}
 					var colourNum = Math.floor(Math.random() * colours.length);
-					result.push(colours[colourNum]);
-					result = result.join("/");
+					result.colour = colours[colourNum];
 					if (!Kns.parts[i].opaque) {
-						var maxOpacity = Func.getOpacityForCode(100);
+						var maxOpacity = Kns.getOpacityForCode(100);
 						var opacity = Math.floor(Math.random() * (maxOpacity + 1));
 						if (opacity < maxOpacity) {
-							result += "|" + opacity;
+							result.opacity = opacity;
 						}
 					}
 					Sel.main[i].push(result);
@@ -735,14 +776,27 @@ $(function() {
 			return true;
 		}
 		// анализ блоков
-		if (vipLevel < 1 && block == numRightEye) { //правые глаза не разрешены в любом случае, если vip < 1
+		if (Kns.vipLevel < 1 && block == Kns.num.RightEye) { //правые глаза не разрешены в любом случае, если vip < 1
 			if (showError) {
 				Kns.error("Невозможно выбирать правые глаза.");
 			}
 			return false;
 		}
-		if (isBaseSpecial(Sel.main[numBase][0])) {
-			if (!Kns.parts[block].special) {
+		var baseId = Sel.main[Kns.num.Base][0];
+		baseId = baseId ? baseId.id : baseId;
+		var baseInfo = Kns.parts[Kns.num.Base].info.filter(function(el) { return el.id == baseId; })[0];
+		if (block != Kns.num.Base && !baseInfo) {
+			if (showError) {
+				Kns.error("Ошибка базы.");
+			}
+			return false;
+		}
+		if (block != Kns.num.Base && baseInfo.allowedChildren) {
+			var ok = !baseInfo.allowedChildren.whitelist;
+			if (baseInfo.allowedChildren.blocks && baseInfo.allowedChildren.blocks.indexOf(block) !== -1) {
+				ok = !ok;
+			}
+			if (!ok) {
 				if (showError) {
 					Kns.error("На особых окрасах нельзя выбирать какие-либо элементы.");
 				}
@@ -751,16 +805,16 @@ $(function() {
 		}
 
 		switch (block) {
-			case numManeElement:
-				if (!Sel.main[numManeBase][0]) {
+			case Kns.num.ManeElement:
+				if (!Sel.main[Kns.num.ManeBase][0] || !Sel.main[Kns.num.ManeBase][0].id) {
 					if (showError) {
 						Kns.error("Выберите сперва гриву-основу.");
 					}
 					return false;
 				}
 				break;
-			case numTuftElement:
-				if (!Sel.main[numTuftBase][0]) {
+			case Kns.num.TuftElement:
+				if (!Sel.main[Kns.num.TuftBase][0] || !Sel.main[Kns.num.TuftBase][0].id) {
 					if (showError) {
 						Kns.error("Выберите сперва шерсть-основу.");
 					}
@@ -774,12 +828,27 @@ $(function() {
 
 		// анализ частей, показываемых в блоке
 		switch (block) {
-			case numEarTufts:
-				var numEar = Sel.main[numEarBase][0].split('/')[0];
-				if (numEar == numEarLay) {
-					if (detail == numEarTuftsNormal) {
+			case Kns.num.EarTufts:
+				var numEar = Sel.main[Kns.num.EarBase][0];
+				if (numEar) {
+					numEar = numEar.id;
+				}
+				if (numEar == Kns.num.EarLay) {
+					if (detail == Kns.num.EarTuftsNormal) {
 						if (showError) {
 							Kns.error("Вислоухим не доступны кисточки.");
+						}
+						return false;
+					}
+				}
+				break;
+			case Kns.num.Base:
+				baseInfo = Kns.parts[Kns.num.Base].info.filter(function(el) { return el.id == detail; })[0];
+				var basePalette = baseInfo ? (baseInfo.palette || Kns.parts[Kns.num.Base].palette || 0) : -1;
+				if (basePalette != Kns.paletteNormalBases) {
+					if (Kns.vipLevel < 2) {
+						if (showError) {
+							Kns.error("Вам не доступны специальные окрасы.");
 						}
 						return false;
 					}
@@ -802,10 +871,10 @@ $(function() {
 		}
 		colour = colourWithOpacity[0];
 		switch (block) {
-			case numLeftEye:
-			case numRightEye:
-				if (isEyesSpecial(colour)) {
-					if (vipLevel < 3) {
+			case Kns.num.LeftEye:
+			case Kns.num.RightEye:
+				if (Kns.isEyesSpecial(colour)) {
+					if (Kns.vipLevel < 3) {
 						if (showError) {
 							Kns.error("Вам не доступны фиолетовые глаза.");
 						}
@@ -813,9 +882,9 @@ $(function() {
 					}
 				}
 				break;
-			case numBase:
-				if (isBaseSpecial(colour)) {
-					if (vipLevel < 2) {
+			case Kns.num.Base:
+				if (Kns.isBaseSpecial(colour)) {
+					if (Kns.vipLevel < 2) {
 						if (showError) {
 							Kns.error("Вам не доступны специальные окрасы.");
 						}
@@ -829,9 +898,9 @@ $(function() {
 	};
 
 	Kns.vip = function(temp) {
-		vipLevel = +$("#main").data("vip");
+		Kns.vipLevel = +$("#main").data("vip");
 		if (temp !== undefined) {
-			vipLevel = +temp;
+			Kns.vipLevel = +temp;
 			Kns.parts = JSON.parse(JSON.stringify(Kns.backupInfo));
 		}
 	};
@@ -871,7 +940,7 @@ $(function() {
 				} else {
 					Sel.main[num] = [];
 				}
-				if (isBaseSpecial(Sel.main[numBase][0]) && !Kns.parts[num].special) {
+				if (!Kns.partAvailable(false, num)) {
 					Sel.main[num] = [];
 				}
 				continue;
@@ -881,11 +950,22 @@ $(function() {
 			Sel.main[num] = [];
 			for (var inter = 0; inter < blocks[num].length; inter++) {
 				var part = blocks[num][inter];
+				var result = {};
+				part = (part + '').split('|');
+				result.opacity = part[1];
 				if (Kns.parts[num].opaque) {
-					part = (part + '').split('|')[0] || 0;
+					delete result.opacity;
 				}
+				part = part[0] + "";
 				if (+part !== 0) {
-					Sel.main[num].push(part);
+					part = part.split("/");
+					if (part.length > 1) {
+						result.id = part[0];
+						result.colour = part[1];
+					} else {
+						result.colour = part[0];
+					}
+					Sel.main[num].push(result);
 				}
 			}
 		}
@@ -935,12 +1015,9 @@ $(function() {
 			//validate
 			try {
 				for (var i = 0; i < Kns.parts.length; i++) {
-					if (!(Sel.main[i] instanceof Array)) {
-						Sel.main[i] = (Sel.main[i] + '').split('-');
-					}
 					var now = Sel.main[i];
 					var info = Kns.parts[i];
-					var max = Kns.partAvailable(false, i) ? (info.noCombine ? 1 : detailsMax) : 0;
+					var max = Kns.partAvailable(false, i) ? (info.noCombine ? 1 : Kns.detailsMax) : 0;
 					if (now.length > max) {
 						Kns.error("Сохранение невозможно: слишком много элементов");
 						return;
@@ -959,31 +1036,28 @@ $(function() {
 							}
 							continue;
 						}
-						var parts = (now[layer] + '').split('/');
-						if (parts.length != (info.noVariations ? 1 : 2)) {
-							Kns.error("Сохранение невозможно: некорректный код элемента");
-							return;
-						}
+						var parts = now[layer];
 						var palette = info.palette | 0;
 						var detail = 0;
 						if (info.info) {
-							detail = info.info.filter(function(el) { return el.id == parts[0]; })[0];
+							if (!parts.id) {
+								Kns.error("Сохранение невозможно: некорректный код элемента");
+								return;
+							}
+							detail = info.info.filter(function(el) { return el.id == parts.id; })[0];
 							if (detail && Kns.partAvailable(false, i, detail)) {
 								palette = detail.palette | 0;
 							} else {
 								Kns.error("Сохранение невозможно: неверный элемент");
 								return;
 							}
-							if (oldLayers.filter(function(el) { return el == parts[0]; }).length >= (info.opaque ? 1 : maxSimilarElements)) {
+							if (oldLayers.filter(function(el) { return el == parts.id; }).length >= (info.opaque ? 1 : Kns.maxSimilarElements)) {
 								Kns.error("Сохранение невозможно: повторяющийся элемент");
 								return;
 							}
-							oldLayers.push(parts[0]);
+							oldLayers.push(parts.id);
 						}
-						if (info.noVariations) {
-							parts[1] = parts[0];
-						}
-						if (!Kns.palette[palette].filter(function(el) { return el.id == (parts[1]+'').split('|')[0]; })[0] || +parts[1] === 0 || !Kns.partAvailable(false, i, detail, parts[1])) {
+						if (!Kns.palette[palette].filter(function(el) { return el.id == parts.colour; })[0] || +parts[1] === 0 || !Kns.partAvailable(false, i, detail, parts.colour)) {
 							Kns.error("Сохранение невозможно: неверный цвет");
 							return;
 						}
@@ -996,7 +1070,7 @@ $(function() {
 			$.post("kns_save", {code: Kns.code()}, function(data) {
 				$("body").html(data);
 				var cat = $("#cat");
-				cat.html(Func.showCat(cat.text())).show();
+				cat.html(Kns.showCat()).show();
 			});
 		});
 	});
@@ -1013,6 +1087,14 @@ $(function() {
 		if (!colour && +colour !== 0) {
 			return;
 		}
+		var id;
+		colour = colour.split("/");
+		if (colour.length > 1) {
+			id = colour[0];
+			colour = colour[1];
+		} else {
+			colour = colour[0];
+		}
 
 		var detail = (Kns.parts[Sel.now].info && Kns.parts[Sel.now].info[Sel.nowSelected]) ? Kns.parts[Sel.now].info[Sel.nowSelected].id : 0;
 
@@ -1024,21 +1106,8 @@ $(function() {
 		if (!Kns.parts[Sel.now].noCombine) {
 			dataNum = $(".sel").attr("data-num");
 		}
-		if (!Kns.parts[Sel.now].noVariations) {
-			colour = (colour ? Kns.parts[Sel.now].info[Sel.nowSelected].id + "/" + colour : 0);
-		}
-		if (!(Sel.main[Sel.now] instanceof Array)) {
-			Sel.main[Sel.now] = [Sel.main[Sel.now]];
-		}
-		var opacity = $("#opacity_range");
-		if (opacity) {
-			opacity = $("#opacity_range").val();
-			if (opacity < 100) {
-				opacity = Func.getOpacityForCode(opacity);
-				colour += "|" + opacity;
-			}
-		}
-		Sel.main[Sel.now][dataNum] = colour;
+		Sel.main[Sel.now][dataNum].colour = colour;
+		Sel.main[Sel.now][dataNum].id = id ? id : Sel.main[Sel.now][dataNum].id;
 
 		Kns.cleanMain(Sel.now);
 		Kns.refresh(false, true, false, false, true);
