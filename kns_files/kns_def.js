@@ -263,7 +263,8 @@ var defines = function(Kns) {
 			info: [{id: "1", name: "Кончик"},
 				{id: "2", name: "Кайма"},
 				{id: "3", name: "Полностью"},
-				{id: "4", name: "Шерсть внутри", palette: 5}]
+				{id: "4", name: "Шерсть внутри", palette: 5}],
+			cut_from: Kns.num.EarBase
 		},
 		/* 8 */ {
 			name: "Правое ухо",
