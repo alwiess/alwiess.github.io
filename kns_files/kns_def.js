@@ -4,13 +4,13 @@ var defines = function(Kns) {
 	Kns.paletteNormalBases = 0;
 	Kns.maxSimilarElements = 2;
 	Kns.isBaseSpecial = function (base) {
-		return !(Kns.palette[Kns.paletteNormalBases].filter(function (el) {
+		return !(Kns.palette[Kns.paletteNormalBases].colours.filter(function (el) {
 			return base == el.id;
 		})[0])
 	};
 	Kns.paletteNormalEyes = 1;
 	Kns.isEyesSpecial = function (eye) {
-		return !(Kns.palette[Kns.paletteNormalEyes].filter(function (el) {
+		return !(Kns.palette[Kns.paletteNormalEyes].colours.filter(function (el) {
 			return eye == el.id;
 		})[0])
 	};
@@ -37,7 +37,8 @@ var defines = function(Kns) {
 			info: [
 				{id: "1", name: "Обычное телосложение"},
 				{id: "2", name: "Уникальный окрас", palette: 2, elements: 1, allowedChildren: {whitelist: true, blocks: [Kns.num.LeftEye, Kns.num.RightEye]}, times: {1: [1000, 200, 200, 300, 1000, 100, 100, 100]}},
-				{id: "3", name: "Уникальный окрас", palette: 7, elements: 2, allowedChildren: {whitelist: true, blocks: [Kns.num.LeftEye, Kns.num.RightEye, Kns.num.NoseElement, Kns.num.Whisker]}, times: {1: [1000, 200, 200, 300, 1000, 100, 100, 100]}}]
+				{id: "3", name: "Уникальный окрас", palette: 7, elements: 2, allowedChildren: {whitelist: true, blocks: [Kns.num.LeftEye, Kns.num.RightEye, Kns.num.NoseElement, Kns.num.Whisker]}, times: {1: [1000, 200, 200, 300, 1000, 100, 100, 100]}}],
+			cut_from: false
 		},
 		/* 1 */ {
 			name: "Глаза",
@@ -252,7 +253,8 @@ var defines = function(Kns) {
 				{id: "19", name: "Ремень с кончиком"},
 				{id: "20", name: "Узкий ремень"},
 				{id: "21", name: "Налёт"},
-				{id: "22", name: "Затушёвка"}]
+				{id: "22", name: "Затушёвка"}],
+			cut_from: Kns.num.TailBase
 		},
 		/* 7 */ {
 			name: "Левое ухо",
@@ -270,7 +272,8 @@ var defines = function(Kns) {
 			info: [{id: "1", name: "Кончик"},
 				{id: "2", name: "Кайма"},
 				{id: "3", name: "Полностью"},
-				{id: "4", name: "Шерсть внутри", palette: 5}]
+				{id: "4", name: "Шерсть внутри", palette: 5, cut_from: false}],
+			cut_from: Kns.num.EarBase
 		},
 		/* 9 */ {
 			name: "Грудь",
@@ -294,7 +297,8 @@ var defines = function(Kns) {
 			info: [
 				{id: "1", name: "Кисточки"},
 				{id: "2", name: "Маленькие кисточки"}],
-			opaque: true
+			opaque: true,
+			cut_from: false
 		},
 		/* 11 */ {
 			name: "Шея",
@@ -409,7 +413,8 @@ var defines = function(Kns) {
 				{id: "5", name: "Пышный"},
 				{id: "6", name: "Беличий"}],
 			obligatory: true,
-			opaque: true
+			opaque: true,
+			cut_from: false
 		},
 		/* 16 */ {
 			name: "Грива",
@@ -420,7 +425,8 @@ var defines = function(Kns) {
 				{id: "1", name: "Умеренная"},
 				{id: "2", name: "Пушистая"},
 				{id: "3", name: "Пышная"}],
-			opaque: true
+			opaque: true,
+			cut_from: false
 		},
 		/* 17 */ {
 			name: "Уши",
@@ -435,7 +441,8 @@ var defines = function(Kns) {
 				{id: "4", name: "Раскосые"},
 				{id: "5", name: "Вывернутые"}],
 			obligatory: true,
-			opaque: true
+			opaque: true,
+			cut_from: false
 		},
 		/* 18 */ {
 			name: "Шерсть",
@@ -446,7 +453,8 @@ var defines = function(Kns) {
 				{id: "1", name: "На щёках №1"},
 				{id: "2", name: "На щёках №2"},
 				{id: "3", name: "На щёках №3"}],
-			opaque: true
+			opaque: true,
+			cut_from: false
 		},
 		/* 19 */ {
 			name: "Правый глаз",
@@ -457,7 +465,8 @@ var defines = function(Kns) {
 			previewImg: "_",
 			maxLayers: 2,
 			special: true,
-			opaque: false
+			opaque: false,
+			cut_from: false
 		},
 		/* 20 */ {
 			name: "Грива",
@@ -474,7 +483,8 @@ var defines = function(Kns) {
 				{id: "8", name: "Узкий ремень"},
 				{id: "11", name: "Низ"},
 				{id: "9", name: "Налёт"},
-				{id: "10", name: "Затушёвка"}]
+				{id: "10", name: "Затушёвка"}],
+			cut_from: Kns.num.ManeBase
 		},
 		/* 21 */ {
 			name: "Шерсть",
@@ -488,7 +498,8 @@ var defines = function(Kns) {
 				{id: "5", name: "Пятна слева"},
 				{id: "6", name: "Пятна справа"},
 				{id: "7", name: "Полосы слева"},
-				{id: "8", name: "Полосы справа"}]
+				{id: "8", name: "Полосы справа"}],
+			cut_from: Kns.num.TuftBase
 		},
 		/* 22 */ {
 			name: "Усы",
@@ -518,7 +529,9 @@ var defines = function(Kns) {
 	];
 	Kns.palette = [
 		/* ОСНОВНОЙ ЦВЕТ -- ЭЛЕМЕНТЫ И БАЗЫ*/
-		/* 0 */ [
+		/* 0 */ {cut: true,
+			cut_from: Kns.num.Base,
+			colours: [
 			{id: "0", name: "", image: "+0"},
 			{id: "1", name: "Кремовый", colour: "#f5e5ce"},
 			{id: "2", name: "Белоснежный", colour: "#ffffff"},
@@ -543,9 +556,10 @@ var defines = function(Kns) {
 			{id: "21", name: "Голубой", colour: "#a6b4b7"},
 			{id: "22", name: "Серо-голубой", colour: "#697a8a"},
 			{id: "23", name: "Дымчато-голубой", colour: "#465165"},
-			{id: "24", name: "Черничный", colour: "#323d51"}],
+			{id: "24", name: "Черничный", colour: "#323d51"}]},
 		/* ГЛАЗА */
-		/* 1 */ [
+		/* 1 */ {cut: false,
+			colours: [
 			{id: "0", name: '', colour: ""},
 			{id: "1", name: "Медный", colour: "#9C7941"},
 			{id: "2", name: "Карий", colour: "#362121"},
@@ -561,9 +575,10 @@ var defines = function(Kns) {
 			{id: "12", name: "Голубой", colour: "#87C3D4"},
 			{id: "13", name: "Васильковый", colour: "#148CCC"},
 			{id: "14", name: "Синий", colour: "#192580"},
-			{id: "15", name: "Серый", colour: "#7D8996"}],
+			{id: "15", name: "Серый", colour: "#7D8996"}]},
 		/* УНИКАЛЬНЫЕ ОКРАСЫ */
-		/* 2 */ [
+		/* 2 */ {cut: false,
+			colours: [
 			{id: "0", name: '', colour: ""},
 			{id: "25", name: "\r\nУникальный окрас", image: "+1"},
 			{id: "26", name: "Уникальный окрас", image: "+2"},
@@ -585,9 +600,10 @@ var defines = function(Kns) {
 			{id: "42", name: "Уникальный окрас", image: "+18"},
 			{id: "43", name: "Уникальный окрас", image: "+19"},
 			{id: "44", name: "Уникальный окрас", image: "+20"},
-			{id: "46", name: "Уникальный окрас", image: "+22"}],
+			{id: "46", name: "Уникальный окрас", image: "+22"}]},
 		/* ФИОЛЕТОВЫЕ ГЛАЗА */
-		/* 3 */ [
+		/* 3 */ {cut: false,
+			colours: [
 			{id: "0", name: '', colour: ""},
 			{id: "1", name: "Медный", colour: "#9C7941"},
 			{id: "2", name: "Карий", colour: "#362121"},
@@ -604,15 +620,17 @@ var defines = function(Kns) {
 			{id: "13", name: "Васильковый", colour: "#148CCC"},
 			{id: "14", name: "Синий", colour: "#192580"},
 			{id: "15", name: "Серый", colour: "#7D8996"},
-			{id: "16", name: "Фиолетовый", colour: "#734563"}],
+			{id: "16", name: "Фиолетовый", colour: "#734563"}]},
 		/* УСЫ */
-		/* 4 */ [
+		/* 4 */ {cut: false,
+			colours: [
 			{id: "0", name: '', colour: ""},
 			{id: "1", name: "Светлые", colour: "#ffffff"},
 			{id: "2", name: "Тёмные", colour: "#5c5c5c"},
-			{id: "3", name: "Чёрные", colour: "#242424"}],
+			{id: "3", name: "Чёрные", colour: "#242424"}]},
 		/* НОС И ШЕРСТЬ ВНУТРИ УШЕЙ */
-		/* 5 */ [
+		/* 5 */ {cut: false,
+			colours: [
 			{id: "0", name: '', colour: ""},
 			{id: "1", name: "Кремовый", colour: "#f5e5ce"},
 			{id: "2", name: "Белый", colour: "#ffffff"},
@@ -625,17 +643,19 @@ var defines = function(Kns) {
 			{id: "9", name: "Красный", colour: "#e15c0f"},
 			{id: "10", name: "Розовый", colour: "#cc8370"},
 			{id: "11", name: "Лиловый", colour: "#b19798"},
-			{id: "12", name: "Дымчато-голубой", colour: "#465165"}],
+			{id: "12", name: "Дымчато-голубой", colour: "#465165"}]},
 		/* ЭЛЕМЕНТ КАЙМА НОСА */
-		/* 6 */ [
+		/* 6 */ {cut: false,
+			colours: [
 			{id: "0", name: '', colour: ""},
-			{id: "1", name: "Чёрный", colour: "#242424"}],
+			{id: "1", name: "Чёрный", colour: "#242424"}]},
 		/* УНИКАЛЬНЫЕ ОКРАСЫ */
-		/* 7 */ [
+		/* 7 */ {cut: false,
+			colours: [
 			{id: "0", name: '', colour: ""},
 			{id: "45", name: "Уникальный окрас", image: "+21"},
 			{id: "47", name: "Уникальный окрас", image: "+23"},
-			{id: "48", name: "Уникальный окрас", image: "+24"}]
+			{id: "48", name: "Уникальный окрас", image: "+24"}]}
 	];
 
 	Kns.backupInfo = JSON.parse(JSON.stringify(Kns.parts));
