@@ -223,6 +223,7 @@ $(function() {
 				doSetTimeout(i);
 			}
 		}
+		$("#canvacat").show();
 	};
 
 	Kns.generateHTMLofCat = function(arr, size, cl, act, url, layersProperty) {
@@ -257,7 +258,6 @@ $(function() {
 		if (Kns.isAnimation) {
 			Kns.doCanvas(size, cl, act);
 			$("#cat").hide();
-			$("#canvacat").show();
 			return "";
 		} else {
 			$("#cat").show();
@@ -806,6 +806,8 @@ $(function() {
 		}
 		Sel.random = true;
 		Kns.reset();
+		$("#cat").hide();
+		$("#canvacat").hide();
 		for (var mode = 0; mode < 2; mode++) {
 			for (var i = 0; i < Kns.parts.length; i++) {
 				if ((Kns.parts[i].type || Kns.parts[i].noVariations) && mode !== 0) {
@@ -1032,6 +1034,7 @@ $(function() {
 	Kns.parseCode = function(input) {
 		var code = input.value;
 		var blocks = code.split(" ");
+		$("#canvacat").hide();
 		for (var num = 0; num < Kns.parts.length; num++) {
 			if (num >= blocks.length) {
 				if (Kns.parts[num] && Kns.parts[num].default) {
