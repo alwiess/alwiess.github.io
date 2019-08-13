@@ -21,7 +21,6 @@ var defines = function(Kns) {
 	Kns.actions = [0, 1];
 
 	Kns.folders = {static: [], animationLayers: [Kns.num.Base, Kns.num.LeftHindPaw, Kns.num.RightHindPaw, Kns.num.LeftForePaw, Kns.num.RightForePaw, Kns.num.BodyElement, Kns.num.BellyElement, Kns.num.BreastElement, Kns.num.NeckElement, Kns.num.HeadElement, Kns.num.ManeBase, Kns.num.ManeElement, Kns.num.TuftBase, Kns.num.TuftElement, Kns.num.EarTufts, Kns.num.EarBase, Kns.num.EarLeft, Kns.num.EarRight, Kns.num.NoseElement, Kns.num.LeftEye, Kns.num.RightEye, Kns.num.Whisker, Kns.num.TailBase, Kns.num.TailElement]};
-	//Kns.folders = {static: [], animationLayers: ["base", "hindpaw_left", "hindpaw_right", "forepaw_left", "forepaw_right", "body", "belly", "breast", "neck", "head", "base_mane", "mane", "base_hair", "hair", "tuft", "base_ears", "ear_left", "ear_right", "nose", "eyes", "eye_right", "whisker", "base_tail", "tail", "costume", "dirt", "wound", "drown", "poisoning", "disease"]};
 
 	Kns.parts = [
 		/* 0 */ {

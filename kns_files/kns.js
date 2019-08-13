@@ -3,6 +3,8 @@ var Kns = {};
 $(function() {
 	defines(Kns);
 	Kns.error_tm = 0;
+	Kns.canvaKey = {};
+	Kns.canvaAnim = {};
 	Kns.warning = 3; // убрать, когда будут действия
 	
 	Kns.start = function() {
@@ -46,11 +48,12 @@ $(function() {
 		return (code * 5 + 50) / 100;
 	};
 
-	Kns.addLayer = function(canvas, position, id, size, cl, act) {
+	Kns.addLayer = function(canvases, position, id, size, cl, act, key) {
 		var folder = Kns.folders["animationLayers"][position];
 		while (id < 0) {
 			position++;
 			if (position >= Kns.folders["animationLayers"].length) {
+				Kns.finishCanvas(canvases, act, key);
 				return;
 			}
 			folder = Kns.folders["animationLayers"][position];
@@ -85,11 +88,13 @@ $(function() {
 
 		var palette;
 		var cut_from;
+		var times;
 		if (Kns.parts[folder].info && Sel.main[folder][id].id) {
 			var detail = Kns.parts[folder].info.filter(function(el) { return el.id == Sel.main[folder][id].id;})[0];
 			if (detail) {
 				palette = detail.palette;
 				cut_from = detail.cut_from;
+				times = detail.times;
 			}
 		}
 		if (palette === undefined) {
@@ -98,6 +103,24 @@ $(function() {
 		if (cut_from === undefined) {
 			cut_from = Kns.parts[folder].cut_from;
 		}
+		if (!times) {
+			times = Kns.parts[folder].times;
+		}
+		times = (times ? times[act] : undefined) || [];
+		var canvas = times.length ? canvases.filter(function(el) { return JSON.stringify(el.times) == JSON.stringify(times); })[0] : canvases[0];
+		if (!times.length) {
+			times = undefined;
+		}
+		if (!canvas) {
+			var elname = "cat_" + act + "_" + canvases.length;
+			canvas = {};
+			canvas.canvas = document.getElementById(elname);
+			canvas.times = times;
+			canvases.push(canvas);
+			canvas.canvas.width = (canvas.times ? canvas.times.length : 1) * 100;
+			canvas.canvas.height = 154;
+		}
+		var tcanvas = canvas.canvas.getContext('2d');
 		if (cut_from === undefined) {
 			palette = Kns.palette[palette];
 			if (palette.cut_from !== undefined && palette.cut) {
@@ -129,35 +152,77 @@ $(function() {
 
 		var buffer = document.getElementById("buffer_" + act);
 		var bufferCtx = buffer.getContext('2d');
-		buffer.width = 100;
+		buffer.width = (canvas.times ? canvas.times.length : 1) * 100;
 		buffer.height = 154;
 
 		var mark = new Image();
-		var notLoaded = function() {
-			Kns.addLayer(canvas, position, id - 1, size, cl, act);
+		var loadNext = function() {
+			Kns.addLayer(canvases, position, id - 1, size, cl, act, key);
 		};
-		mark.onerror = notLoaded;
+		mark.onerror = loadNext;
 		mark.onload = function () {
+			if (key != Kns.canvaKey[act]) {
+				return;
+			}
 			bufferCtx.globalCompositeOperation = "copy";
 			bufferCtx.globalAlpha = opacity;
 			bufferCtx.drawImage(this, 0, 0);
 			if (cut_from === undefined) {
-				canvas.drawImage(buffer, 0, 0);
-				Kns.addLayer(canvas, position, id - 1, size, cl, act);
+				for (var i = 0; i < (canvas.times ? canvas.times.length : 1); i += (times ? times.length : 1)) {
+					tcanvas.drawImage(buffer, i*100, 0);
+				}
+				loadNext();
 			} else {
 				var base = new Image();
-				base.onerror = notLoaded;
+				base.onerror = loadNext;
 				base.onload = function() {
+					if (key != Kns.canvaKey[act]) {
+						return;
+					}
 					bufferCtx.globalCompositeOperation = "source-in";
 					bufferCtx.globalAlpha = 1;
 					bufferCtx.drawImage(this, 0, 0);
-					canvas.drawImage(buffer, 0, 0);
-					Kns.addLayer(canvas, position, id - 1, size, cl, act);
+					for (var i = 0; i < (canvas.times ? canvas.times.length : 1); i += (times ? times.length : 1)) {
+						tcanvas.drawImage(buffer, i * 100, 0);
+					}
+					loadNext();
 				};
 				base.src = "cats/" + act + "/" + cut_from + ".png";
 			}
 		};
 		mark.src = "cats/" + act + "/" + name + "/" + img + ".png";
+	};
+
+	Kns.finishCanvas = function(canvases, act, key) {
+		Kns.canvaAnim[act] = {};
+		var canvas = document.getElementById("cat_" + act).getContext('2d');
+		canvas.clearRect(0, 0, 100, 154);
+		var doSetTimeout = function(ci) {
+			setTimeout(function anim() {
+				if (key != Kns.canvaKey[act])
+					return;
+
+				canvas.globalCompositeOperation = 'source-over';
+				canvas.clearRect(0, 0, 100, 154);
+				Kns.canvaAnim[act][ci]++;
+				if (Kns.canvaAnim[act][ci] >= canvases[ci].times.length) {
+					Kns.canvaAnim[act][ci] = 0;
+				}
+
+				for (var j = 0; j < canvases.length; j++) {
+					canvas.drawImage(canvases[j].canvas, 100*Kns.canvaAnim[act][j], 0, 100, 154, 0, 0, 100, 154);
+				}
+
+				setTimeout(anim, canvases[ci].times[Kns.canvaAnim[act][ci]]);
+			}, canvases[ci].times[0]);
+		};
+		for (var i = 0; i < canvases.length; i++) {
+			canvas.drawImage(canvases[i].canvas, 0, 0);
+			Kns.canvaAnim[act][i] = 0;
+			if (canvases[i].times && canvases[i].times.length) {
+				doSetTimeout(i);
+			}
+		}
 	};
 
 	Kns.generateHTMLofCat = function(arr, size, cl, act, url, layersProperty) {
@@ -172,18 +237,25 @@ $(function() {
 		return result;
 	};
 
-	Kns.showCat = function(size, type, act, factors, dirt, costume) {
-		if (Kns.isAnimation) {
-			var canvas = document.getElementById("cat_"+act);
-			if (!canvas) {
-				canvas = document.createElement("canvas");
-				canvas.id = "cat_" + act;
-			}
-			canvas.style.display = 'unset;';
-			canvas.width = 100;
-			canvas = canvas.getContext('2d');
+	Kns.doCanvas = function(size, cl, act) {
+		var canvases = [];
 
-			Kns.addLayer(canvas, 0, 0, size, cl, act, layersProperty);
+		for (var i = 0; i < Kns.folders.animationLayers.length; i++) {
+			var buffer = document.getElementById("cat_" + act + "_" + i);
+			if (buffer) {
+				buffer.width = buffer.width;
+			}
+		}
+
+		Kns.canvaKey[act] = Math.floor(Math.random() * 100);
+		Kns.addLayer(canvases, 0, 0, size, cl, act, Kns.canvaKey[act]);
+	};
+
+	Kns.showCat = function(size, type, act, factors, dirt, costume) {
+		size = 55 + 10 * (isNaN(size) ? 4.5 : size);
+		size = Math.round(size);
+		if (Kns.isAnimation) {
+			Kns.doCanvas(size, cl, act);
 			$("#cat").hide();
 			$("#canvacat").show();
 			return "";
@@ -191,8 +263,6 @@ $(function() {
 			$("#cat").show();
 			$("#canvacat").hide();
 		}
-		size = 55 + 10 * (isNaN(size) ? 4.5 : size);
-		size = Math.round(size);
 		var cl = ['d', 'e', 'f'][type || 0];
 		act = act || 0;
 		factors = factors || {};
