@@ -77,7 +77,7 @@ $(function() {
 			noCombine: true,
 			type: true,
 			default: "1/1",
-			info: [{id: "1", name: "Куцый"}, {id: "2", name: "Тонкий"}, {id: "3", name: "Умеренный"}, {id: "4", name: "Пушистый"}, {id: "5", name: "Пышный"}, {id: "6", name: "Беличий"}],
+			info: [{id: "1", name: "Куцый"}, {id: "2", name: "Тонкий"}, {id: "7", name: "Гладкий"}, {id: "3", name: "Умеренный"}, {id: "4", name: "Пушистый"}, {id: "5", name: "Пышный"}, {id: "6", name: "Беличий"}],
 			obligatory: true,
 			opaque: true},
 		/* 16 */ {name: "Грива", // base_mane
