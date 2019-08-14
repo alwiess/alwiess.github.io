@@ -6,6 +6,19 @@ $(function() {
 	Kns.canvaKey = {};
 	Kns.canvaAnim = {};
 	Kns.warning = 3; // убрать, когда будут действия
+	Kns.vipLevel = 0;
+	Kns.detailVariant = 1;
+	Kns.blocks = [["Основа", [0, 22, 23, 16], 15, 18, 17], ["Шея и морда", [1, 19, 7, 8, 10, 20, 21], 5, 11], ["Туловище", 4, 9, 12], ["Лапы и хвост", 6, 2, 3, 13, 14]];
+	Kns.isBaseSpecial = function (base) {
+		return !(Kns.palette[Kns.paletteNormalBases].colours.filter(function (el) {
+			return base == el.id;
+		})[0])
+	};
+	Kns.isEyesSpecial = function (eye) {
+		return !(Kns.palette[Kns.paletteNormalEyes].colours.filter(function (el) {
+			return eye == el.id;
+		})[0])
+	};
 	
 	Kns.start = function() {
 		Kns.vip();
@@ -139,7 +152,7 @@ $(function() {
 				if (Sel.main[folder][id].id === undefined) {
 					img = "1";
 				} else {
-					img = Sel.main[folder][id].id + "/1";
+					img = Sel.main[folder][id].id;
 				}
 				cut_from = Kns.parts[parent].folder + "/" + cut_from;
 			}
@@ -255,6 +268,7 @@ $(function() {
 	Kns.showCat = function(size, type, act, factors, dirt, costume) {
 		size = 55 + 10 * (isNaN(size) ? 4.5 : size);
 		size = Math.round(size);
+		act = act || 0;
 		if (Kns.isAnimation) {
 			Kns.doCanvas(size, cl, act);
 			$("#cat").hide();
@@ -264,7 +278,6 @@ $(function() {
 			$("#canvacat").hide();
 		}
 		var cl = ['d', 'e', 'f'][type || 0];
-		act = act || 0;
 		factors = factors || {};
 
 		var isAnimation = !!Kns.isAnimation;
@@ -506,9 +519,9 @@ $(function() {
 	};
 
 	Kns.getPreviewStyle = function(part) {
-		var id = Kns.parts[Sel.now].previewImg || "0";
-		if (part !== undefined && !Kns.parts[Sel.now].noVariations) {
-			id = part + "/" + id;
+		var id = "icons";
+		if (part !== undefined && Kns.parts[Sel.now].info) {
+			id = id + "/" + part;
 		}
 		var parent = Kns.parts[Sel.now].parent;
 		if (parent !== undefined) {
