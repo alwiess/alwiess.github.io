@@ -1,13 +1,13 @@
-var Kns = {};
+//var Kns = {};
 
 $(function() {
-	defines(Kns);
 	Kns.error_tm = 0;
 	Kns.canvaKey = {};
 	Kns.canvaAnim = {};
 	Kns.warning = 3; // убрать, когда будут действия
 	Kns.vipLevel = 0;
 	Kns.detailVariant = 1;
+	Kns.backupInfo = JSON.stringify(Kns.parts);
 	Kns.blocks = [["Основа", [0, 22, 23, 16], 15, 18, 17], ["Шея и морда", [1, 19, 7, 8, 10, 20, 21], 5, 11], ["Туловище", 4, 9, 12], ["Лапы и хвост", 6, 2, 3, 13, 14]];
 	Kns.isBaseSpecial = function (base) {
 		return !(Kns.palette[Kns.paletteNormalBases].colours.filter(function (el) {
@@ -1015,7 +1015,7 @@ $(function() {
 		Kns.vipLevel = +$("#main").data("vip");
 		if (temp !== undefined) {
 			Kns.vipLevel = +temp;
-			Kns.parts = JSON.parse(JSON.stringify(Kns.backupInfo));
+			Kns.parts = JSON.parse(Kns.backupInfo);
 		}
 	};
 	Kns.error = function(text) {
