@@ -841,7 +841,8 @@ Kns = {
 		{
 			"id": "4",
 			"name": "Шерсть внутри",
-			"palette": 5
+			"palette": 5,
+			"cut_from": false
 		}],
 		"cut_from": 17
 	},
