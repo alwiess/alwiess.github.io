@@ -62,6 +62,8 @@ $(function() {
 	};
 
 	Kns.addLayer = function(canvases, position, id, size, cl, act, key) {
+		if (key != Kns.canvaKey[act])
+			return;
 		var folder = Kns.folders["animationLayers"][position];
 		while (id < 0) {
 			position++;
