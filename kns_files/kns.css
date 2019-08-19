@@ -21,9 +21,6 @@ height:0px;
 width: 11px; 
 }
 
-table {
-	border-collapse: collapse;
-}
 p, h2 {
 	margin: 7px 0;
 }
@@ -31,8 +28,9 @@ td {
 	padding: 0;
 }
 #main {
-	margin: auto;
-	display: table;
+	width: 800px;
+	margin-right: auto !important;
+	margin-left: auto !important;
 }
 #color div, #area td, .tabledetail div {
 	width: 30px;
@@ -40,6 +38,9 @@ td {
 	border-radius: 50%;
 	box-sizing: border-box;
 	margin: 1px;
+}
+#area td{
+	border-radius: 5px;
 }
 .tabledetail div {
 	width: 33px;
@@ -67,13 +68,9 @@ td {
 #lock {
 	cursor: pointer;
 }
-input {
-	vertical-align: middle;
-
-}
 #confirm {
 	background: #AD8446;
-	width: 400px;
+	/*width: 400px;*/
 	height: 72px;
 	margin: 5px 0;
 	padding: 5px;
@@ -99,41 +96,195 @@ td.td_plus {
 }
 .detailslist {
 	border: 0;
-	width: 125px;
+	/*width: 125px;*/
 	height: 300px;
 	overflow: auto;
+}
+input {
+	vertical-align: middle;
+
 }
 
 /*index.html*/
-.blocks {
-	min-width: 190px;
-	max-width: 190px;
+.row, .row-cat, .row-detail, .row-color, .container-panel, .elem-row {
+	display: -webkit-flex; 
+	display: flex; 
 }
-#blocks {
-	padding: 5px;
+#field{
+	min-width: 300px;
+	width: 370px;
+	height: 300px;
+	border: 6px solid #000;
+	justify-content: space-between;
+}
+#detail{
+	height: 300px;
+	max-width: 240px;
+	overflow: auto;
+}
+#blocks{
 	height: 300px;
 	overflow: auto;
+	width: 150px;
+	min-width: 150px;
 	border: 1px solid black;
-	box-sizing: border-box;
+	padding: 5px; /* Поля вокруг текста */
+	background-color: #FFE4C4;
+}
+#container {
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+#navi,
+#infoi {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#infoi {
+  z-index: 10;
+}
+.btn-kns{
+	border: 1px solid black;
+	background: transparent;
+	text-align: center;
+	border-radius: .25rem;
+	line-height: 1.5;
+	font-size: 1rem;
+}
+.output-code{
+	border: 1px solid black;
+	border-radius: 0.25rem;
+    line-height: 1.5rem;
+    padding-left: 5px;
+    margin: 10px;
+    margin-right: 2px;
+}
+
+.copy{
+	border: 0px none;
+	color: transparent;
+	width: 25px;
+	background: url(copy.png) no-repeat;
+}
+
+.input-code{
+	border: 1px solid black;
+	background: transparent;
+	text-align: center;
 	width: 100%;
 }
-.field {
-	min-width: 350px;
-	max-width: 350px;
+
+.icon{
+	width: 33px; height: 33px; border-radius: 5px; margin: 2px;
 }
-#field {
-	height: 300px;
-	overflow: auto;
-	border: 5px solid #000;
-	box-sizing: border-box;
-	width: 100%;
+.info{
+	margin-top: 10px;
 }
-#detail {
-	height: 300px;
-	overflow: auto;
-	min-width: 200px;
-	max-width: 200px;
+/*children row*/
+.cat{
+	min-width: 340px;
 }
-#color {
-	margin: 10px 0 10px 0;
+.row-color{
+	margin: 10px 0px;
+	 page-break-after: always;
+	/*flex-basis: 800px;*/
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+}
+.elem-row{
+	align-content: flex-start;
+	-webkit-flex-wrap: wrap; 
+	 flex-wrap: wrap;
+}
+.row-column{
+	flex-direction: column;
+}
+.row-detail{
+	padding-bottom: 10px;
+	align-content: flex-start;
+}
+.row{
+		flex-wrap: wrap;
+}
+
+/*lib*/
+.modal-content{
+	background-color: #c1a982 !important;
+}
+.row-modal{
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	justify-content: left;
+}
+
+.lib-group-elem{
+	margin: auto;
+}
+
+.lib-elem{
+	margin-right: 2%;
+	margin-top: 2%;
+	border: 3px solid;
+}
+
+.caption-elem-lib{
+	margin: 3px;
+	text-align: center;
+}
+@media (max-width: 900px){
+	#main{
+		width: auto;
+	}
+}
+
+@media (max-width: 740px){
+	.row{	
+ 		-webkit-flex-wrap: wrap; 
+	 	flex-wrap: wrap;
+	 	width: 100%
+	}
+	#detail{
+		-webkit-order: 4;
+		width: 50%;
+		max-width:500px; 
+	}
+	#blocks{
+		-webkit-order: 3;
+		width: 40%;
+	}
+	#field{
+		max-width: 100%;
+		width: 100%;
+		-webkit-order: 1;	
+	}
+	.row-color{
+		width: 100%;
+		-webkit-order:2;
+	}
+	#confirm {
+		width: 100%;
+	}
+	.output-code{
+		width: 50%;
+	}
+	.row-modal{
+	justify-content: center;
+}
+	@media(max-width: 345px){
+		#detail{
+			width: 40%;
+		}
+		#blocks{
+			width: 30%;
+			min-width: 120px;
+		}
+	}
 }
