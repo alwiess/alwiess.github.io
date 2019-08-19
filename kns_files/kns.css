@@ -70,7 +70,7 @@ td {
 }
 #confirm {
 	background: #AD8446;
-	width: 400px;
+	/*width: 400px;*/
 	height: 72px;
 	margin: 5px 0;
 	padding: 5px;
@@ -112,9 +112,10 @@ input {
 }
 #field{
 	min-width: 300px;
-	max-width: 373px;
+	width: 370px;
 	height: 300px;
 	border: 6px solid #000;
+	justify-content: space-between;
 }
 #detail{
 	height: 300px;
@@ -184,8 +185,8 @@ input {
 	margin-top: 10px;
 }
 /*children row*/
-.content-cat{
-	/*justify-content: space-between;*/
+.cat{
+	min-width: 340px;
 }
 .row-color{
 	margin: 10px 0px;

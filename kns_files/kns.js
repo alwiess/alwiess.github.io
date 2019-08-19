@@ -822,7 +822,7 @@ $(function() {
 		Sel.random = true;
 		Kns.reset();
 		$("#cat").hide();
-		$("#canvacat").hide();
+		// $("#canvacat").hide();
 		for (var mode = 0; mode < 2; mode++) {
 			for (var i = 0; i < Kns.parts.length; i++) {
 				if ((Kns.parts[i].type || Kns.parts[i].noVariations) && mode !== 0) {

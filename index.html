@@ -5,6 +5,7 @@
 <script>Kns.isAnimation = true;</script>
 <canvas id="buffer_0" style="display: none;"></canvas>
 <canvas id="buffer_1" style="display: none;"></canvas>
+<canvas id="buffer_-1" style="display: none;"></canvas>
 <div id="main" data-vip="0">
 	<h2>Конструктор окрасов</h2>
 	<label>
@@ -27,6 +28,22 @@
 
 	<!-- БЛОК С ФОНОМ ЗА КОТОМ -->
 	<div id="field" style="background: url(spacoj/0.jpg) center no-repeat;" class="row-cat">
+		<div id="canvacat" class="row cat">
+			<div name="block-cat_0">
+				<canvas id="cat_0" width="100px"></canvas>
+				<canvas id="cat_0_0" style="display: none;"></canvas>
+			</div>
+			<div name="block-cat_1">
+				<canvas id="cat_1" width="100px"></canvas>
+				<canvas id="cat_1_0" style="display: none;"></canvas>
+				<canvas id="cat_1_1" style="display: none;"></canvas>
+			</div>
+			<!-- block for kitten -->
+			<div name="block-cat_-1">
+				<canvas id="cat_-1" width="100px" style="width: 60%"></canvas>
+				<canvas id="cat_-1_0" style="display: none;"></canvas>
+			</div>
+		</div>
 		<!-- БЛОК С ВЫБОРОМ ФОНА -->
 		<table id="area" style="border-collapse: separate;border-spacing: 0;">
 		<!-- перечисление доступных фонов -->
@@ -40,22 +57,6 @@
 			<tr><td style="background: url(spacoj/6.jpg); background-size: 200%;" class="field_palette"/></tr>
 			<tr><td style="background: url(spacoj/7.jpg); background-size: 200%;" class="field_palette"/></tr>
 		</table>
-		<div id="canvacat" class="row">
-			<div name="block-cat_0">
-				<canvas id="cat_0" width="100px"></canvas>
-				<canvas id="cat_0_0" style="display: none;"></canvas>
-			</div>
-			<div name="block-cat_1">
-				<canvas id="cat_1" width="100px"></canvas>
-				<canvas id="cat_1_0" style="display: none;"></canvas>
-				<canvas id="cat_1_1" style="display: none;"></canvas>
-			</div>
-			<!-- block for kitten -->
-			<div name="block-cat_-1">
-				<canvas id="cat_-1" width="100px"></canvas>
-				<canvas id="cat_-1_0" style="display: none;"></canvas>
-			</div>
-		</div>
 	</div>		
 	<!-- БЛОК С ЭЛЕМЕНТАМИ -->
 	<div id="detail" class="row-detail"></div>
