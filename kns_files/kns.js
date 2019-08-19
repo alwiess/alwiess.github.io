@@ -62,8 +62,6 @@ $(function() {
 	};
 
 	Kns.addLayer = function(canvases, position, id, size, cl, act, key) {
-		if (key != Kns.canvaKey[act])
-			return;
 		var folder = Kns.folders["animationLayers"][position];
 		while (id < 0) {
 			position++;
@@ -410,7 +408,7 @@ $(function() {
 				data.data = Kns.parts[Sel.now].info[n];
 				info.push(data);
 			}
-		} else if (Kns.parts[Sel.now].maxLayers && Kns.parts[Sel.now].maxLayers > 1) {
+	} else if (Kns.parts[Sel.now].maxLayers && Kns.parts[Sel.now].maxLayers > 1) {
 			for (n = 0; n < Kns.parts[Sel.now].maxLayers; n++) {
 				data = {};
 				data.num = n;
@@ -434,7 +432,7 @@ $(function() {
 			if (selectedList.length < max && selectedList.length < info.length) {
 				canAdd = true;
 			}
-			html += '<table><tr><td><table class="tabledetail">';
+			html += '<div>';
 			for (var i = 0; i < selectedList.length; i++) {
 				var style = i != dataNum ? '' : ' class="sel"';
 				var moveup = '';
@@ -452,14 +450,15 @@ $(function() {
 					case 1:
 						name = info.filter(function(el) { return el.data.id == selectedList[i]; })[0];
 						name = name ? name.data.name : '';
-						style += ' style="border-width: 1px; border-style: solid;' + Kns.getPreviewStyle(selectedList[i] || 0) + '"';
-						html += '<tr><td class="tdarrow"></td><td class="tdarrow">' + moveup + '<br>' + movedown + '</td>';
-						html += '<td><div' + style + ' onclick="Kns.clickedDetail(this);" data-num="' + i + '" data-value="' + (selectedList[i] || 0) + '" id="select' + i + '" title="' + name + '"/></td>';
+						style += ' style="border-width: 1px; border-style: solid; width: 33px; height: 33px; border-radius: 5px; margin: 2px;' + Kns.getPreviewStyle(selectedList[i] || 0) + '"';
+						
+						html += '<div class="container-panel"><div class="tdarrow"></div><div class="tdarrow">' + moveup + '<br>' + movedown + '</div>';
+						html += '<div ' + style + ' onclick="Kns.clickedDetail(this);" data-num="' + i + '" data-value="' + (selectedList[i] || 0) + '" id="select' + i + '" title="' + name + '"/>';
 						break;
 					case 0:
 					default:
-						html += '<tr><td class="tdarrow">' + moveup + '</td><td class="tdarrow">' + movedown + '</td>';
-						html += '<td><select style="width:100px;"' + style + ' onchange="Kns.selectedDetail(this);" onclick="Kns.clickedDetail(this);" data-num="' + i + '" id="select' + i + '">';
+						html += '<div class="container-panel"><div class="tdarrow">' + moveup + '</div><div class="tdarrow">' + movedown + '</div>';
+						html += '<select style="width:100px;"' + style + ' onchange="Kns.selectedDetail(this);" onclick="Kns.clickedDetail(this);" data-num="' + i + '" id="select' + i + '">';
 						if (!Kns.parts[Sel.now].noVariations) {
 							for (var j = 0; j < info.length; j++) {
 								var id = info[j].data.id;
@@ -473,46 +472,47 @@ $(function() {
 						} else {
 							html += '<option value="' + (+selectedList[i] + 1) + '">' + (+selectedList[i] + 1) + '</option>';
 						}
-						html += "</select></td>";
+						html += "</select>";
 						break;
 				}
-				html += '<td class="td_x">';
+					html += '<div class="td_x">';
 				if (!Kns.parts[Sel.now].obligatory || selectedList.length > 1) {
 					html += '<a class="a_none" onclick="Kns.removeDetail(' + i + ');">✖</a>';
 				}
-				html += '</td></tr>';
+				html +='</div></div>';
 			}
 			if (canAdd) {
-				html += '<tr><td class="tdarrow"></td><td class="td_plus" colspan="2"><a onclick="Kns.addDetail();" class="a_none">+</a></td></tr>';
+				html += '<div class="container-panel"><div class="tdarrow"></div><div class="td_plus" colspan="2"><a onclick="Kns.addDetail();" class="a_none">+</a></div></div>';
 			}
-			html += "</table></td>";
+			html += "</div>";
 			if (!Kns.parts[Sel.now].noVariations) {
 				switch (Kns.detailVariant) {
 					case 1:
 						if (dataNum >= 0 && dataNum < selectedList.length) {
-							html += '<td><div class="detailslist""><table style="margin: auto;" class="tabledetail"><tr>';
-							var line = 0;
+							html += '<div class="elem-row">';
+							// var line = 0;
 							for (j = 0; j < info.length; j++) {
 								id = info[j].data.id;
 								if (selectedList.filter(function(el) { return el == id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : Kns.maxSimilarElements) && selectedList[dataNum] != id) {
 									continue;
 								}
 								name = info[j].data.name;
-								html += '<td><div data-num="' + dataNum + '" data-value="' + info[j].num + '" style="border-width: 1px; border-style: solid;' + Kns.getPreviewStyle(id) + '" onclick="Kns.selectedDetail(this)" title="' + name + '"/></td>';
-								line++;
-								if (line >= 3) {
-									line = 0;
-									html += '</tr><tr>';
-								}
+								html += '<div  data-num="' + dataNum + '" data-value="' + info[j].num + '" style="border-width: 1px; border-style: solid; width: 33px; height: 33px; border-radius: 5px; margin: 2px;' + Kns.getPreviewStyle(id) + '" onclick="Kns.selectedDetail(this)" title="' + name + '"/>';
+								
+								// line++;
+								// if (line >= 3) {
+								// 	line = 0;
+								// 	html += '</tr><tr>';
+								// }
 							}
-							html += '</tr></table></div></td>';
+							html +=  '</div>';
 						}
 						break;
 					case 0:
 						break;
 				}
 			}
-			html += '</tr></<table>';
+			// html+='</div>'
 		} else {
 			Sel.nowSelected = 0;
 		}
@@ -704,7 +704,7 @@ $(function() {
 	};
 
 	Kns.drawPalette = function() {
-		var html = '<table style="border: 0 solid black;"><tr>';
+		var html = '';
 		var p;
 		try {p = Kns.parts[Sel.now].info[Sel.nowSelected].palette;} catch(e) {}
 		p = p || Kns.parts[Sel.now].palette || 0;
@@ -746,29 +746,29 @@ $(function() {
 				var name = Kns.palette[p].colours[i].name;
 				if (name.trim() != name) {
 					name = name.trim();
-					html += '</tr><tr>';
+					// html += '</tr><tr>';
 					width = 0;
 				} else if (width >= maxWidth) {
-					html += '</tr><tr>';
+					// html += '</tr><tr>';
 					width = 0;
 				}
 				var id = Kns.palette[p].colours[i].id;
 				if (Kns.parts[Sel.now].info && Kns.parts[Sel.now].noVariations) {
 					id = pList[j].id + "/" + id;
 				}
-				html += '<td><div style="background: ' + bg + ' center no-repeat; border-width: 1px; border-style: solid;" title="' + name + '" data-num="' + id + '"' + (Kns.palette[p].colours[i].id == colour ? ' class="selected_colour"' : '') + '> </div></td>';
+				html += '<div style="background: ' + bg + ' center no-repeat; border-width: 1px; border-style: solid;" title="' + name + '" data-num="' + id + '"' + (Kns.palette[p].colours[i].id == colour ? ' class="selected_colour"' : '') + '> </div>';
 				width += 32;
 			}
 		}
 		p = pList[0];
-		html += '</tr></table>';
+		// html += '';
 		if (!Kns.parts[Sel.now].opaque && p && Kns.palette[p.id]) {
 			var opacity = Sel.main[Sel.now][dataNum].opacity
 			opacity = opacity === undefined ? Kns.getOpacityForCode(100) : opacity;
 			opacity = Kns.getOpacityFromCode(opacity) * 100;
 			var minOpacity = Kns.getOpacityFromCode(0) * 100;
 			var stepOpacity = (100 - minOpacity) / Kns.getOpacityForCode(100);
-			html += "<br><label><b>Непрозрачность: </b><input type='range' max='100' min='" + minOpacity + "' step='" + stepOpacity + "' value='" + opacity + "' onchange='Kns.selectedOpacity(this.value);' oninput='Kns.selectedOpacity(this.value);' id='opacity_range'></label>";
+			html += "<div style='width:100%'><label><b>Непрозрачность: </b><input type='range' max='100' min='" + minOpacity + "' step='" + stepOpacity + "' value='" + opacity + "' onchange='Kns.selectedOpacity(this.value);' oninput='Kns.selectedOpacity(this.value);' id='opacity_range'></label></div>";
 		}
 		$("#color").html(html);
 		$("[title]").tipTip();
@@ -1255,6 +1255,13 @@ $(function() {
 		$(".selected_field").each(function () { $(this).removeClass('selected_field')});
 		$(this).addClass("selected_field");
 	});
+
+	Kns.copyCode = function() {
+		var copyText = document.getElementById("code");
+		copyText.select();
+		document.execCommand("copy");
+  		alert("Код скопирован!");
+	}
 	
 	Kns.start();
 });
