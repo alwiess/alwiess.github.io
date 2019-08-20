@@ -1,4 +1,4 @@
-Kns = {"num": {"Base": 0,
+{"num": {"Base": 0,
 		"TailBase": 15,
 		"TailElement": 6,
 		"ManeBase": 16,
@@ -28,7 +28,7 @@ Kns = {"num": {"Base": 0,
 	"maxSimilarElements": 2,
 	"paletteNormalEyes": 1,
 	"detailsMax": 8,
-	"actions": [0, 1],
+	"actions": [{"id": 0}, {"id": 1}, {"id": -1, "size": 55}],
 	"folders": {"static": [],
 		"animationLayers": [0,13,14,2,3,4,12,9,11,5,16,20,18,21,10,17,7,8,23,1,19,22,15,6]},
 	"parts": [{"name": "Основной цвет",
@@ -1151,4 +1151,14 @@ Kns = {"num": {"Base": 0,
 			"image": "+23"},
 		{"id": "48",
 			"name": "Уникальный окрас",
-			"image": "+24"}]}]}
+			"image": "+24"}]}],
+	"compositeTimes": {
+		"1": [{
+			"orig": [1000,200,200,300],
+			"server": [100, 1000, 200, 300, 1000, 200, 200, 300, 1000, 200, 200, 300, 100]
+		},
+		{
+			"orig": [5000,100,100,100],
+			"server": [4750, 100, 100, 100, 50]
+		}]
+	}}
