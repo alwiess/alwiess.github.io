@@ -1,6 +1,8 @@
-//var Kns = {};
+var Kns = {};
 
-$(function() {
+var initAll = function(data) {
+	Kns = data;
+	Kns.isAnimation = true;
 	Kns.error_tm = 0;
 	Kns.canvaKey = {};
 	Kns.canvaAnim = {};
@@ -19,14 +21,34 @@ $(function() {
 			return eye == el.id;
 		})[0])
 	};
-	
-	Kns.start = function() {
+
+	Kns.start = function () {
+		/// инициализация буферов канв для котиков
+		var html = '';
+		for (var i = 0; i < Kns.actions.length; i++) {
+			var id = Kns.actions[i].id;
+			var style = Kns.actions[i].size;
+			style = style === undefined ? '' : ' style="transform: scale(' + style / 100 + ');"';
+			html += '<div name="block-cat_' + id + '">';
+			html += '<canvas id="cat_' + id + '" width="100px"' + style + '></canvas>';
+			html += '<canvas id="buffer_' + id + '" style="display: none;"></canvas>';
+			var times = 1;
+			if (Kns.compositeTimes[id]) {
+				times += Kns.compositeTimes[id].length;
+			}
+			for (var j = 0; j < times; j++) {
+				html += '<canvas id="cat_' + id + '_' + j + '" style="display: none;"></canvas>';
+			}
+			html += '</div>';
+		}
+		$("#canvacat").html(html);
+
 		Kns.vip();
 		Kns.drawBlocks();
 		Kns.refresh(true);
 	};
 
-	Kns.code = function() {
+	Kns.code = function () {
 		var code = [];
 		for (var i = 0; i < Kns.parts.length; i++) {
 			var now = [];
@@ -53,15 +75,15 @@ $(function() {
 		code = code.join(" ");
 		return code;
 	};
-	
-	Kns.getOpacityForCode = function(procent) {
+
+	Kns.getOpacityForCode = function (procent) {
 		return (procent - 50) / 5;
 	};
-	Kns.getOpacityFromCode = function(code) {
+	Kns.getOpacityFromCode = function (code) {
 		return (code * 5 + 50) / 100;
 	};
 
-	Kns.addLayer = function(canvases, position, id, size, cl, act, key) {
+	Kns.addLayer = function (canvases, position, id, cl, act, key) {
 		var folder = Kns.folders["animationLayers"][position];
 		while (id < 0) {
 			position++;
@@ -103,7 +125,9 @@ $(function() {
 		var cut_from;
 		var times;
 		if (Kns.parts[folder].info && Sel.main[folder][id].id) {
-			var detail = Kns.parts[folder].info.filter(function(el) { return el.id == Sel.main[folder][id].id;})[0];
+			var detail = Kns.parts[folder].info.filter(function (el) {
+				return el.id == Sel.main[folder][id].id;
+			})[0];
 			if (detail) {
 				palette = detail.palette;
 				cut_from = detail.cut_from;
@@ -120,7 +144,9 @@ $(function() {
 			times = Kns.parts[folder].times;
 		}
 		times = (times ? times[act] : undefined) || [];
-		var canvas = times.length ? canvases.filter(function(el) { return JSON.stringify(el.times) == JSON.stringify(times); })[0] : canvases[0];
+		var canvas = times.length ? canvases.filter(function (el) {
+			return JSON.stringify(el.times) == JSON.stringify(times);
+		})[0] : canvases[0];
 		if (!times.length) {
 			times = undefined;
 		}
@@ -169,8 +195,8 @@ $(function() {
 		buffer.height = 154;
 
 		var mark = new Image();
-		var loadNext = function() {
-			Kns.addLayer(canvases, position, id - 1, size, cl, act, key);
+		var loadNext = function () {
+			Kns.addLayer(canvases, position, id - 1, cl, act, key);
 		};
 		mark.onerror = loadNext;
 		mark.onload = function () {
@@ -182,13 +208,13 @@ $(function() {
 			bufferCtx.drawImage(this, 0, 0);
 			if (cut_from === undefined) {
 				for (var i = 0; i < (canvas.times ? canvas.times.length : 1); i += (times ? times.length : 1)) {
-					tcanvas.drawImage(buffer, i*100, 0);
+					tcanvas.drawImage(buffer, i * 100, 0);
 				}
 				loadNext();
 			} else {
 				var base = new Image();
 				base.onerror = loadNext;
-				base.onload = function() {
+				base.onload = function () {
 					if (key != Kns.canvaKey[act]) {
 						return;
 					}
@@ -206,11 +232,11 @@ $(function() {
 		mark.src = "cats/" + act + "/" + name + "/" + img + ".png";
 	};
 
-	Kns.finishCanvas = function(canvases, act, key) {
+	Kns.finishCanvas = function (canvases, act, key) {
 		Kns.canvaAnim[act] = {};
 		var canvas = document.getElementById("cat_" + act).getContext('2d');
 		canvas.clearRect(0, 0, 100, 154);
-		var doSetTimeout = function(ci) {
+		var doSetTimeout = function (ci) {
 			setTimeout(function anim() {
 				if (key != Kns.canvaKey[act])
 					return;
@@ -223,7 +249,7 @@ $(function() {
 				}
 
 				for (var j = 0; j < canvases.length; j++) {
-					canvas.drawImage(canvases[j].canvas, 100*Kns.canvaAnim[act][j], 0, 100, 154, 0, 0, 100, 154);
+					canvas.drawImage(canvases[j].canvas, 100 * Kns.canvaAnim[act][j], 0, 100, 154, 0, 0, 100, 154);
 				}
 
 				setTimeout(anim, canvases[ci].times[Kns.canvaAnim[act][ci]]);
@@ -239,7 +265,7 @@ $(function() {
 		$("#canvacat").show();
 	};
 
-	Kns.generateHTMLofCat = function(arr, size, cl, act, url, layersProperty) {
+	Kns.generateHTMLofCat = function (arr, size, cl, act, url, layersProperty) {
 		var result = "";
 		if (url) {
 			result = "<div style=\"background-image:url('" + url + "');width: " + size + "px;background-size: 100%;\" class='" + cl + "'>";
@@ -251,7 +277,7 @@ $(function() {
 		return result;
 	};
 
-	Kns.doCanvas = function(size, cl, act) {
+	Kns.doCanvas = function (size, cl, act) {
 		var canvases = [];
 
 		for (var i = 0; i < Kns.folders.animationLayers.length; i++) {
@@ -262,10 +288,20 @@ $(function() {
 		}
 
 		Kns.canvaKey[act] = Math.floor(Math.random() * 100);
-		Kns.addLayer(canvases, 0, 0, size, cl, act, Kns.canvaKey[act]);
+		Kns.addLayer(canvases, 0, 0, cl, act, Kns.canvaKey[act]);
 	};
 
-	Kns.showCat = function(size, type, act, factors, dirt, costume) {
+	Kns.clearCanvas = function () {
+		for (var i = 0; i < Kns.actions.length; i++) {
+			var id = Kns.actions[i].id;
+			var buffer = document.getElementById("cat_" + id);
+			if (buffer) {
+				buffer.width = buffer.width;
+			}
+		}
+	};
+
+	Kns.showCat = function (size, type, act, factors, dirt, costume) {
 		size = 55 + 10 * (isNaN(size) ? 4.5 : size);
 		size = Math.round(size);
 		act = act || 0;
@@ -313,21 +349,28 @@ $(function() {
 		return Kns.generateHTMLofCat(arr, size, cl, act, url, layersProperty);
 	};
 
-	Kns.getUrlStyle = function(act, name, id) {
+	Kns.getUrlStyle = function (act, name, id) {
 		return "background-image:url('cats/" + act + "/" + name + "/" + id + ".png');";
 	};
 
-	Kns.drawCat = function() {
+	Kns.drawCat = function () {
 		var html = "";
 		for (var i = 0; i < Kns.actions.length; i++) {
-			html += "<td>" + Kns.showCat(4.5, 0, Kns.actions[i], {"costume": 0, "dirt": 0, "wound": 0, "drown": 0, "poisoning": 0, "disease": 0}) + "</td>";
+			html += "<td>" + Kns.showCat(4.5, 0, Kns.actions[i].id, {
+				"costume": 0,
+				"dirt": 0,
+				"wound": 0,
+				"drown": 0,
+				"poisoning": 0,
+				"disease": 0
+			}) + "</td>";
 		}
 		html = "<table><tr>" + html + "</tr></table>";
 		$("#cat").html(html);
 		$("#code").val(Kns.code());
 	};
 
-	Kns.drawBlocks = function() {
+	Kns.drawBlocks = function () {
 		var html = "", blocks = [];
 		for (var block = 0; block < Kns.blocks.length; block++) {
 			var table = '<table class="block" id="block' + block + '"><tr><td><b>' + Kns.blocks[block][0] + '</b></td></tr>';
@@ -351,7 +394,7 @@ $(function() {
 		html = blocks + html;
 		$("#blocks").html(html);
 	};
-	Kns.adaptBlocks = function() {
+	Kns.adaptBlocks = function () {
 		for (var block = 0; block < Kns.blocks.length; block++) {
 			var showAny = false;
 			for (var i = 1; i < Kns.blocks[block].length; i++) {
@@ -361,7 +404,7 @@ $(function() {
 				}
 				for (var j = 0; j < all_n.length; j++) {
 					var n = all_n[j];
-					if (Kns.partAvailable(false, n)){
+					if (Kns.partAvailable(false, n)) {
 						showAny = true;
 						$("#part" + n).show();
 					} else {
@@ -377,7 +420,7 @@ $(function() {
 		}
 	};
 
-	Kns.drawDetail = function(newSelect) {
+	Kns.drawDetail = function (newSelect) {
 		var html = "";
 		delete Sel.nowSelected;
 		var dataNum = 0;
@@ -408,7 +451,7 @@ $(function() {
 				data.data = Kns.parts[Sel.now].info[n];
 				info.push(data);
 			}
-	} else if (Kns.parts[Sel.now].maxLayers && Kns.parts[Sel.now].maxLayers > 1) {
+		} else if (Kns.parts[Sel.now].maxLayers && Kns.parts[Sel.now].maxLayers > 1) {
 			for (n = 0; n < Kns.parts[Sel.now].maxLayers; n++) {
 				data = {};
 				data.num = n;
@@ -448,10 +491,12 @@ $(function() {
 				var name;
 				switch (Kns.detailVariant) {
 					case 1:
-						name = info.filter(function(el) { return el.data.id == selectedList[i]; })[0];
+						name = info.filter(function (el) {
+							return el.data.id == selectedList[i];
+						})[0];
 						name = name ? name.data.name : '';
 						style += ' style="border-width: 1px; border-style: solid; width: 33px; height: 33px; border-radius: 5px; margin: 2px;' + Kns.getPreviewStyle(selectedList[i] || 0) + '"';
-						
+
 						html += '<div class="container-panel"><div class="tdarrow"></div><div class="tdarrow">' + moveup + '<br>' + movedown + '</div>';
 						html += '<div ' + style + ' onclick="Kns.clickedDetail(this);" data-num="' + i + '" data-value="' + (selectedList[i] || 0) + '" id="select' + i + '" title="' + name + '"/>';
 						break;
@@ -462,7 +507,9 @@ $(function() {
 						if (!Kns.parts[Sel.now].noVariations) {
 							for (var j = 0; j < info.length; j++) {
 								var id = info[j].data.id;
-								if (selectedList.filter(function(el) { return el == id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : Kns.maxSimilarElements) && selectedList[i] != id) {
+								if (selectedList.filter(function (el) {
+									return el == id;
+								}).length >= (Kns.parts[Sel.now].opaque ? 1 : Kns.maxSimilarElements) && selectedList[i] != id) {
 									continue;
 								}
 								name = info[j].data.name;
@@ -475,11 +522,11 @@ $(function() {
 						html += "</select>";
 						break;
 				}
-					html += '<div class="td_x">';
+				html += '<div class="td_x">';
 				if (!Kns.parts[Sel.now].obligatory || selectedList.length > 1) {
 					html += '<a class="a_none" onclick="Kns.removeDetail(' + i + ');">✖</a>';
 				}
-				html +='</div></div>';
+				html += '</div></div>';
 			}
 			if (canAdd) {
 				html += '<div class="container-panel"><div class="tdarrow"></div><div class="td_plus" colspan="2"><a onclick="Kns.addDetail();" class="a_none">+</a></div></div>';
@@ -493,19 +540,21 @@ $(function() {
 							// var line = 0;
 							for (j = 0; j < info.length; j++) {
 								id = info[j].data.id;
-								if (selectedList.filter(function(el) { return el == id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : Kns.maxSimilarElements) && selectedList[dataNum] != id) {
+								if (selectedList.filter(function (el) {
+									return el == id;
+								}).length >= (Kns.parts[Sel.now].opaque ? 1 : Kns.maxSimilarElements) && selectedList[dataNum] != id) {
 									continue;
 								}
 								name = info[j].data.name;
 								html += '<div  data-num="' + dataNum + '" data-value="' + info[j].num + '" style="border-width: 1px; border-style: solid; width: 33px; height: 33px; border-radius: 5px; margin: 2px;' + Kns.getPreviewStyle(id) + '" onclick="Kns.selectedDetail(this)" title="' + name + '"/>';
-								
+
 								// line++;
 								// if (line >= 3) {
 								// 	line = 0;
 								// 	html += '</tr><tr>';
 								// }
 							}
-							html +=  '</div>';
+							html += '</div>';
 						}
 						break;
 					case 0:
@@ -520,7 +569,7 @@ $(function() {
 		$("[title]").tipTip();
 	};
 
-	Kns.getPreviewStyle = function(part) {
+	Kns.getPreviewStyle = function (part) {
 		var id = "icons";
 		if (part !== undefined && Kns.parts[Sel.now].info) {
 			id = id + "/" + part;
@@ -538,7 +587,7 @@ $(function() {
 		return Kns.getUrlStyle(0, Kns.parts[Sel.now].folder, id) + 'background-size: 100%;';
 	};
 
-	Kns.refresh = function(allnew, detailnotnew, noblocks, newselect, nodetail, nocats, nopalette) {
+	Kns.refresh = function (allnew, detailnotnew, noblocks, newselect, nodetail, nocats, nopalette) {
 		if (!noblocks) {
 			if (newselect) {
 				Kns.drawBlocks();
@@ -555,11 +604,12 @@ $(function() {
 			Kns.drawPalette();
 		}
 		if (allnew) {
+			Kns.clearCanvas();
 			$(".edit0").click();
 		}
 	};
 
-	Kns.selectedDetail = function(menu) {
+	Kns.selectedDetail = function (menu) {
 		Sel.nowSelected = menu.value || menu.getAttribute('data-value') || '1';
 		var dataNum = menu.getAttribute("data-num");
 		if (Sel.main[Sel.now].length <= dataNum) {
@@ -567,7 +617,9 @@ $(function() {
 		}
 		Sel.main[Sel.now][dataNum].id = Kns.parts[Sel.now].info[Sel.nowSelected].id;
 		var palette = Kns.parts[Sel.now].info[Sel.nowSelected].palette || Kns.parts[Sel.now].palette || 0;
-		if (Kns.palette[palette].colours.filter(function(el) { return el.id == Sel.main[Sel.now][dataNum].colour; }).length < 1) {
+		if (Kns.palette[palette].colours.filter(function (el) {
+			return el.id == Sel.main[Sel.now][dataNum].colour;
+		}).length < 1) {
 			for (var c = 0; c < Kns.palette[palette].colours.length; c++) {
 				if (+Kns.palette[palette].colours[c].id === 0) {
 					continue;
@@ -575,7 +627,7 @@ $(function() {
 				if (!Kns.partAvailable(false, Sel.now, Sel.main[Sel.now][dataNum].id, Kns.palette[palette].colours[c].id)) {
 					continue;
 				}
-				Sel.main[Sel.now][dataNum].colour =  Kns.palette[palette].colours[c].id;
+				Sel.main[Sel.now][dataNum].colour = Kns.palette[palette].colours[c].id;
 				break;
 			}
 		}
@@ -588,8 +640,7 @@ $(function() {
 		$("[title]").tipTip();
 	};
 
-	Kns.selectedOpacity = function(opacity)
-	{
+	Kns.selectedOpacity = function (opacity) {
 		var dataNum = Kns.parts[Sel.now].noCombine ? 0 : $(".sel").attr("data-num");
 		if (dataNum === undefined) {
 			return;
@@ -610,17 +661,19 @@ $(function() {
 		Kns.refresh(false, false, true, true, true, false, true);
 	};
 
-	Kns.clickedDetail = function(menu) {
+	Kns.clickedDetail = function (menu) {
 		if (menu.classList.contains('sel')) {
 			return;
 		}
-		$(".sel").each(function () { $(this).removeClass('sel')});
+		$(".sel").each(function () {
+			$(this).removeClass('sel')
+		});
 		menu.className += 'sel';
 		Sel.nowSelected = menu.value || menu.getAttribute("data-value");
 		Kns.refresh(false, true, false, false, Kns.detailVariant != 1, true);
 	};
 
-	Kns.addDetail = function() {
+	Kns.addDetail = function () {
 		if (Kns.parts[Sel.now].noCombine && Kns.parts[Sel.now][0]) {
 			Kns.error("Невозможно добавить элемент.");
 			return;
@@ -636,7 +689,9 @@ $(function() {
 			}
 			var data = {};
 			for (var j = 0; j < info.length; j++) {
-				if (selectedList.filter(function(el) { return el == info[j].id; }).length >= (Kns.parts[Sel.now].opaque ? 1 : Kns.maxSimilarElements)) {
+				if (selectedList.filter(function (el) {
+					return el == info[j].id;
+				}).length >= (Kns.parts[Sel.now].opaque ? 1 : Kns.maxSimilarElements)) {
 					continue;
 				}
 				if (!Kns.partAvailable(false, Sel.now, info[j].id)) {
@@ -694,7 +749,7 @@ $(function() {
 		}
 	};
 
-	Kns.removeDetail = function(index) {
+	Kns.removeDetail = function (index) {
 		if (Sel.main[Sel.now].length <= index) {
 			return;
 		}
@@ -703,10 +758,13 @@ $(function() {
 		Kns.refresh(false, true, false, false, true);
 	};
 
-	Kns.drawPalette = function() {
+	Kns.drawPalette = function () {
 		var html = '';
 		var p;
-		try {p = Kns.parts[Sel.now].info[Sel.nowSelected].palette;} catch(e) {}
+		try {
+			p = Kns.parts[Sel.now].info[Sel.nowSelected].palette;
+		} catch (e) {
+		}
 		p = p || Kns.parts[Sel.now].palette || 0;
 		p = Sel.nowSelected === undefined ? -1 : p;
 		var dataNum = Kns.parts[Sel.now].noCombine ? 0 : $(".sel").attr("data-num");
@@ -774,7 +832,7 @@ $(function() {
 		$("[title]").tipTip();
 	};
 
-	Kns.cleanMain = function(el) {
+	Kns.cleanMain = function (el) {
 		if (!(Sel.main[el] instanceof Array)) {
 			return;
 		}
@@ -808,21 +866,19 @@ $(function() {
 			Kns.drawDetail(false);
 		}
 	};
-	Kns.reset = function() {
+	Kns.reset = function () {
 		Sel.main = [];
 		for (var i = 0; i < Kns.parts.length; i++) {
 			Sel.main[i] = Kns.parts[i].default ? [JSON.parse(JSON.stringify(Kns.parts[i].default))] : [];
 		}
 		Kns.refresh(true);
 	};
-	Kns.random = function(coeff) {
+	Kns.random = function (coeff) {
 		if (coeff === undefined) {
 			coeff = 0.5;
 		}
 		Sel.random = true;
 		Kns.reset();
-		$("#cat").hide();
-		// $("#canvacat").hide();
 		for (var mode = 0; mode < 2; mode++) {
 			for (var i = 0; i < Kns.parts.length; i++) {
 				if ((Kns.parts[i].type || Kns.parts[i].noVariations) && mode !== 0) {
@@ -900,7 +956,9 @@ $(function() {
 		}
 		var baseId = Sel.main[Kns.num.Base][0];
 		baseId = baseId ? baseId.id : baseId;
-		var baseInfo = Kns.parts[Kns.num.Base].info.filter(function(el) { return el.id == baseId; })[0];
+		var baseInfo = Kns.parts[Kns.num.Base].info.filter(function (el) {
+			return el.id == baseId;
+		})[0];
 		if (block != Kns.num.Base && !baseInfo) {
 			if (showError) {
 				Kns.error("Ошибка базы.");
@@ -959,7 +1017,9 @@ $(function() {
 				}
 				break;
 			case Kns.num.Base:
-				baseInfo = Kns.parts[Kns.num.Base].info.filter(function(el) { return el.id == detail; })[0];
+				baseInfo = Kns.parts[Kns.num.Base].info.filter(function (el) {
+					return el.id == detail;
+				})[0];
 				var basePalette = baseInfo ? (baseInfo.palette || Kns.parts[Kns.num.Base].palette || 0) : -1;
 				if (basePalette != Kns.paletteNormalBases) {
 					if (Kns.vipLevel < 2) {
@@ -1013,43 +1073,43 @@ $(function() {
 		return true;
 	};
 
-	Kns.vip = function(temp) {
+	Kns.vip = function (temp) {
 		Kns.vipLevel = +$("#main").data("vip");
 		if (temp !== undefined) {
 			Kns.vipLevel = +temp;
 			Kns.parts = JSON.parse(Kns.backupInfo);
 		}
 	};
-	Kns.error = function(text) {
+	Kns.error = function (text) {
 		if (Sel.random) {
 			return;
 		}
 		$("#error").text(text).show();
 		clearTimeout(Kns.error_tm);
-		Kns.error_tm = setTimeout(function() {
+		Kns.error_tm = setTimeout(function () {
 			Kns.hideError();
 		}, 10000);
 	};
-	Kns.hideError = function() {
+	Kns.hideError = function () {
 		clearTimeout(Kns.error_tm);
 		$("#error").fadeOut(500);
 	};
-	Kns.confirm = function(text, func) {
+	Kns.confirm = function (text, func) {
 		$("#confirm_text").html(text);
 		var confirm = $("#confirm");
 		confirm.show();
 		var yes = $("#confirm_yes");
 		yes.off();
-		yes.on("click", function() {
+		yes.on("click", function () {
 			confirm.hide();
 			func();
 		});
 	};
 
-	Kns.parseCode = function(input) {
+	Kns.parseCode = function (input) {
 		var code = input.value;
 		var blocks = code.split(" ");
-		$("#canvacat").hide();
+		Kns.clearCanvas();
 		for (var num = 0; num < Kns.parts.length; num++) {
 			if (num >= blocks.length) {
 				if (Kns.parts[num] && Kns.parts[num].default) {
@@ -1062,7 +1122,7 @@ $(function() {
 				}
 				continue;
 			}
-			blocks[num] = (blocks[num]+'').split("-");
+			blocks[num] = (blocks[num] + '').split("-");
 
 			Sel.main[num] = [];
 			for (var inter = 0; inter < blocks[num].length; inter++) {
@@ -1089,7 +1149,7 @@ $(function() {
 		Kns.refresh(true);
 	};
 
-	Kns.moveLine = function(up, line) {
+	Kns.moveLine = function (up, line) {
 		if (Kns.parts[Sel.now].noCombine) {
 			return;
 		}
@@ -1101,7 +1161,7 @@ $(function() {
 			return;
 		}
 		var dataNumNew = dataNum + (up ? -1 : 1);
-		Sel.main[Sel.now][dataNumNew] = [Sel.main[Sel.now][dataNum], Sel.main[Sel.now][dataNum]=Sel.main[Sel.now][dataNumNew]][0];
+		Sel.main[Sel.now][dataNumNew] = [Sel.main[Sel.now][dataNum], Sel.main[Sel.now][dataNum] = Sel.main[Sel.now][dataNumNew]][0];
 		var selected = $(".sel");
 		if (+selected.attr("data-num") == dataNumNew) {
 			dataNumNew = [dataNum, dataNum = dataNumNew][0];
@@ -1112,7 +1172,7 @@ $(function() {
 		}
 		Kns.refresh(false, true, true);
 	};
-	
+
 	var Sel = {};
 	Sel.main = [];
 	for (var i = 0; i < Kns.parts.length; i++) {
@@ -1122,13 +1182,13 @@ $(function() {
 	Sel.nowSelected = 0;
 	Sel.block = 0;
 	Sel.random = false;
-	
-	$("body").on("click", "a[href*=#]", function(e) {
+
+	$("body").on("click", "a[href*=#]", function (e) {
 		e.preventDefault();
 	});
-	
-	$("#sbm").on("click", function() {
-		Kns.confirm("Сохранить окрас?", function() {
+
+	$("#sbm").on("click", function () {
+		Kns.confirm("Сохранить окрас?", function () {
 			//validate
 			try {
 				for (var i = 0; i < Kns.parts.length; i++) {
@@ -1161,20 +1221,26 @@ $(function() {
 								Kns.error("Сохранение невозможно: некорректный код элемента");
 								return;
 							}
-							detail = info.info.filter(function(el) { return el.id == parts.id; })[0];
+							detail = info.info.filter(function (el) {
+								return el.id == parts.id;
+							})[0];
 							if (detail && Kns.partAvailable(false, i, detail.id)) {
 								palette = detail.palette | 0;
 							} else {
 								Kns.error("Сохранение невозможно: неверный элемент");
 								return;
 							}
-							if (oldLayers.filter(function(el) { return el == parts.id; }).length >= (info.opaque ? 1 : Kns.maxSimilarElements)) {
+							if (oldLayers.filter(function (el) {
+								return el == parts.id;
+							}).length >= (info.opaque ? 1 : Kns.maxSimilarElements)) {
 								Kns.error("Сохранение невозможно: повторяющийся элемент");
 								return;
 							}
 							oldLayers.push(parts.id);
 						}
-						if (!Kns.palette[palette].colours.filter(function(el) { return el.id == parts.colour; })[0] || +parts[1] === 0 || !Kns.partAvailable(false, i, detail.id, parts.colour)) {
+						if (!Kns.palette[palette].colours.filter(function (el) {
+							return el.id == parts.colour;
+						})[0] || +parts[1] === 0 || !Kns.partAvailable(false, i, detail.id, parts.colour)) {
 							Kns.error("Сохранение невозможно: неверный цвет");
 							return;
 						}
@@ -1184,22 +1250,24 @@ $(function() {
 				Kns.error("Ошибка валидации, сохранение невозможно");
 				return;
 			}
-			$.post("kns_save", {code: Kns.code()}, function(data) {
+			$.post("kns_save", {code: Kns.code()}, function (data) {
 				$("body").html(data);
 				var cat = $("#cat");
 				cat.html(Kns.showCat());
 			});
 		});
 	});
-	
-	$("body").on("click", "[class^=edit]", function() {
+
+	$("body").on("click", "[class^=edit]", function () {
 		Sel.now = parseInt($(this).attr('class').replace('edit', ''));
-		$(".selected_block").each(function () { $(this).removeClass('selected_block')});
+		$(".selected_block").each(function () {
+			$(this).removeClass('selected_block')
+		});
 		$(this).addClass('selected_block');
 		Kns.refresh(false, false, true, false, false, true);
 	});
-	
-	$("#color").on("click", function(e) {
+
+	$("#color").on("click", function (e) {
 		var colour = $(e.target).attr("data-num");
 		if (!colour && +colour !== 0) {
 			return;
@@ -1229,39 +1297,46 @@ $(function() {
 		Kns.cleanMain(Sel.now);
 		Kns.refresh(false, true, false, false, true);
 	});
-	
-	$("#random").on("click", function() {
+
+	$("#random").on("click", function () {
 		Kns.confirm("Сгенерировать случайный окрас? Текущий окрас будет потерян.", Kns.random);
 	});
 
-	$("#random2").on("click", function() {
-		Kns.confirm("Сгенерировать очень случайный окрас? Текущий окрас будет потерян.", function() {
+	$("#random2").on("click", function () {
+		Kns.confirm("Сгенерировать очень случайный окрас? Текущий окрас будет потерян.", function () {
 			Kns.random(1);
 		});
 	});
-	
-	$("#reset").on("click", function() {
+
+	$("#reset").on("click", function () {
 		Kns.confirm("Сбросить окрас?", Kns.reset);
 	});
 
 	$("#error").on("click", Kns.hideError);
-	
-	$("#confirm_no").on("click", function() {
+
+	$("#confirm_no").on("click", function () {
 		$("#confirm").hide();
 	});
 
-	$(".field_palette").on('click', function() {
+	$(".field_palette").on('click', function () {
 		$('#field').css('background-image', this.style.backgroundImage);
-		$(".selected_field").each(function () { $(this).removeClass('selected_field')});
+		$(".selected_field").each(function () {
+			$(this).removeClass('selected_field')
+		});
 		$(this).addClass("selected_field");
 	});
 
-	Kns.copyCode = function() {
+	Kns.copyCode = function () {
 		var copyText = document.getElementById("code");
 		copyText.select();
 		document.execCommand("copy");
-  		alert("Код скопирован!");
-	}
-	
+		alert("Код скопирован!");
+	};
+
 	Kns.start();
+};
+
+
+$(function() {
+	$.getJSON('./kns_files/kns_def.json', initAll);
 });
