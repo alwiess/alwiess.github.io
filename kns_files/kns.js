@@ -537,7 +537,6 @@ var initAll = function(data) {
 					case 1:
 						if (dataNum >= 0 && dataNum < selectedList.length) {
 							html += '<div class="elem-row">';
-							// var line = 0;
 							for (j = 0; j < info.length; j++) {
 								id = info[j].data.id;
 								if (selectedList.filter(function (el) {
@@ -547,12 +546,6 @@ var initAll = function(data) {
 								}
 								name = info[j].data.name;
 								html += '<div data-num="' + dataNum + '" data-value="' + info[j].num + '" style="border-width: 1px; border-style: solid; width: 33px; height: 33px; border-radius: 5px; margin: 2px;' + Kns.getPreviewStyle(id) + '" onclick="Kns.selectedDetail(this)" title="' + name + '"/>';
-
-								// line++;
-								// if (line >= 3) {
-								// 	line = 0;
-								// 	html += '</tr><tr>';
-								// }
 							}
 							html += '</div>';
 						}
@@ -561,7 +554,6 @@ var initAll = function(data) {
 						break;
 				}
 			}
-			// html+='</div>'
 		} else {
 			Sel.nowSelected = 0;
 		}
@@ -653,6 +645,12 @@ var initAll = function(data) {
 		if (opacityPresent == opacity) {
 			return;
 		}
+		opacity = (opacity > 100 ? 100 : (opacity < 0 ? 0 : opacity));
+		var display = $("#opacity_value");
+		if (display) {
+			display.html(opacity + "%");
+		}
+
 		if (opacity >= 100) {
 			delete Sel.main[Sel.now][dataNum].opacity;
 		} else {
@@ -804,10 +802,8 @@ var initAll = function(data) {
 				var name = Kns.palette[p].colours[i].name;
 				if (name.trim() != name) {
 					name = name.trim();
-					// html += '</tr><tr>';
 					width = 0;
 				} else if (width >= maxWidth) {
-					// html += '</tr><tr>';
 					width = 0;
 				}
 				var id = Kns.palette[p].colours[i].id;
@@ -819,14 +815,16 @@ var initAll = function(data) {
 			}
 		}
 		p = pList[0];
-		// html += '';
 		if (!Kns.parts[Sel.now].opaque && p && Kns.palette[p.id]) {
 			var opacity = Sel.main[Sel.now][dataNum].opacity
 			opacity = opacity === undefined ? Kns.getOpacityForCode(100) : opacity;
 			opacity = Kns.getOpacityFromCode(opacity) * 100;
 			var minOpacity = Kns.getOpacityFromCode(0) * 100;
 			var stepOpacity = (100 - minOpacity) / Kns.getOpacityForCode(100);
-			html += "<div style='width:100%'><label><b>Непрозрачность: </b><input type='range' max='100' min='" + minOpacity + "' step='" + stepOpacity + "' value='" + opacity + "' onchange='Kns.selectedOpacity(this.value);' oninput='Kns.selectedOpacity(this.value);' id='opacity_range'></label></div>";
+			var opacitystr = (opacity + "").split(".")[0] || minOpacity;
+			html += "<div style='width:100%'><label><b>Непрозрачность: </b>" +
+				"<input type='range' max='100' min='" + minOpacity + "' step='" + stepOpacity + "' value='" + opacity + "' onchange='Kns.selectedOpacity(this.value);' oninput='Kns.selectedOpacity(this.value);' id='opacity_range'>" +
+				"<span id='opacity_value'>" + opacitystr + "%</span></label></div>";
 		}
 		$("#color").html(html);
 		$("[title]").tipTip();
