@@ -22,7 +22,7 @@ var initAll = function(data) {
 		})[0])
 	};
 
-	Kns.start = function () {
+	Kns.start = function() {
 		/// инициализация буферов канв для котиков
 		var html = '';
 		for (var i = 0; i < Kns.actions.length; i++) {
@@ -48,7 +48,7 @@ var initAll = function(data) {
 		Kns.refresh(true);
 	};
 
-	Kns.code = function () {
+	Kns.code = function() {
 		var code = [];
 		for (var i = 0; i < Kns.parts.length; i++) {
 			var now = [];
@@ -195,11 +195,11 @@ var initAll = function(data) {
 		buffer.height = 154;
 
 		var mark = new Image();
-		var loadNext = function () {
+		var loadNext = function() {
 			Kns.addLayer(canvases, position, id - 1, cl, act, key);
 		};
 		mark.onerror = loadNext;
-		mark.onload = function () {
+		mark.onload = function() {
 			if (key != Kns.canvaKey[act]) {
 				return;
 			}
@@ -214,7 +214,7 @@ var initAll = function(data) {
 			} else {
 				var base = new Image();
 				base.onerror = loadNext;
-				base.onload = function () {
+				base.onload = function() {
 					if (key != Kns.canvaKey[act]) {
 						return;
 					}
@@ -291,7 +291,7 @@ var initAll = function(data) {
 		Kns.addLayer(canvases, 0, 0, cl, act, Kns.canvaKey[act]);
 	};
 
-	Kns.clearCanvas = function () {
+	Kns.clearCanvas = function() {
 		for (var i = 0; i < Kns.actions.length; i++) {
 			var id = Kns.actions[i].id;
 			var buffer = document.getElementById("cat_" + id);
@@ -353,7 +353,7 @@ var initAll = function(data) {
 		return "background-image:url('cats/" + act + "/" + name + "/" + id + ".png');";
 	};
 
-	Kns.drawCat = function () {
+	Kns.drawCat = function() {
 		var html = "";
 		for (var i = 0; i < Kns.actions.length; i++) {
 			html += "<td>" + Kns.showCat(4.5, 0, Kns.actions[i].id, {
@@ -370,7 +370,7 @@ var initAll = function(data) {
 		$("#code").val(Kns.code());
 	};
 
-	Kns.drawBlocks = function () {
+	Kns.drawBlocks = function() {
 		var html = "", blocks = [];
 		for (var block = 0; block < Kns.blocks.length; block++) {
 			var table = '<table class="block" id="block' + block + '"><tr><td><b>' + Kns.blocks[block][0] + '</b></td></tr>';
@@ -394,7 +394,7 @@ var initAll = function(data) {
 		html = blocks + html;
 		$("#blocks").html(html);
 	};
-	Kns.adaptBlocks = function () {
+	Kns.adaptBlocks = function() {
 		for (var block = 0; block < Kns.blocks.length; block++) {
 			var showAny = false;
 			for (var i = 1; i < Kns.blocks[block].length; i++) {
@@ -546,7 +546,7 @@ var initAll = function(data) {
 									continue;
 								}
 								name = info[j].data.name;
-								html += '<div  data-num="' + dataNum + '" data-value="' + info[j].num + '" style="border-width: 1px; border-style: solid; width: 33px; height: 33px; border-radius: 5px; margin: 2px;' + Kns.getPreviewStyle(id) + '" onclick="Kns.selectedDetail(this)" title="' + name + '"/>';
+								html += '<div data-num="' + dataNum + '" data-value="' + info[j].num + '" style="border-width: 1px; border-style: solid; width: 33px; height: 33px; border-radius: 5px; margin: 2px;' + Kns.getPreviewStyle(id) + '" onclick="Kns.selectedDetail(this)" title="' + name + '"/>';
 
 								// line++;
 								// if (line >= 3) {
@@ -665,7 +665,7 @@ var initAll = function(data) {
 		if (menu.classList.contains('sel')) {
 			return;
 		}
-		$(".sel").each(function () {
+		$(".sel").each(function() {
 			$(this).removeClass('sel')
 		});
 		menu.className += 'sel';
@@ -673,7 +673,7 @@ var initAll = function(data) {
 		Kns.refresh(false, true, false, false, Kns.detailVariant != 1, true);
 	};
 
-	Kns.addDetail = function () {
+	Kns.addDetail = function() {
 		if (Kns.parts[Sel.now].noCombine && Kns.parts[Sel.now][0]) {
 			Kns.error("Невозможно добавить элемент.");
 			return;
@@ -758,7 +758,7 @@ var initAll = function(data) {
 		Kns.refresh(false, true, false, false, true);
 	};
 
-	Kns.drawPalette = function () {
+	Kns.drawPalette = function() {
 		var html = '';
 		var p;
 		try {
@@ -866,7 +866,7 @@ var initAll = function(data) {
 			Kns.drawDetail(false);
 		}
 	};
-	Kns.reset = function () {
+	Kns.reset = function() {
 		Sel.main = [];
 		for (var i = 0; i < Kns.parts.length; i++) {
 			Sel.main[i] = Kns.parts[i].default ? [JSON.parse(JSON.stringify(Kns.parts[i].default))] : [];
@@ -1086,11 +1086,11 @@ var initAll = function(data) {
 		}
 		$("#error").text(text).show();
 		clearTimeout(Kns.error_tm);
-		Kns.error_tm = setTimeout(function () {
+		Kns.error_tm = setTimeout(function() {
 			Kns.hideError();
 		}, 10000);
 	};
-	Kns.hideError = function () {
+	Kns.hideError = function() {
 		clearTimeout(Kns.error_tm);
 		$("#error").fadeOut(500);
 	};
@@ -1100,7 +1100,7 @@ var initAll = function(data) {
 		confirm.show();
 		var yes = $("#confirm_yes");
 		yes.off();
-		yes.on("click", function () {
+		yes.on("click", function() {
 			confirm.hide();
 			func();
 		});
@@ -1108,6 +1108,9 @@ var initAll = function(data) {
 
 	Kns.parseCode = function (input) {
 		var code = input.value;
+		if (code === undefined) {
+			code = input;
+		}
 		var blocks = code.split(" ");
 		Kns.clearCanvas();
 		for (var num = 0; num < Kns.parts.length; num++) {
@@ -1187,8 +1190,8 @@ var initAll = function(data) {
 		e.preventDefault();
 	});
 
-	$("#sbm").on("click", function () {
-		Kns.confirm("Сохранить окрас?", function () {
+	$("#sbm").on("click", function() {
+		Kns.confirm("Сохранить окрас?", function() {
 			//validate
 			try {
 				for (var i = 0; i < Kns.parts.length; i++) {
@@ -1258,9 +1261,9 @@ var initAll = function(data) {
 		});
 	});
 
-	$("body").on("click", "[class^=edit]", function () {
+	$("body").on("click", "[class^=edit]", function() {
 		Sel.now = parseInt($(this).attr('class').replace('edit', ''));
-		$(".selected_block").each(function () {
+		$(".selected_block").each(function() {
 			$(this).removeClass('selected_block')
 		});
 		$(this).addClass('selected_block');
@@ -1298,35 +1301,35 @@ var initAll = function(data) {
 		Kns.refresh(false, true, false, false, true);
 	});
 
-	$("#random").on("click", function () {
+	$("#random").on("click", function() {
 		Kns.confirm("Сгенерировать случайный окрас? Текущий окрас будет потерян.", Kns.random);
 	});
 
-	$("#random2").on("click", function () {
-		Kns.confirm("Сгенерировать очень случайный окрас? Текущий окрас будет потерян.", function () {
+	$("#random2").on("click", function() {
+		Kns.confirm("Сгенерировать очень случайный окрас? Текущий окрас будет потерян.", function() {
 			Kns.random(1);
 		});
 	});
 
-	$("#reset").on("click", function () {
+	$("#reset").on("click", function() {
 		Kns.confirm("Сбросить окрас?", Kns.reset);
 	});
 
 	$("#error").on("click", Kns.hideError);
 
-	$("#confirm_no").on("click", function () {
+	$("#confirm_no").on("click", function() {
 		$("#confirm").hide();
 	});
 
-	$(".field_palette").on('click', function () {
+	$(".field_palette").on('click', function() {
 		$('#field').css('background-image', this.style.backgroundImage);
-		$(".selected_field").each(function () {
+		$(".selected_field").each(function() {
 			$(this).removeClass('selected_field')
 		});
 		$(this).addClass("selected_field");
 	});
 
-	Kns.copyCode = function () {
+	Kns.copyCode = function() {
 		var copyText = document.getElementById("code");
 		copyText.select();
 		document.execCommand("copy");
