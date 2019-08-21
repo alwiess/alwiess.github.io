@@ -35,7 +35,7 @@ td {
 #color div, #area td, .tabledetail div {
 	width: 30px;
 	height: 30px;
-	border-radius: 50%;
+	border-radius: 40%;
 	box-sizing: border-box;
 	margin: 1px;
 }
