@@ -105,13 +105,16 @@ input {
 
 }
 
+#color label {
+	margin-top: 17px;
+	width: 100%;
+}
 #opacity_range {
 	width: 200px;
 	display: inline-block;
-	margin-left: 5px;
 }
 #opacity_value {
-	margin-left: 20px;
+	margin-left: 4px;
 }
 
 .row, .row-cat, .row-detail, .row-color, .container-panel, .elem-row {

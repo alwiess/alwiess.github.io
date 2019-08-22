@@ -785,8 +785,6 @@ var initAll = function(data) {
 			}
 		}
 
-		var width = 0;
-		var maxWidth = $('#main').width() - 32;
 		var detailId = (Kns.parts[Sel.now].info && Kns.parts[Sel.now].info[Sel.nowSelected]) ? Kns.parts[Sel.now].info[Sel.nowSelected].id : 0;
 		for (var j in pList) {
 			if (!pList.hasOwnProperty(j)) continue;
@@ -802,16 +800,12 @@ var initAll = function(data) {
 				var name = Kns.palette[p].colours[i].name;
 				if (name.trim() != name) {
 					name = name.trim();
-					width = 0;
-				} else if (width >= maxWidth) {
-					width = 0;
 				}
 				var id = Kns.palette[p].colours[i].id;
 				if (Kns.parts[Sel.now].info && Kns.parts[Sel.now].noVariations) {
 					id = pList[j].id + "/" + id;
 				}
 				html += '<div style="background: ' + bg + ' center no-repeat; border-width: 1px; border-style: solid;" title="' + name + '" data-num="' + id + '"' + (Kns.palette[p].colours[i].id == colour ? ' class="selected_colour"' : '') + '> </div>';
-				width += 32;
 			}
 		}
 		p = pList[0];
@@ -822,9 +816,9 @@ var initAll = function(data) {
 			var minOpacity = Kns.getOpacityFromCode(0) * 100;
 			var stepOpacity = (100 - minOpacity) / Kns.getOpacityForCode(100);
 			var opacitystr = (opacity + "").split(".")[0] || minOpacity;
-			html += "<div style='width:100%'><label><b>Непрозрачность: </b>" +
+			html += "<label><b>Непрозрачность: </b>" +
 				"<input type='range' max='100' min='" + minOpacity + "' step='" + stepOpacity + "' value='" + opacity + "' onchange='Kns.selectedOpacity(this.value);' oninput='Kns.selectedOpacity(this.value);' id='opacity_range'>" +
-				"<span id='opacity_value'>" + opacitystr + "%</span></label></div>";
+				"<span id='opacity_value'>" + opacitystr + "%</span></label>";
 		}
 		$("#color").html(html);
 		$("[title]").tipTip();
@@ -1330,7 +1324,16 @@ var initAll = function(data) {
 	Kns.copyCode = function() {
 		var copyText = document.getElementById("code");
 		copyText.select();
+
+		var range = document.createRange();
+		range.selectNodeContents(copyText);
+		var s = window.getSelection();
+		s.removeAllRanges();
+		s.addRange(range);
+		copyText.setSelectionRange(0, 999999);
+
 		document.execCommand("copy");
+		copyText.blur();
 		alert("Код скопирован!");
 	};
 
