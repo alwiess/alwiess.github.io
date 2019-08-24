@@ -27,17 +27,16 @@ var initAll = function(data) {
 		var html = '';
 		for (var i = 0; i < Kns.actions.length; i++) {
 			var id = Kns.actions[i].id;
-			var style = Kns.actions[i].size;
-			style = style === undefined ? '' : ' style="transform: scale(' + style / 100 + ');"';
+			var size = Kns.actions[i].size || 100;
 			html += '<div name="block-cat_' + id + '">';
-			html += '<canvas id="cat_' + id + '" width="100px"' + style + '></canvas>';
+			html += '<canvas id="cat_' + id + '" width="100px" style="width: ' + size + 'px;"></canvas>';
 			html += '<canvas id="buffer_' + id + '" style="display: none;"></canvas>';
 			var times = 1;
 			if (Kns.compositeTimes[id]) {
 				times += Kns.compositeTimes[id].length;
 			}
 			for (var j = 0; j < times; j++) {
-				html += '<canvas id="cat_' + id + '_' + j + '" style="display: none;"></canvas>';
+				html += '<canvas id="cat_' + id + '_' + j + '" style="display: none;" width="100px"></canvas>';
 			}
 			html += '</div>';
 		}
@@ -302,8 +301,6 @@ var initAll = function(data) {
 	};
 
 	Kns.showCat = function (size, type, act, factors, dirt, costume) {
-		size = 55 + 10 * (isNaN(size) ? 4.5 : size);
-		size = Math.round(size);
 		act = act || 0;
 		if (Kns.isAnimation) {
 			Kns.doCanvas(size, cl, act);
@@ -356,7 +353,8 @@ var initAll = function(data) {
 	Kns.drawCat = function() {
 		var html = "";
 		for (var i = 0; i < Kns.actions.length; i++) {
-			html += "<td>" + Kns.showCat(4.5, 0, Kns.actions[i].id, {
+			var size = Kns.actions[i].size || 100;
+			html += "<td>" + Kns.showCat(size, 0, Kns.actions[i].id, {
 				"costume": 0,
 				"dirt": 0,
 				"wound": 0,
@@ -475,7 +473,7 @@ var initAll = function(data) {
 			if (selectedList.length < max && selectedList.length < info.length) {
 				canAdd = true;
 			}
-			html += '<div>';
+			html += '<div class="row-column">';
 			for (var i = 0; i < selectedList.length; i++) {
 				var style = i != dataNum ? '' : ' class="sel"';
 				var moveup = '';
@@ -497,7 +495,7 @@ var initAll = function(data) {
 						name = name ? name.data.name : '';
 						style += ' style="border-width: 1px; border-style: solid; width: 33px; height: 33px; border-radius: 5px; margin: 2px;' + Kns.getPreviewStyle(selectedList[i] || 0) + '"';
 
-						html += '<div class="container-panel"><div class="tdarrow"></div><div class="tdarrow">' + moveup + '<br>' + movedown + '</div>';
+						html += '<div class="container-panel"><div class="tdarrow">' + moveup + '<br>' + movedown + '</div>';
 						html += '<div ' + style + ' onclick="Kns.clickedDetail(this);" data-num="' + i + '" data-value="' + (selectedList[i] || 0) + '" id="select' + i + '" title="' + name + '"/>';
 						break;
 					case 0:

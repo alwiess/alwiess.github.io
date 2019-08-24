@@ -19,6 +19,7 @@
 
 ::-webkit-scrollbar{
 	width: 11px;
+	height: 11px;
 }
 
 p, h2 {
@@ -41,6 +42,11 @@ td {
 }
 #area td{
 	border-radius: 5px;
+	margin: 0;
+}
+#area {
+	border-collapse: separate;
+	border-spacing: 0 1px;
 }
 .tabledetail div {
 	width: 33px;
@@ -71,7 +77,7 @@ td {
 #confirm {
 	background: #AD8446;
 	/*width: 400px;*/
-	height: 72px;
+	min-height: 72px;
 	margin: 5px 0;
 	padding: 5px;
 	border-radius: 5px;
@@ -98,11 +104,10 @@ td.td_plus {
 	border: 0;
 	/*width: 125px;*/
 	height: 300px;
-	overflow: auto;
+	overflow-y: auto;
 }
 input {
 	vertical-align: middle;
-
 }
 
 #color label {
@@ -127,6 +132,7 @@ input {
 	height: 300px;
 	border: 6px solid #000;
 	justify-content: space-between;
+	box-sizing: border-box;
 }
 #detail{
 	height: 300px;
@@ -134,12 +140,13 @@ input {
 }
 #blocks{
 	height: 300px;
-	overflow: auto;
+	overflow-y: auto;
 	width: 150px;
 	min-width: 150px;
 	border: 1px solid black;
 	padding: 5px; /* Поля вокруг текста */
 	background-color: #FFE4C4;
+	box-sizing: border-box;
 }
 #container {
 	width: 100px;
@@ -197,6 +204,7 @@ input {
 /*children row*/
 .cat{
 	min-width: 340px;
+	position: absolute;
 }
 .row-color{
 	margin: 10px 0px;
@@ -216,9 +224,11 @@ input {
 }
 .row-column{
 	flex-direction: column;
+	min-width: 70px;
+	overflow-y: auto;
+	overflow-y: overlay;
 }
 .row-detail{
-	padding-bottom: 10px;
 	align-content: flex-start;
 }
 .row{
@@ -257,24 +267,43 @@ input {
 	}
 }
 
+@media (max-width: 360px) {
+	#field {
+		height: 170px;
+	}
+	#detail, #blocks {
+		height: 250px;
+	}
+	::-webkit-scrollbar{
+		width: 5px;
+		height: 5px;
+	}
+}
+
 @media (max-width: 740px){
 	.row{
 		-webkit-flex-wrap: wrap;
 		flex-wrap: wrap;
-		width: 100%
+		width: auto;
 	}
 	#detail{
 		-webkit-order: 4;
-		width: 50%;
+		width: 60%;
 		max-width:500px;
 	}
 	#blocks{
 		-webkit-order: 3;
 		width: 40%;
+		min-width: 0;
 	}
 	#field{
 		max-width: 100%;
+		min-width: 100%;
 		width: 100%;
+		max-width: calc(100% + 16px);
+		min-width: calc(100% + 16px);
+		width: calc(100% + 16px);
+		margin-left: -8px;
 		-webkit-order: 1;
 	}
 	.row-color{
@@ -292,11 +321,17 @@ input {
 	}
 	@media(max-width: 345px){
 		#detail{
-			width: 40%;
+			width: 65%;
 		}
 		#blocks{
-			width: 30%;
-			min-width: 120px;
+			width: 35%;
+			min-width: 0;
+		}
+		.cat {
+			min-width: 0;
+			overflow: auto;
+			max-width: 100%;
+			position: relative;
 		}
 	}
 }
