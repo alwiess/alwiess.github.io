@@ -296,7 +296,10 @@ var initAll = function(data) {
 			}
 		}
 
-		Kns.canvaKey[act] = Math.floor(Math.random() * 100);
+		if (Kns.canvaKey[act] === undefined) {
+			Kns.canvaKey[act] = 0;
+		}
+		Kns.canvaKey[act] += Math.floor(Math.random() * 100);
 		Kns.addLayer(canvases, 0, 0, cl, act, Kns.canvaKey[act]);
 	};
 
@@ -1218,7 +1221,7 @@ var initAll = function(data) {
 						}
 						var parts = now[layer];
 						var palette = info.palette | 0;
-						var detail = 0;
+						var detail = {id: 0};
 						if (info.info) {
 							if (!parts.id) {
 								Kns.error("Сохранение невозможно: некорректный код элемента");
