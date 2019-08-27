@@ -16,10 +16,17 @@ var initAll = function(data) {
 			return base == el.id;
 		})[0])
 	};
-	Kns.isEyesSpecial = function (eye) {
+	Kns.isEyesSpecial = function (eye, vip) {
+		if (vip < 1) {
 		return !(Kns.palette[Kns.paletteNormalEyes].colours.filter(function (el) {
 			return eye == el.id;
-		})[0])
+			})[0]);
+		}
+		if (vip < 3) {
+			return !(Kns.palette[Kns.paletteAugmentedEyes].colours.filter(function (el) {
+				return eye == el.id;
+			})[0]);
+		}
 	};
 
 	Kns.start = function() {
@@ -1042,14 +1049,12 @@ var initAll = function(data) {
 		switch (block) {
 			case Kns.num.LeftEye:
 			case Kns.num.RightEye:
-				if (Kns.isEyesSpecial(colour)) {
-					if (Kns.vipLevel < 3) {
+				if (Kns.isEyesSpecial(colour, Kns.vipLevel)) {
 						if (showError) {
-							Kns.error("Вам не доступны фиолетовые глаза.");
+						Kns.error("Вам не доступны специальные глаза.");
 						}
 						return false;
 					}
-				}
 				break;
 			case Kns.num.Base:
 				if (Kns.isBaseSpecial(colour)) {
