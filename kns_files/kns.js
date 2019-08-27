@@ -83,6 +83,9 @@ var initAll = function(data) {
 	};
 
 	Kns.addLayer = function (canvases, position, id, cl, act, key) {
+		if (key != Kns.canvaKey[act]) {
+			return;
+		}
 		var folder = Kns.folders["animationLayers"][position];
 		while (id < 0) {
 			position++;
@@ -1092,6 +1095,8 @@ var initAll = function(data) {
 		yes.off();
 		yes.on("click", function() {
 			confirm.hide();
+			Kns.canvaKey = {};
+			Kns.canvaAnim = {};
 			func();
 		});
 	};
@@ -1245,8 +1250,6 @@ var initAll = function(data) {
 			}
 			$.post("kns_save", {code: Kns.code()}, function (data) {
 				$("body").html(data);
-				var cat = $("#cat");
-				cat.html(Kns.showCat());
 			});
 		});
 	});
