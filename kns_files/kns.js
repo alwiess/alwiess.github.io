@@ -166,7 +166,7 @@ var initAll = function(data) {
 			canvas.times = times;
 			canvases.push(canvas);
 			canvas.canvas.width = (canvas.times ? canvas.times.length : 1) * 100;
-			canvas.canvas.height = 154;
+			canvas.canvas.height = 150;
 		}
 		var tcanvas = canvas.canvas.getContext('2d');
 		if (cut_from === undefined) {
@@ -201,7 +201,7 @@ var initAll = function(data) {
 		var buffer = document.getElementById("buffer_" + act);
 		var bufferCtx = buffer.getContext('2d');
 		buffer.width = (canvas.times ? canvas.times.length : 1) * 100;
-		buffer.height = 154;
+		buffer.height = 150;
 
 		var mark = new Image();
 		var loadNext = function() {
@@ -244,21 +244,21 @@ var initAll = function(data) {
 	Kns.finishCanvas = function (canvases, act, key) {
 		Kns.canvaAnim[act] = {};
 		var canvas = document.getElementById("cat_" + act).getContext('2d');
-		canvas.clearRect(0, 0, 100, 154);
+		canvas.clearRect(0, 0, 100, 150);
 		var doSetTimeout = function (ci) {
 			setTimeout(function anim() {
 				if (key != Kns.canvaKey[act])
 					return;
 
 				canvas.globalCompositeOperation = 'source-over';
-				canvas.clearRect(0, 0, 100, 154);
+				canvas.clearRect(0, 0, 100, 150);
 				Kns.canvaAnim[act][ci]++;
 				if (Kns.canvaAnim[act][ci] >= canvases[ci].times.length) {
 					Kns.canvaAnim[act][ci] = 0;
 				}
 
 				for (var j = 0; j < canvases.length; j++) {
-					canvas.drawImage(canvases[j].canvas, 100 * Kns.canvaAnim[act][j], 0, 100, 154, 0, 0, 100, 154);
+					canvas.drawImage(canvases[j].canvas, 100 * Kns.canvaAnim[act][j], 0, 100, 150, 0, 0, 100, 150);
 				}
 
 				setTimeout(anim, canvases[ci].times[Kns.canvaAnim[act][ci]]);
