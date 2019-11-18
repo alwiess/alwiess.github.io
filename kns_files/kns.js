@@ -1,7 +1,7 @@
-var Kns = {};
+//var Kns = {};
 
 var initAll = function(data) {
-	Kns = data;
+	//Kns = data;
 	Kns.isAnimation = true;
 	Kns.error_tm = 0;
 	Kns.canvaKey = {};
@@ -35,8 +35,9 @@ var initAll = function(data) {
 		for (var i = 0; i < Kns.actions.length; i++) {
 			var id = Kns.actions[i].id;
 			var size = Kns.actions[i].size || 100;
-			html += '<div name="block-cat_' + id + '">';
+			html += '<div name="block-cat_' + id + '" style="width: ' + size + 'px;" class="cat_dis">';
 			html += '<canvas id="cat_' + id + '" width="100px" style="width: ' + size + 'px;"></canvas>';
+			html += '<div id="top_' + id + '" class="cat_dis"></div>';
 			html += '<canvas id="buffer_' + id + '" style="display: none;"></canvas>';
 			var times = 1;
 			if (Kns.compositeTimes[id]) {
@@ -89,7 +90,7 @@ var initAll = function(data) {
 		return (code * 5 + 50) / 100;
 	};
 
-	Kns.addLayer = function (canvases, position, id, cl, act, key) {
+	Kns.addLayer = function (canvases, position, id, act, key) {
 		if (key != Kns.canvaKey[act]) {
 			return;
 		}
@@ -205,7 +206,7 @@ var initAll = function(data) {
 
 		var mark = new Image();
 		var loadNext = function() {
-			Kns.addLayer(canvases, position, id - 1, cl, act, key);
+			Kns.addLayer(canvases, position, id - 1, act, key);
 		};
 		mark.onerror = loadNext;
 		mark.onload = function() {
@@ -272,6 +273,7 @@ var initAll = function(data) {
 			}
 		}
 		$("#canvacat").show();
+		$("#top_" + act).show();
 	};
 
 	Kns.generateHTMLofCat = function (arr, size, cl, act, url, layersProperty) {
@@ -286,7 +288,7 @@ var initAll = function(data) {
 		return result;
 	};
 
-	Kns.doCanvas = function (size, cl, act) {
+	Kns.doCanvas = function (size, act) {
 		var canvases = [];
 
 		for (var i = 0; i < Kns.folders.animationLayers.length; i++) {
@@ -300,7 +302,8 @@ var initAll = function(data) {
 			Kns.canvaKey[act] = 0;
 		}
 		Kns.canvaKey[act] += Math.floor(Math.random() * 100);
-		Kns.addLayer(canvases, 0, 0, cl, act, Kns.canvaKey[act]);
+		Kns.addLayer(canvases, 0, 0, act, Kns.canvaKey[act]);
+		Kns.doTop(act);
 	};
 
 	Kns.clearCanvas = function() {
@@ -310,13 +313,35 @@ var initAll = function(data) {
 			if (buffer) {
 				buffer.width = buffer.width;
 			}
+			$("#top_" + id).hide();
 		}
 	};
+	
+	Kns.doTop = function(act) {
+		var top = [];
+		for (var i = 0; i < Kns.actions.length; i++) {
+			if (Kns.actions[i].id != act) {
+				continue;
+			}
+			top = Kns.actions[i].top;
+			break;
+		}
+		if (top && top.length) {
+			var html = '';
+			for (var it = 0; it < top.length; it++) {
+				if (top[it].operation && top[it].operation != "replace") {
+					continue;
+				}
+				html += '<img src="cats/' + act + '/base/top/' + top[it].file + '">';
+			}
+		}
+		$("#top_" + act).html(html);
+	}
 
 	Kns.showCat = function (size, type, act, factors, dirt, costume) {
 		act = act || 0;
 		if (Kns.isAnimation) {
-			Kns.doCanvas(size, cl, act);
+			Kns.doCanvas(size, act);
 			$("#cat").hide();
 			return "";
 		} else {
@@ -367,14 +392,7 @@ var initAll = function(data) {
 		var html = "";
 		for (var i = 0; i < Kns.actions.length; i++) {
 			var size = Kns.actions[i].size || 100;
-			html += "<td>" + Kns.showCat(size, 0, Kns.actions[i].id, {
-				"costume": 0,
-				"dirt": 0,
-				"wound": 0,
-				"drown": 0,
-				"poisoning": 0,
-				"disease": 0
-			}) + "</td>";
+			html += "<td>" + Kns.showCat(size, 0, Kns.actions[i].id, {"costume": 0, "dirt": 0, "wound": 0, "drown": 0, "poisoning": 0, "disease": 0}) + "</td>";
 		}
 		html = "<table><tr>" + html + "</tr></table>";
 		$("#cat").html(html);
@@ -1351,5 +1369,6 @@ var initAll = function(data) {
 
 
 $(function() {
-	$.getJSON('./kns_files/kns_def.json', initAll);
+	//$.getJSON('./kns_files/kns_def.json', initAll);
+	initAll();
 });
