@@ -35,7 +35,7 @@ var initAll = function(data) {
 		for (var i = 0; i < Kns.actions.length; i++) {
 			var id = Kns.actions[i].id;
 			var size = Kns.actions[i].size || 100;
-			html += '<div name="block-cat_' + id + '" style="width: ' + size + 'px;" class="cat_dis">';
+			html += '<div name="block-cat_' + id + '" style="width: ' + size + 'px;height: ' + Math.ceil(size * 1.5) + 'px;" class="cat_dis">';
 			html += '<canvas id="cat_' + id + '" width="100px" style="width: ' + size + 'px;"></canvas>';
 			html += '<div id="top_' + id + '" class="cat_dis"></div>';
 			html += '<canvas id="buffer_' + id + '" style="display: none;"></canvas>';
