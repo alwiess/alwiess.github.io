@@ -139,17 +139,17 @@ input {
 #field{
 	min-width: 300px;
 	width: 370px;
-	height: 300px;
+	height: 312px;
 	border: 6px solid #000;
 	justify-content: space-between;
 	box-sizing: border-box;
 }
 #detail{
-	height: 300px;
+	height: 312px;
 	max-width: 240px;
 }
 #blocks{
-	height: 300px;
+	height: 312px;
 	overflow-y: auto;
 	width: 150px;
 	min-width: 150px;
