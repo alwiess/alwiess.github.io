@@ -176,11 +176,14 @@ input {
 }
 .btn-kns{
 	border: 1px solid black;
-	background: transparent;
+	background: #ffe;
 	text-align: center;
 	border-radius: .25rem;
 	line-height: 1.5;
 	font-size: 1rem;
+}
+.btn-kns:hover{
+	background-color: #FFE4C4;
 }
 .output-code{
 	border: 1px solid black;
@@ -189,6 +192,7 @@ input {
 	padding-left: 5px;
 	margin: 10px;
 	margin-right: 2px;
+	width: 400px;
 }
 
 .copy{
@@ -200,9 +204,14 @@ input {
 
 .input-code{
 	border: 1px solid black;
-	background: transparent;
-	text-align: center;
 	width: 100%;
+	background: #fedeab;
+	text-align: center;
+	border-radius: .25rem;
+}
+
+.input-code:hover{
+	background: #ffe;
 }
 
 .icon{
@@ -246,7 +255,7 @@ input {
 
 /*lib*/
 .modal-content{
-	background-color: #c1a982 !important;
+	background-color: #d7b680 !important;
 }
 .row-modal{
 	display: -ms-flexbox;
@@ -254,6 +263,7 @@ input {
 	-ms-flex-wrap: wrap;
 	flex-wrap: wrap;
 	justify-content: left;
+	margin-bottom: 5%;
 }
 
 .lib-group-elem{
@@ -263,8 +273,20 @@ input {
 .lib-elem{
 	margin-right: 2%;
 	margin-top: 2%;
-	border: 3px solid;
+	width: 105px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
+
+.modal-footer .btn-kns{
+	background-color: #fedeab;
+}
+
+.modal-footer .btn-kns:hover{
+	background-color: #ffe;
+}
+
 
 .caption-elem-lib{
 	margin: 3px;
