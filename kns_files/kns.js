@@ -558,7 +558,7 @@ var initAll = function(data) {
 				html += '</div></div>';
 			}
 			if (canAdd) {
-				html += '<div class="container-panel"><div class="tdarrow"></div><div class="td_plus" colspan="2"><a onclick="Kns.addDetail();" class="a_none">+</a></div></div>';
+				html += '<div class="container-panel"><div class="tdarrow"></div><div class="td_plus" colspan="2"><a class="btn-knc" onclick="Kns.addDetail();" class="a_none">+</a></div></div>';
 			}
 			html += "</div>";
 			if (!Kns.parts[Sel.now].noVariations) {
