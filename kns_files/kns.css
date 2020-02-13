@@ -125,21 +125,31 @@ input {
 .row, .row-cat, .row-detail, .row-color, .container-panel, .elem-row {
 	display: -webkit-flex;
 	display: flex;
+	overflow-y: auto;
+	overflow-y: overlay;
+}
+.cat_dis {
+	position: relative;
+	width: 100%;
+}
+.cat_dis > * {
+	position: absolute;
+	width: 100%;
 }
 #field{
 	min-width: 300px;
 	width: 370px;
-	height: 300px;
+	height: 312px;
 	border: 6px solid #000;
 	justify-content: space-between;
 	box-sizing: border-box;
 }
 #detail{
-	height: 300px;
+	height: 312px;
 	max-width: 240px;
 }
 #blocks{
-	height: 300px;
+	height: 312px;
 	overflow-y: auto;
 	width: 150px;
 	min-width: 150px;
@@ -203,8 +213,7 @@ input {
 }
 /*children row*/
 .cat{
-	min-width: 340px;
-	position: absolute;
+	min-width: 270px;
 }
 .row-color{
 	margin: 10px 0px;
