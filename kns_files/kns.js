@@ -2,6 +2,9 @@
 
 var initAll = function(data) {
 	//Kns = data;
+	Kns.circleR = 100;
+	Kns.smolCircleR = 25;
+	Kns.paletteScale = 1;
 	Kns.isAnimation = true;
 	Kns.error_tm = 0;
 	Kns.canvaKey = {};
@@ -12,6 +15,9 @@ var initAll = function(data) {
 	Kns.backupInfo = JSON.stringify(Kns.parts);
 	Kns.blocks = [["Основа", [0, 22, 23, 16], 15, 18, 17], ["Шея и морда", [1, 19, 7, 8, 10, 20, 21], 5, 11], ["Туловище", 4, 9, 12], ["Лапы и хвост", 6, 2, 3, 13, 14]];
 	Kns.isBaseSpecial = function (base) {
+		if (base.indexOf(":") !== -1) {
+			return false;
+		}
 		return !(Kns.palette[Kns.paletteNormalBases].colours.filter(function (el) {
 			return base == el.id;
 		})[0])
@@ -35,10 +41,11 @@ var initAll = function(data) {
 		for (var i = 0; i < Kns.actions.length; i++) {
 			var id = Kns.actions[i].id;
 			var size = Kns.actions[i].size || 100;
-			html += '<div name="block-cat_' + id + '" style="width: ' + size + 'px;height: ' + Math.ceil(size * 1.5) + 'px;" class="cat_dis">';
+			html += '<div id="block-cat_' + id + '" style="width: ' + size + 'px;height: ' + Math.ceil(size * 1.5) + 'px;" class="cat_dis">';
 			html += '<canvas id="cat_' + id + '" width="100px" style="width: ' + size + 'px;"></canvas>';
 			html += '<div id="top_' + id + '" class="cat_dis"></div>';
 			html += '<canvas id="buffer_' + id + '" style="display: none;"></canvas>';
+			html += '<canvas id="buffer_blend_' + id + '" style="display: none;"></canvas>';
 			var times = 1;
 			if (Kns.compositeTimes[id]) {
 				times += Kns.compositeTimes[id].length;
@@ -90,6 +97,125 @@ var initAll = function(data) {
 		return (code * 5 + 50) / 100;
 	};
 
+	Kns.canvasBlend = function (paletteId, path, colour, act, onload, key) {
+		if (key != Kns.canvaKey[act]) {
+			return;
+		}
+
+		var paths = colour.split("/");
+		for (var i = 0; i < paths.length - 1; i++) {
+			path += "/" + paths[i];
+		}
+		colour = paths[i];
+		var props = colour.split(":");
+		var palette = Kns.palette[paletteId];
+		if (!palette || !palette.circle || !props[2]) {
+			return null;
+		}
+
+		var brightness = props[2] / 100;
+		var hue = props[1] / 100;
+		var saturation = props[0] / 100;
+
+		var bufferCtx = document.getElementById("buffer_blend_" + act).getContext('2d');
+		bufferCtx.canvas.width *= 1;
+
+		// определяем оттенок
+		var borderPalette;
+		for (borderPalette = 1; borderPalette < palette.colours.length; borderPalette++) {
+			if (hue >= palette.colours[borderPalette - 1].point && hue <= palette.colours[borderPalette].point) {
+				break;
+			}
+		}
+		if (borderPalette === palette.colours.length) {
+			hue = 0;
+			borderPalette = 1;
+		}
+		var opacity;
+		var opacityFirst, opacitySecond;
+		borderPalette--;
+		var images = [];
+		for (var j = 0; j < 2 + (palette.center ? 1 : 0); j++) {
+			var gradSet;
+			switch (j) {
+				case 0:
+					gradSet = palette.colours[borderPalette];
+					opacity = 1;
+					break;
+				case 1:
+					gradSet = palette.colours[borderPalette + 1];
+					opacity = (hue - palette.colours[borderPalette].point) / (palette.colours[borderPalette + 1].point - palette.colours[borderPalette].point);;
+					break;
+				case 2:
+					opacity = 1 - saturation;
+					gradSet = palette.center;
+					break;
+				default:
+					break;
+			}
+
+			if (opacity <= 0) {
+				continue;
+			}
+			if (opacity >= 1) {
+				images = [];
+			}
+			for (var k = 1; k < gradSet.shades.length; k++) {
+				if (brightness >= gradSet.shades[k].bright && brightness <= gradSet.shades[k-1].bright) {
+					var opacityCoeff = gradSet.shades[k-1].bright - gradSet.shades[k].bright;
+					opacityFirst = 1 + (brightness - gradSet.shades[k-1].bright) / opacityCoeff;
+					opacitySecond = 1 + (gradSet.shades[k].bright - brightness) / opacityCoeff;
+					opacityFirst *= opacity;
+					opacitySecond *= opacity;
+
+					if (opacity >= 1) {
+						opacityFirst = 1;
+					}
+
+					if (opacitySecond >= 1) {
+						opacitySecond = 1;
+						images = [{image: gradSet.shades[k].id, opacity: opacitySecond}]; // непрозрачное изображение заменяет предыдущие
+						break;
+					}
+					opacityFirst /= (1 - opacitySecond);
+					images.push({image: gradSet.shades[k-1].id, opacity: opacityFirst});
+					images.push({image: gradSet.shades[k].id, opacity: opacitySecond});
+					break;
+				}
+			}
+		}
+		var loaded = function(allimages, success, first, obj) {
+			if (!first) {
+				var newImage = allimages[0].opacity;
+				allimages.splice(0, 1);
+
+				if (success) {
+					if (newImage > 0) {
+						bufferCtx.globalCompositeOperation = "source-over";
+						bufferCtx.globalAlpha = newImage;
+						bufferCtx.drawImage(obj, 0, 0);
+					}
+				}
+			}
+			if (!allimages.length) {
+				if (onload) {
+					onload(bufferCtx.canvas);
+				}
+				return;
+			}
+			var loadedSuccess = function(obj) {
+				loaded(allimages, true, false, obj);
+			}
+			var loadedError = function(obj) {
+				loaded(allimages, false, false, obj);
+			}
+			Kns.loadImage(p, path, allimages[0].image, loadedSuccess, loadedError, act, key);
+		}
+		loaded(images, true, true);
+
+		return {onload: true};
+	}
+
 	Kns.addLayer = function (canvases, position, id, act, key) {
 		if (key != Kns.canvaKey[act]) {
 			return;
@@ -131,7 +257,7 @@ var initAll = function(data) {
 		var name = Kns.parts[folder].folder;
 		opacity = Kns.getOpacityFromCode(opacity);
 
-		var palette;
+		var paletId;
 		var cut_from;
 		var times;
 		if (Kns.parts[folder].info && Sel.main[folder][id].id) {
@@ -139,13 +265,13 @@ var initAll = function(data) {
 				return el.id == Sel.main[folder][id].id;
 			})[0];
 			if (detail) {
-				palette = detail.palette;
+				paletId = detail.palette;
 				cut_from = detail.cut_from;
 				times = detail.times;
 			}
 		}
-		if (palette === undefined) {
-			palette = Kns.parts[folder].palette || 0;
+		if (paletId === undefined) {
+			paletId = Kns.parts[folder].palette || 0;
 		}
 		if (cut_from === undefined) {
 			cut_from = Kns.parts[folder].cut_from;
@@ -171,9 +297,8 @@ var initAll = function(data) {
 		}
 		var tcanvas = canvas.canvas.getContext('2d');
 		if (cut_from === undefined) {
-			palette = Kns.palette[palette];
-			if (palette.cut_from !== undefined && palette.cut) {
-				cut_from = palette.cut_from;
+			if (Kns.palette[paletId].cut_from !== undefined && Kns.palette[paletId].cut) {
+				cut_from = Kns.palette[paletId].cut_from;
 			}
 		}
 		if (cut_from || cut_from === Kns.num.Base) {
@@ -200,47 +325,66 @@ var initAll = function(data) {
 		}
 
 		var buffer = document.getElementById("buffer_" + act);
+		var buffer_blend = document.getElementById("buffer_blend_" + act);
 		var bufferCtx = buffer.getContext('2d');
-		buffer.width = (canvas.times ? canvas.times.length : 1) * 100;
-		buffer.height = 150;
+		buffer_blend.width = buffer.width = (canvas.times ? canvas.times.length : 1) * 100;
+		buffer_blend.height = buffer.height = 150;
 
-		var mark = new Image();
 		var loadNext = function() {
 			Kns.addLayer(canvases, position, id - 1, act, key);
 		};
-		mark.onerror = loadNext;
-		mark.onload = function() {
+		var addImage = function (obj) {
 			if (key != Kns.canvaKey[act]) {
 				return;
 			}
 			bufferCtx.globalCompositeOperation = "copy";
 			bufferCtx.globalAlpha = opacity;
-			bufferCtx.drawImage(this, 0, 0);
+			bufferCtx.drawImage(obj, 0, 0);
 			if (cut_from === undefined) {
 				for (var i = 0; i < (canvas.times ? canvas.times.length : 1); i += (times ? times.length : 1)) {
-					tcanvas.drawImage(buffer, i * 100, 0);
+					tcanvas.drawImage(bufferCtx.canvas, i * 100, 0);
 				}
 				loadNext();
 			} else {
-				var base = new Image();
-				base.onerror = loadNext;
-				base.onload = function() {
+				var doBlend = function(obj) {
 					if (key != Kns.canvaKey[act]) {
 						return;
 					}
 					bufferCtx.globalCompositeOperation = "source-in";
 					bufferCtx.globalAlpha = 1;
-					bufferCtx.drawImage(this, 0, 0);
+					bufferCtx.drawImage(obj, 0, 0);
 					for (var i = 0; i < (canvas.times ? canvas.times.length : 1); i += (times ? times.length : 1)) {
-						tcanvas.drawImage(buffer, i * 100, 0);
+						tcanvas.drawImage(bufferCtx.canvas, i * 100, 0);
 					}
 					loadNext();
 				};
-				base.src = "cats/" + act + "/" + cut_from + ".png";
+				Kns.loadImage(paletId, "cats/" + act, cut_from, doBlend, loadNext, act, key);
 			}
 		};
-		mark.src = "cats/" + act + "/" + name + "/" + img + ".png";
+		Kns.loadImage(paletId, "cats/" + act + "/" + name, img, addImage, loadNext, act, key);
 	};
+	Kns.loadImage = function(palette, path, filename, onload, onerror, act, key) {
+		if (key != Kns.canvaKey[act]) {
+			return;
+		}
+		if ((filename+'').indexOf(":") !== -1) {
+			var newImage = Kns.canvasBlend(palette, path, filename, act, onload, key);
+			if (newImage) {
+				if (!newImage.onload) {
+					newImage.onload = onload;
+					newImage.onload();
+				}
+				return;
+			}
+		}
+		var file = new Image();
+		var success = function() { onload(this) };
+		var error = function() { onerror(this) };
+		file.onload = success;
+		file.onerror = error;
+		file.src = path + "/" + filename + ".png";
+		return file;
+	}
 
 	Kns.finishCanvas = function (canvases, act, key) {
 		Kns.canvaAnim[act] = {};
@@ -558,7 +702,7 @@ var initAll = function(data) {
 				html += '</div></div>';
 			}
 			if (canAdd) {
-				html += '<div class="container-panel"><div class="tdarrow"></div><div class="td_plus" colspan="2"><a onclick="Kns.addDetail();" class="a_none">+</a></div></div>';
+				html += '<div class="container-panel"><div class="tdarrow"></div><div class="td_plus"><a onclick="Kns.addDetail();" class="a_none">+</a></div></div>';
 			}
 			html += "</div>";
 			if (!Kns.parts[Sel.now].noVariations) {
@@ -638,18 +782,24 @@ var initAll = function(data) {
 		}
 		Sel.main[Sel.now][dataNum].id = Kns.parts[Sel.now].info[Sel.nowSelected].id;
 		var palette = Kns.parts[Sel.now].info[Sel.nowSelected].palette || Kns.parts[Sel.now].palette || 0;
-		if (Kns.palette[palette].colours.filter(function (el) {
+		if (Kns.palette[palette].circle) {
+			if ((Sel.main[Sel.now][dataNum].colour+"").indexOf(":") === -1) {
+				Sel.main[Sel.now][dataNum].colour = Kns.palette[palette].default[0];
+			}
+		} else {
+			if (Kns.palette[palette].colours.filter(function (el) {
 			return el.id == Sel.main[Sel.now][dataNum].colour;
-		}).length < 1) {
-			for (var c = 0; c < Kns.palette[palette].colours.length; c++) {
-				if (+Kns.palette[palette].colours[c].id === 0) {
-					continue;
+			}).length < 1) {
+				for (var c = 0; c < Kns.palette[palette].colours.length; c++) {
+					if (+Kns.palette[palette].colours[c].id === 0) {
+						continue;
+					}
+					if (!Kns.partAvailable(false, Sel.now, Sel.main[Sel.now][dataNum].id, Kns.palette[palette].colours[c].id)) {
+						continue;
+					}
+					Sel.main[Sel.now][dataNum].colour = Kns.palette[palette].colours[c].id;
+					break;
 				}
-				if (!Kns.partAvailable(false, Sel.now, Sel.main[Sel.now][dataNum].id, Kns.palette[palette].colours[c].id)) {
-					continue;
-				}
-				Sel.main[Sel.now][dataNum].colour = Kns.palette[palette].colours[c].id;
-				break;
 			}
 		}
 		Kns.cleanMain(Sel.now);
@@ -705,6 +855,12 @@ var initAll = function(data) {
 			Kns.error("Невозможно добавить элемент.");
 			return;
 		}
+		var getDefault = function(palette) {
+			if (!palette.default) {
+				return palette.colours[0];
+			}
+			return palette.default[Math.max(Math.random() * palette.default.length, palette.default.length - 1)];
+		}
 		var info = Kns.parts[Sel.now].info;
 		if (!Kns.parts[Sel.now].noVariations) {
 			var selectedList = [];
@@ -725,15 +881,19 @@ var initAll = function(data) {
 					continue;
 				}
 				var palette = info[j].palette || Kns.parts[Sel.now].palette || 0;
-				for (var c = 0; c < Kns.palette[palette].colours.length; c++) {
-					if (+Kns.palette[palette].colours[c].id === 0) {
-						continue;
+				if (Kns.palette[palette].circle) {
+					data = {id: info[j].id, colour: getDefault(Kns.palette[palette])};
+				} else {
+					for (var c = 0; c < Kns.palette[palette].colours.length; c++) {
+						if (+Kns.palette[palette].colours[c].id === 0) {
+							continue;
+						}
+						if (!Kns.partAvailable(false, Sel.now, info[j].id, Kns.palette[palette].colours[c].id)) {
+							continue;
+						}
+						data = {id: info[j].id, colour: Kns.palette[palette].colours[c].id};
+						break;
 					}
-					if (!Kns.partAvailable(false, Sel.now, info[j].id, Kns.palette[palette].colours[c].id)) {
-						continue;
-					}
-					data = {id: info[j].id, colour: Kns.palette[palette].colours[c].id};
-					break;
 				}
 				break;
 			}
@@ -752,15 +912,19 @@ var initAll = function(data) {
 			for (var p in palList) {
 				if (!palList.hasOwnProperty(p)) continue;
 				palette = palList[p];
-				for (c = 0; c < Kns.palette[palette].colours.length; c++) {
-					if (+Kns.palette[palette].colours[c].id === 0) {
-						continue;
+				if (Kns.palette[palette].circle) {
+					data = {colour: getDefault(Kns.palette[palette])};
+				} else {
+					for (c = 0; c < Kns.palette[palette].colours.length; c++) {
+						if (+Kns.palette[palette].colours[c].id === 0) {
+							continue;
+						}
+						if (!Kns.partAvailable(false, Sel.now, 0, Kns.palette[palette].colours[c].id)) {
+							continue;
+						}
+						data = {colour: Kns.palette[palette].colours[c].id};
+						break;
 					}
-					if (!Kns.partAvailable(false, Sel.now, 0, Kns.palette[palette].colours[c].id)) {
-						continue;
-					}
-					data = {colour: Kns.palette[palette].colours[c].id};
-					break;
 				}
 			}
 		}
@@ -785,8 +949,110 @@ var initAll = function(data) {
 		Kns.refresh(false, true, false, false, true);
 	};
 
+	Kns.prerenderPalettes = function() {
+		var cR = Kns.circleR, cX = cR, cY = cR, cXC = cR*2, cYC = cR*2;
+		for (var id in Kns.palette) {
+			if (!Kns.palette.hasOwnProperty(id)) {
+				continue;
+			}
+			var palette = Kns.palette[id];
+
+			if (!palette.circle) {
+				continue;
+			}
+
+			var maxI = 0, i, centerI = [];
+			for (i = 0; i < palette.colours.length; i++) {
+				palette.colours[i].shades.sort(function(a, b) { return b.bright - a.bright; });
+				if (palette.colours[i].center) {
+					centerI.push(i);
+				} else {
+					if (palette.colours[i].point > maxI) {
+						maxI = palette.colours[i].point;
+					}
+				}
+			}
+			for (i = 0; i < centerI.length; i++) {
+				if (!palette.center) {
+					palette.center = JSON.parse(JSON.stringify(palette.colours[centerI[i]]));
+				}
+				palette.colours.splice(centerI[i], 1);
+			}
+			var circles = palette.colours, center = palette.center;
+			for (i = 0; i < circles.length; i++) {
+				circles[i].point /= maxI;
+				if (circles[i].point >= 1) {
+					var newcol = JSON.parse(JSON.stringify(circles[i]));
+					newcol.point = 0;
+					circles.push(newcol);
+				}
+			}
+			circles.sort(function(a, b) { return a.point - b.point; });
+
+			var elId = 'circle_palette_' + id;
+			var html = '<div id="div_' + elId + '"><canvas id="' + elId + '" width="' + cXC + '" height="' + cYC + '"></canvas></div>';
+
+			$("#color_circles").append(html);
+
+			var ctx = document.getElementById(elId).getContext('2d');
+			var ctx2 = document.getElementById("palettebuffer").getContext('2d');
+			var circum = Math.PI * 2 * 2 * cR;
+			ctx2.canvas.height = 1;
+			ctx2.canvas.width = circum;
+			var linearGrad = ctx2.createLinearGradient(0, 0, circum, 0);
+			for (i = 0; i < circles.length; i++) {
+				linearGrad.addColorStop(circles[i].point, circles[i].shades[0].colour);
+			}
+
+			function getLinearGradientColors(grad, length, ct) {
+				ct.fillStyle = grad;
+				ct.fillRect(0,0,length, 1);
+				return ct.getImageData(0,0,length,1).data
+					.reduce(function(out, channel, i) {
+						var px_index = Math.floor(i/4);
+						var px_slot = out[px_index] || (out[px_index] = []);
+						px_slot.push(channel);
+						if(px_slot.length === 4) {
+							px_slot[3] /= 255;
+							out[px_index] = 'rgba(' + px_slot.join() + ')';
+						}
+						return out;
+					}, []);
+			}
+			var colors = getLinearGradientColors(linearGrad, circum, ctx2);
+
+			ctx2.canvas.width = cXC;
+			ctx2.canvas.height = cYC;
+			ctx2.setTransform(1,0,0,1,cX, cY);
+			for(i = 0; i< colors.length; i++) {
+				ctx2.beginPath();
+				ctx2.moveTo(0,0);
+				ctx2.lineTo(cR, 0);
+				ctx2.strokeStyle = colors[i];
+				ctx2.stroke();
+				ctx2.rotate((Math.PI*2)/colors.length);
+			}
+
+			// return a Pattern so we can use it as fillStyle or strokeStyle
+			ctx.fillStyle = ctx2.createPattern(ctx2.canvas, 'no-repeat');
+			ctx.beginPath();
+			ctx.arc(cX, cY, cR,Math.PI*2,0);
+			ctx.fill();
+
+			if (center) {
+				var centerGrad = ctx.createRadialGradient(cX, cY, 0, cX, cY, cR);
+				centerGrad.addColorStop(0, center.shades[0].colour);
+				centerGrad.addColorStop(1, center.shades[0].colour + '00');
+				ctx.fillStyle = centerGrad;
+				ctx.fillRect(cX - cR, cY - cR,cX + cR, cY + cR);
+			}
+			ctx2.canvas.width = ctx2.canvas.height = 1;
+		}
+	}
+
 	Kns.drawPalette = function() {
 		var html = '';
+		var colourCircle = ($("#color_circle").html(''));
 		var p;
 		try {
 			p = Kns.parts[Sel.now].info[Sel.nowSelected].palette;
@@ -807,8 +1073,12 @@ var initAll = function(data) {
 			for (var data in Kns.parts[Sel.now].info) {
 				if (!Kns.parts[Sel.now].info.hasOwnProperty(data)) continue;
 				p = Kns.parts[Sel.now].info[data].palette;
-				if (p !== undefined && pList.indexOf(p) === -1) {
-					p = {palette: p, id: Kns.parts[Sel.now].info[data].id};
+				if (p === undefined) {
+					continue;
+				}
+				p = {palette: p, id: +Kns.parts[Sel.now].info[data].id};
+				if (!pList.filter(function (el) {
+					return el.id === p.id && +el.palette === p.palette; })[0]) {
 					pList.push(p);
 				}
 			}
@@ -818,8 +1088,38 @@ var initAll = function(data) {
 		for (var j in pList) {
 			if (!pList.hasOwnProperty(j)) continue;
 			p = pList[j].palette;
-			for (var i = 0; Kns.palette[p] && i < Kns.palette[p].colours.length; i++) {
-				if (Kns.palette[p].colours[i].name === '') {
+			if (!Kns.palette[p]) {
+				continue;
+			}
+			if (Kns.palette[p].circle && colour) {
+				var deltaX = Kns.smolCircleR * 7, deltaY = Kns.smolCircleR;
+				var tHeight = (Kns.circleR + deltaY) * 2, tWidth = Kns.smolCircleR * 6 + (Kns.circleR + Kns.smolCircleR) * 2;
+
+				var canvasCtx = document.getElementById("palettebuffer_work").getContext('2d');
+				var paletteCtx = document.getElementById('circle_palette_' + p).getContext('2d');
+				canvasCtx.canvas.width = tWidth;
+				canvasCtx.canvas.height = tHeight;
+				canvasCtx.drawImage(paletteCtx.canvas, deltaX, deltaY);
+
+				Kns.paletteScale = Math.min($("#field").outerWidth() / (tWidth), 1);
+				if (Kns.paletteScale < 1) {
+					tHeight *= Kns.paletteScale;
+					tWidth *= Kns.paletteScale;
+				}
+
+				var id = 0;
+				if (Kns.parts[Sel.now].info && Kns.parts[Sel.now].noVariations) {
+					id = pList[j].id;
+				}
+				var htmlTop = '<div id="show_palette_' + p + '" style="white-space:nowrap;"><canvas class="palette" height="' + tHeight + '" width="'+ tWidth + '" onclick="Kns.circlePaletteClicked(event);" data-detail="' + id + '"></canvas></div>';
+				colourCircle.append(htmlTop);
+
+				Kns.drawCircle(colour, p);
+
+				continue;
+			}
+			for (var i = 0; i < Kns.palette[p].colours.length; i++) {
+				if (Kns.palette[p].colours[i].name === '' || !Kns.palette[p].colours[i].name) {
 					continue;
 				}
 				if (!Kns.partAvailable(false, Sel.now, detailId, Kns.palette[p].colours[i].id)) {
@@ -849,8 +1149,79 @@ var initAll = function(data) {
 				"<input type='range' max='100' min='" + minOpacity + "' step='" + stepOpacity + "' value='" + opacity + "' onchange='Kns.selectedOpacity(this.value);' oninput='Kns.selectedOpacity(this.value);' id='opacity_range'>" +
 				"<span id='opacity_value'>" + opacitystr + "%</span></label>";
 		}
-		$("#color").html(html);
+		($("#color").html(html))[(html ? "show" : "hide")]();
+		(colourCircle)[(colourCircle.html() ? "show" : "hide")]();
 		$("[title]").tipTip();
+	};
+	Kns.drawCircle = function(colour, p, hold) {
+		var props = (colour+"").split(":");
+		var complete = true;
+		if (props.length !== 3) {
+			complete = false;
+			props = [0, 0, 100];
+		}
+
+		var palette = Kns.palette[p];
+		if (!palette.circle) {
+			return;
+		}
+
+		var finalCtx = $(".palette", "#show_palette_" + p)[0].getContext('2d');
+		var paletteCtx = document.getElementById("palettebuffer_work").getContext('2d');
+		var target_left = document.getElementById('target_img' + (hold === 'l' ? "_wide" : ''));
+		var target_right = document.getElementById('target_img' + (hold === 'r' ? "_wide" : ''));
+
+		var brightness = (100 - props[2]) * 2 * Kns.circleR / 100;
+		props[1] /= 100;
+		var angle = 2 * Math.PI * props[1];
+		var radius = props[0] * Kns.circleR / 100;
+
+		finalCtx.canvas.width++;finalCtx.canvas.width--;
+
+		finalCtx.scale(Kns.paletteScale, Kns.paletteScale);
+
+		finalCtx.drawImage(paletteCtx.canvas, 0, 0);
+		var i;
+		for (i = 1; i < palette.colours.length; i++) {
+			if (props[1] >= palette.colours[i - 1].point && props[1] <= palette.colours[i].point) {
+				break;
+			}
+		}
+		if (i === palette.colours.length) {
+			props[1] = 0;
+			i = 1;
+		}
+		var opacity = (props[1] - palette.colours[i - 1].point) / (palette.colours[i].point - palette.colours[i - 1].point);
+		i--;
+		for (var j = 0; j < 2 + (palette.center ? 1 : 0); j++) {
+			var gradSet;
+			switch (j) {
+				case 1:
+					opacity = 1 - props[0] / 100;
+				case 0:
+					gradSet = palette.colours[i + j];
+					break;
+				case 2:
+					gradSet = palette.center;
+					opacity = 1;
+					break;
+				default:
+					break;
+			}
+
+			var grad = finalCtx.createLinearGradient(Kns.smolCircleR * 2, Kns.smolCircleR + 2 * Kns.circleR, Kns.smolCircleR * 2, Kns.smolCircleR);
+			for (var k = 0; k < gradSet.shades.length; k++) {
+				grad.addColorStop(gradSet.shades[k].bright, gradSet.shades[k].colour);
+			}
+			finalCtx.fillStyle = grad;
+			finalCtx.fillRect(Kns.smolCircleR * 2, Kns.smolCircleR, Kns.smolCircleR, Kns.circleR * 2);
+			finalCtx.globalAlpha = opacity;
+		}
+		if (complete) {
+			finalCtx.drawImage(target_left, Kns.smolCircleR * 2, brightness + Kns.smolCircleR - target_left.width / 2);
+			finalCtx.drawImage(target_right, Kns.smolCircleR * 7 + Kns.circleR + radius * Math.cos(angle) - target_right.width / 2, Kns.smolCircleR + Kns.circleR + radius * Math.sin(angle) - target_right.width / 2);
+		}
+		finalCtx.scale(1, 1);
 	};
 
 	Kns.cleanMain = function (el) {
@@ -876,7 +1247,7 @@ var initAll = function(data) {
 				newArr.push(Sel.main[i][j]);
 			}
 			if (el == i) {
-				isNew = Sel.main[i].length != newArr.length;
+				isNew = Sel.main[i].length !== newArr.length;
 			}
 			Sel.main[i] = newArr;
 			if (!Sel.main[i].length && Kns.parts[i].obligatory && Kns.parts[i].default) {
@@ -937,18 +1308,26 @@ var initAll = function(data) {
 						palette = parts[part].palette || palette;
 						detail = parts[part].id;
 					}
-					var colours = [];
-					for (var c = 0; c < Kns.palette[palette].colours.length; c++) {
-						if (+Kns.palette[palette].colours[c].id === 0 || +Kns.palette[palette].colours[c].name === 0) {
-							continue;
+					if (Kns.palette[palette].circle) {
+						var props = [0, 0, 0];
+						for (var li = 0; li < 3; li++) {
+							props[li] = Math.round(Math.min(100, Math.random() * 101));
 						}
-						if (!Kns.partAvailable(false, i, detail, Kns.palette[palette].colours[c].id)) {
-							continue;
+						result.colour = props.join(":");
+					} else {
+						var colours = [];
+						for (var c = 0; c < Kns.palette[palette].colours.length; c++) {
+							if (+Kns.palette[palette].colours[c].id === 0 || +Kns.palette[palette].colours[c].name === 0) {
+								continue;
+							}
+							if (!Kns.partAvailable(false, i, detail, Kns.palette[palette].colours[c].id)) {
+								continue;
+							}
+							colours.push(Kns.palette[palette].colours[c].id);
 						}
-						colours.push(Kns.palette[palette].colours[c].id);
+						var colourNum = Math.floor(Math.random() * colours.length);
+						result.colour = colours[colourNum];
 					}
-					var colourNum = Math.floor(Math.random() * colours.length);
-					result.colour = colours[colourNum];
 					if (!Kns.parts[i].opaque) {
 						var maxOpacity = Kns.getOpacityForCode(100);
 						var opacity = Math.floor(Math.random() * (maxOpacity + 1));
@@ -1190,7 +1569,7 @@ var initAll = function(data) {
 		if (+selected.attr("data-num") == dataNumNew) {
 			dataNumNew = [dataNum, dataNum = dataNumNew][0];
 		}
-		if (+selected.attr("data-num") == dataNum) {
+		if (+selected.attr("data-num") === dataNum) {
 			selected.removeClass('sel');
 			$('#select' + dataNumNew).addClass('sel');
 		}
@@ -1206,6 +1585,8 @@ var initAll = function(data) {
 	Sel.nowSelected = 0;
 	Sel.block = 0;
 	Sel.random = false;
+
+	Kns.prerenderPalettes();
 
 	$("body").on("click", "a[href*=#]", function (e) {
 		e.preventDefault();
@@ -1364,7 +1745,65 @@ var initAll = function(data) {
 		alert("Код скопирован!");
 	};
 
+	Kns.circlePaletteClicked = function(evt) {
+		Kns.circlePaletteUpdated(evt.offsetX, evt.offsetY, evt.target);
+	}
+	Kns.circlePaletteUpdated = function(x, y, obj) {
+		x /= Kns.paletteScale;
+		y /= Kns.paletteScale;
+
+
+		var dataNum = 0;
+		if (!Kns.parts[Sel.now].noCombine) {
+			dataNum = $(".sel").attr("data-num");
+		}
+		var props = Sel.main[Sel.now][dataNum].colour.split(":");
+		if (props.length !== 3) {
+			props = [35, 60, 100];
+		}
+
+		var dx, dy;
+		dx = x - (Kns.smolCircleR * 7 + Kns.circleR);
+		dy = y - (Kns.smolCircleR + Kns.circleR);
+
+
+		if (dx*dx + dy*dy <= Kns.circleR * Kns.circleR) {
+			var radius = Math.sqrt(Math.max(dx*dx + dy*dy, 0));
+			props[0] = radius / Kns.circleR * 100;
+			var angle = Math.atan2(dy, dx) / Math.PI / 2;
+			if (angle < 0 || angle > 1) {
+				angle -= Math.floor(angle);
+			}
+			props[1] = angle * 100;
+		}
+
+		dx = x - (Kns.smolCircleR * 2);
+		dy = y - (Kns.smolCircleR);
+		if (dx >= 0 && dx <= Kns.smolCircleR && dy >= 0 && dy <= Kns.circleR * 2) {
+			var brightness = dy / (Kns.circleR * 2);
+			props[2] = (1 - brightness) * 100;
+		}
+
+		for (var i = 0; i < props.length; i++) {
+			props[i] = Math.round(props[i]);
+		}
+		if (!props[0]) {
+			props[1] = 0;
+		}
+
+		var id = $(obj).attr("data-detail");
+		Sel.main[Sel.now][dataNum].colour = props.join(":");
+		if (+id) {
+			Sel.main[Sel.now][dataNum].id = id;
+		}
+
+		Kns.cleanMain(Sel.now);
+		Kns.refresh(false, true, false, false, true);
+	}
+
 	Kns.start();
+
+	window.onresize = Kns.drawPalette;
 };
 
 
