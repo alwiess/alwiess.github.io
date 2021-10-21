@@ -312,6 +312,7 @@ var initAll = function(data) {
 		}
 		Kns.canvaKey[act] += Math.floor(Math.random() * 100);
 		Kns.addLayer(canvases, 0, 0, act, Kns.canvaKey[act]);
+		Kns.doTop(act);
 	};
 
 	Kns.clearCanvas = function() {
@@ -324,7 +325,7 @@ var initAll = function(data) {
 			$("#top_" + id).hide();
 		}
 	};
-	
+
 	Kns.doTop = function(act) {
 		var top = [];
 		for (var i = 0; i < Kns.actions.length; i++) {
@@ -349,7 +350,7 @@ var initAll = function(data) {
 	Kns.showCat = function (size, type, act, factors, dirt, costume) {
 		act = act || 0;
 		if (Kns.isAnimation) {
-			Kns.doCanvas(size, cl, act);
+			Kns.doCanvas(size, act);
 			$("#cat").hide();
 			return "";
 		} else {
