@@ -17,8 +17,8 @@ var initAll = function(data) {
 	};
 	Kns.isEyesSpecial = function (eye, vip) {
 		if (vip < 1) {
-		return !(Kns.palette[Kns.paletteNormalEyes].colours.filter(function (el) {
-			return eye == el.id;
+			return !(Kns.palette[Kns.paletteNormalEyes].colours.filter(function (el) {
+				return eye == el.id;
 			})[0]);
 		}
 		if (vip < 3) {
@@ -34,9 +34,8 @@ var initAll = function(data) {
 		for (var i = 0; i < Kns.actions.length; i++) {
 			var id = Kns.actions[i].id;
 			var size = Kns.actions[i].size || 100;
-			html += '<div name="block-cat_' + id + '" style="width: ' + size + 'px;height: ' + Math.ceil(size * 1.5) + 'px;" class="cat_dis">';
+			html += '<div name="block-cat_' + id + '">';
 			html += '<canvas id="cat_' + id + '" width="100px" style="width: ' + size + 'px;"></canvas>';
-			html += '<div id="top_' + id + '" class="cat_dis"></div>';
 			html += '<canvas id="buffer_' + id + '" style="display: none;"></canvas>';
 			var times = 1;
 			if (Kns.compositeTimes[id]) {
@@ -89,7 +88,7 @@ var initAll = function(data) {
 		return (code * 5 + 50) / 100;
 	};
 
-	Kns.addLayer = function (canvases, position, id, act, key) {
+	Kns.addLayer = function (canvases, position, id, cl, act, key) {
 		if (key != Kns.canvaKey[act]) {
 			return;
 		}
@@ -121,18 +120,13 @@ var initAll = function(data) {
 		var opacity = Sel.main[folder][id].opacity;
 		opacity = opacity === undefined ? Kns.getOpacityForCode(100) : opacity;
 
-		var img;
-		if (Sel.main[folder][id].id === undefined) {
-			img = Sel.main[folder][id].colour;
-		} else {
-			img = Sel.main[folder][id].id + "/" + Sel.main[folder][id].colour;
-		}
 		var name = Kns.parts[folder].folder;
 		opacity = Kns.getOpacityFromCode(opacity);
 
 		var palette;
 		var cut_from;
 		var times;
+		var noPalette = false;
 		if (Kns.parts[folder].info && Sel.main[folder][id].id) {
 			var detail = Kns.parts[folder].info.filter(function (el) {
 				return el.id == Sel.main[folder][id].id;
@@ -141,6 +135,7 @@ var initAll = function(data) {
 				palette = detail.palette;
 				cut_from = detail.cut_from;
 				times = detail.times;
+				noPalette = noPalette || detail.noPalette;
 			}
 		}
 		if (palette === undefined) {
@@ -149,6 +144,20 @@ var initAll = function(data) {
 		if (cut_from === undefined) {
 			cut_from = Kns.parts[folder].cut_from;
 		}
+		if (!noPalette) {
+			noPalette = !!Kns.parts[folder].noPalette;
+		}
+
+		var img;
+		if (Sel.main[folder][id].id === undefined) {
+			img = Sel.main[folder][id].colour;
+		} else {
+			img = Sel.main[folder][id].id;
+			if (!noPalette) {
+				img += "/" + Sel.main[folder][id].colour;
+			}
+		}
+
 		if (!times) {
 			times = Kns.parts[folder].times;
 		}
@@ -205,7 +214,7 @@ var initAll = function(data) {
 
 		var mark = new Image();
 		var loadNext = function() {
-			Kns.addLayer(canvases, position, id - 1, act, key);
+			Kns.addLayer(canvases, position, id - 1, cl, act, key);
 		};
 		mark.onerror = loadNext;
 		mark.onload = function() {
@@ -272,7 +281,6 @@ var initAll = function(data) {
 			}
 		}
 		$("#canvacat").show();
-		$("#top_" + act).show();
 	};
 
 	Kns.generateHTMLofCat = function (arr, size, cl, act, url, layersProperty) {
@@ -287,7 +295,7 @@ var initAll = function(data) {
 		return result;
 	};
 
-	Kns.doCanvas = function (size, act) {
+	Kns.doCanvas = function (size, cl, act) {
 		var canvases = [];
 
 		for (var i = 0; i < Kns.folders.animationLayers.length; i++) {
@@ -301,8 +309,7 @@ var initAll = function(data) {
 			Kns.canvaKey[act] = 0;
 		}
 		Kns.canvaKey[act] += Math.floor(Math.random() * 100);
-		Kns.addLayer(canvases, 0, 0, act, Kns.canvaKey[act]);
-		Kns.doTop(act);
+		Kns.addLayer(canvases, 0, 0, cl, act, Kns.canvaKey[act]);
 	};
 
 	Kns.clearCanvas = function() {
@@ -312,35 +319,13 @@ var initAll = function(data) {
 			if (buffer) {
 				buffer.width = buffer.width;
 			}
-			$("#top_" + id).hide();
 		}
 	};
-	
-	Kns.doTop = function(act) {
-		var top = [];
-		for (var i = 0; i < Kns.actions.length; i++) {
-			if (Kns.actions[i].id != act) {
-				continue;
-			}
-			top = Kns.actions[i].top;
-			break;
-		}
-		if (top && top.length) {
-			var html = '';
-			for (var it = 0; it < top.length; it++) {
-				if (top[it].operation && top[it].operation != "replace") {
-					continue;
-				}
-				html += '<img src="cats/' + act + '/base/top/' + top[it].file + '">';
-			}
-		}
-		$("#top_" + act).html(html);
-	}
 
 	Kns.showCat = function (size, type, act, factors, dirt, costume) {
 		act = act || 0;
 		if (Kns.isAnimation) {
-			Kns.doCanvas(size, act);
+			Kns.doCanvas(size, cl, act);
 			$("#cat").hide();
 			return "";
 		} else {
@@ -391,7 +376,14 @@ var initAll = function(data) {
 		var html = "";
 		for (var i = 0; i < Kns.actions.length; i++) {
 			var size = Kns.actions[i].size || 100;
-			html += "<td>" + Kns.showCat(size, 0, Kns.actions[i].id, {"costume": 0, "dirt": 0, "wound": 0, "drown": 0, "poisoning": 0, "disease": 0}) + "</td>";
+			html += "<td>" + Kns.showCat(size, 0, Kns.actions[i].id, {
+				"costume": 0,
+				"dirt": 0,
+				"wound": 0,
+				"drown": 0,
+				"poisoning": 0,
+				"disease": 0
+			}) + "</td>";
 		}
 		html = "<table><tr>" + html + "</tr></table>";
 		$("#cat").html(html);
@@ -637,7 +629,10 @@ var initAll = function(data) {
 		}
 		Sel.main[Sel.now][dataNum].id = Kns.parts[Sel.now].info[Sel.nowSelected].id;
 		var palette = Kns.parts[Sel.now].info[Sel.nowSelected].palette || Kns.parts[Sel.now].palette || 0;
-		if (Kns.palette[palette].colours.filter(function (el) {
+		var noPalette = Kns.parts[Sel.now].info[Sel.nowSelected].noPalette || Kns.parts[Sel.now].noPalette || 0;
+		if (noPalette) {
+			Sel.main[Sel.now][dataNum].colour = "1";
+		} else if (Kns.palette[palette].colours.filter(function (el) {
 			return el.id == Sel.main[Sel.now][dataNum].colour;
 		}).length < 1) {
 			for (var c = 0; c < Kns.palette[palette].colours.length; c++) {
@@ -936,7 +931,7 @@ var initAll = function(data) {
 						var part = Math.floor(Math.random() * parts.length);
 						result.id = parts[part].id;
 						pastParts.push(parts[part].id);
-						palette = parts[part].palette || palette;
+						palette = parts[part].palette !== undefined ? parts[part].palette : palette;
 						detail = parts[part].id;
 					}
 					var colours = [];
@@ -1073,11 +1068,11 @@ var initAll = function(data) {
 			case Kns.num.LeftEye:
 			case Kns.num.RightEye:
 				if (Kns.isEyesSpecial(colour, Kns.vipLevel)) {
-						if (showError) {
+					if (showError) {
 						Kns.error("Вам не доступны специальные глаза.");
-						}
-						return false;
 					}
+					return false;
+				}
 				break;
 			case Kns.num.Base:
 				if (Kns.isBaseSpecial(colour)) {
@@ -1240,7 +1235,7 @@ var initAll = function(data) {
 							continue;
 						}
 						var parts = now[layer];
-						var palette = info.palette | 0;
+						var palette = info.palette || 0;
 						var detail = {id: 0};
 						if (info.info) {
 							if (!parts.id) {
@@ -1251,7 +1246,7 @@ var initAll = function(data) {
 								return el.id == parts.id;
 							})[0];
 							if (detail && Kns.partAvailable(false, i, detail.id)) {
-								palette = detail.palette | 0;
+								palette = detail.palette || info.palette || 0;
 							} else {
 								Kns.error("Сохранение невозможно: неверный элемент");
 								return;
@@ -1371,6 +1366,6 @@ var initAll = function(data) {
 
 
 $(function() {
-	//$.getJSON('./kns_files/kns_def.json', initAll);
-	initAll();
+	//$.getJSON('../js/cw3/kns_def.json', initAll);
+	initAll(true)
 });
