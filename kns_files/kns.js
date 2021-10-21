@@ -787,11 +787,20 @@ var initAll = function(data) {
 	Kns.drawPalette = function() {
 		var html = '';
 		var p;
+		var detail;
 		try {
-			p = Kns.parts[Sel.now].info[Sel.nowSelected].palette;
+			detail = Kns.parts[Sel.now].info[Sel.nowSelected];
+			if (detail.noPalette) {
+				return;
+			}
+			p = detail.palette;
 		} catch (e) {
 		}
-		p = p || Kns.parts[Sel.now].palette || 0;
+		detail = Kns.parts[Sel.now];
+		if (detail.noPalette) {
+			return;
+		}
+		p = p || detail.palette || 0;
 		p = Sel.nowSelected === undefined ? -1 : p;
 		var dataNum = Kns.parts[Sel.now].noCombine ? 0 : $(".sel").attr("data-num");
 		var pList = [{palette: p, id: 1}];
