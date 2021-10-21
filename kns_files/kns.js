@@ -10,7 +10,6 @@ var initAll = function(data) {
 	Kns.vipLevel = 0;
 	Kns.detailVariant = 1;
 	Kns.backupInfo = JSON.stringify(Kns.parts);
-	Kns.blocks = [["Основа", [0, 22, 23, 16], 15, 18, 17], ["Шея и морда", [1, 19, 7, 8, 10, 20, 21], 5, 11], ["Туловище", 4, 9, 12], ["Лапы и хвост", 6, 2, 3, 13, 14]];
 	Kns.isBaseSpecial = function (base) {
 		return !(Kns.palette[Kns.paletteNormalBases].colours.filter(function (el) {
 			return base == el.id;
