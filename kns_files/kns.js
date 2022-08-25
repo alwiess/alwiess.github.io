@@ -10,7 +10,6 @@ var initAll = function(data) {
 	Kns.vipLevel = 0;
 	Kns.detailVariant = 1;
 	Kns.backupInfo = JSON.stringify(Kns.parts);
-	Kns.blocks = [["Основа", [0, 22, 23, 16], 15, 18, 17], ["Шея и морда", [1, 19, 7, 8, 10, 20, 21], 5, 11], ["Туловище", 4, 9, 12], ["Лапы и хвост", 6, 2, 3, 13, 14]];
 	Kns.isBaseSpecial = function (base) {
 		return !(Kns.palette[Kns.paletteNormalBases].colours.filter(function (el) {
 			return base == el.id;
@@ -18,8 +17,8 @@ var initAll = function(data) {
 	};
 	Kns.isEyesSpecial = function (eye, vip) {
 		if (vip < 1) {
-		return !(Kns.palette[Kns.paletteNormalEyes].colours.filter(function (el) {
-			return eye == el.id;
+			return !(Kns.palette[Kns.paletteNormalEyes].colours.filter(function (el) {
+				return eye == el.id;
 			})[0]);
 		}
 		if (vip < 3) {
@@ -122,18 +121,13 @@ var initAll = function(data) {
 		var opacity = Sel.main[folder][id].opacity;
 		opacity = opacity === undefined ? Kns.getOpacityForCode(100) : opacity;
 
-		var img;
-		if (Sel.main[folder][id].id === undefined) {
-			img = Sel.main[folder][id].colour;
-		} else {
-			img = Sel.main[folder][id].id + "/" + Sel.main[folder][id].colour;
-		}
 		var name = Kns.parts[folder].folder;
 		opacity = Kns.getOpacityFromCode(opacity);
 
 		var palette;
 		var cut_from;
 		var times;
+		var noPalette = false;
 		if (Kns.parts[folder].info && Sel.main[folder][id].id) {
 			var detail = Kns.parts[folder].info.filter(function (el) {
 				return el.id == Sel.main[folder][id].id;
@@ -142,6 +136,7 @@ var initAll = function(data) {
 				palette = detail.palette;
 				cut_from = detail.cut_from;
 				times = detail.times;
+				noPalette = noPalette || detail.noPalette;
 			}
 		}
 		if (palette === undefined) {
@@ -150,6 +145,20 @@ var initAll = function(data) {
 		if (cut_from === undefined) {
 			cut_from = Kns.parts[folder].cut_from;
 		}
+		if (!noPalette) {
+			noPalette = !!Kns.parts[folder].noPalette;
+		}
+
+		var img;
+		if (Sel.main[folder][id].id === undefined) {
+			img = Sel.main[folder][id].colour;
+		} else {
+			img = Sel.main[folder][id].id;
+			if (!noPalette) {
+				img += "/" + Sel.main[folder][id].colour;
+			}
+		}
+
 		if (!times) {
 			times = Kns.parts[folder].times;
 		}
@@ -316,7 +325,7 @@ var initAll = function(data) {
 			$("#top_" + id).hide();
 		}
 	};
-	
+
 	Kns.doTop = function(act) {
 		var top = [];
 		for (var i = 0; i < Kns.actions.length; i++) {
@@ -392,7 +401,14 @@ var initAll = function(data) {
 		var html = "";
 		for (var i = 0; i < Kns.actions.length; i++) {
 			var size = Kns.actions[i].size || 100;
-			html += "<td>" + Kns.showCat(size, 0, Kns.actions[i].id, {"costume": 0, "dirt": 0, "wound": 0, "drown": 0, "poisoning": 0, "disease": 0}) + "</td>";
+			html += "<td>" + Kns.showCat(size, 0, Kns.actions[i].id, {
+				"costume": 0,
+				"dirt": 0,
+				"wound": 0,
+				"drown": 0,
+				"poisoning": 0,
+				"disease": 0
+			}) + "</td>";
 		}
 		html = "<table><tr>" + html + "</tr></table>";
 		$("#cat").html(html);
@@ -638,7 +654,10 @@ var initAll = function(data) {
 		}
 		Sel.main[Sel.now][dataNum].id = Kns.parts[Sel.now].info[Sel.nowSelected].id;
 		var palette = Kns.parts[Sel.now].info[Sel.nowSelected].palette || Kns.parts[Sel.now].palette || 0;
-		if (Kns.palette[palette].colours.filter(function (el) {
+		var noPalette = Kns.parts[Sel.now].info[Sel.nowSelected].noPalette || Kns.parts[Sel.now].noPalette || 0;
+		if (noPalette) {
+			Sel.main[Sel.now][dataNum].colour = "1";
+		} else if (Kns.palette[palette].colours.filter(function (el) {
 			return el.id == Sel.main[Sel.now][dataNum].colour;
 		}).length < 1) {
 			for (var c = 0; c < Kns.palette[palette].colours.length; c++) {
@@ -788,11 +807,14 @@ var initAll = function(data) {
 	Kns.drawPalette = function() {
 		var html = '';
 		var p;
+		var detail;
 		try {
-			p = Kns.parts[Sel.now].info[Sel.nowSelected].palette;
+			detail = Kns.parts[Sel.now].info[Sel.nowSelected];
+			p = detail.noPalette ? -1 : detail.palette;
 		} catch (e) {
 		}
-		p = p || Kns.parts[Sel.now].palette || 0;
+		detail = Kns.parts[Sel.now];
+		p = p || (detail.noPalette ? -1 : detail.palette) || 0;
 		p = Sel.nowSelected === undefined ? -1 : p;
 		var dataNum = Kns.parts[Sel.now].noCombine ? 0 : $(".sel").attr("data-num");
 		var pList = [{palette: p, id: 1}];
@@ -934,7 +956,7 @@ var initAll = function(data) {
 						var part = Math.floor(Math.random() * parts.length);
 						result.id = parts[part].id;
 						pastParts.push(parts[part].id);
-						palette = parts[part].palette || palette;
+						palette = parts[part].palette !== undefined ? parts[part].palette : palette;
 						detail = parts[part].id;
 					}
 					var colours = [];
@@ -1071,11 +1093,11 @@ var initAll = function(data) {
 			case Kns.num.LeftEye:
 			case Kns.num.RightEye:
 				if (Kns.isEyesSpecial(colour, Kns.vipLevel)) {
-						if (showError) {
+					if (showError) {
 						Kns.error("Вам не доступны специальные глаза.");
-						}
-						return false;
 					}
+					return false;
+				}
 				break;
 			case Kns.num.Base:
 				if (Kns.isBaseSpecial(colour)) {
