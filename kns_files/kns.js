@@ -1386,6 +1386,14 @@ var initAll = function(data) {
 		alert("Код скопирован!");
 	};
 
+	Kns.getPng = function() {
+		const canvas = document.getElementById('cat_0');
+		const img = canvas.toDataURL('image/png');
+		var link = document.createElement("a");
+		link.setAttribute("href", img);
+		link.setAttribute("download", "image.png");
+		link.click();
+	};
 	Kns.start();
 };
 
