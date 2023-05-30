@@ -1386,11 +1386,27 @@ var initAll = function(data) {
 		alert("Код скопирован!");
 	};
 
-	Kns.getPng = function() {
-		const canvas = document.getElementById('cat_0');
-		const img = canvas.toDataURL('image/png');
+	Kns.getPng = function () {
+		const cat_0 = document.getElementById('cat_0');
+		const cat_1 = document.getElementById('cat_1');
+		const cat__1 = document.getElementById('cat_-1');
+		const cat_5 = document.getElementById('cat_5');
+		const cat_2 = document.getElementById('cat_2');
+
+		const canvasForPng = document.createElement("canvas");
+		canvasForPng.width = 300;
+		canvasForPng.height = 300;
+		const ctx = canvasForPng.getContext("2d");
+
+		cat_0 && ctx.drawImage(cat_0, 0, 0);
+		cat_1 && ctx.drawImage(cat_1, 100, 0);
+		cat__1 && ctx.drawImage(cat__1, 200, 0);
+		cat_5 && ctx.drawImage(cat_5, 0, 160);
+		cat_2 && ctx.drawImage(cat_2, 100, 160);
+
+		const img = canvasForPng.toDataURL('image/png');
 		var link = document.createElement("a");
-		link.setAttribute("href", img);
+		img && link.setAttribute("href", img);
 		link.setAttribute("download", "image.png");
 		link.click();
 	};
