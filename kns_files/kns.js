@@ -1393,6 +1393,56 @@ var initAll = function(data) {
 		const cat_5 = document.getElementById('cat_5');
 		const cat_2 = document.getElementById('cat_2');
 
+		// const canvasForPng = document.createElement("canvas");
+		// canvasForPng.width = 300;
+		// canvasForPng.height = 300;
+		// const ctx = canvasForPng.getContext("2d");
+
+		// cat_0 && ctx.drawImage(cat_0, 0, 0);
+		// cat_1 && ctx.drawImage(cat_1, 100, 0);
+		// cat__1 && ctx.drawImage(cat__1, 200, 0);
+		// cat_5 && ctx.drawImage(cat_5, 0, 160);
+		// cat_2 && ctx.drawImage(cat_2, 100, 160);
+
+		// const img = canvasForPng.toDataURL('image/png');
+		// var link = document.createElement("a");
+		// img && link.setAttribute("href", img);
+		// link.setAttribute("download", "image.png");
+		// link.click();
+		const cat_0_image = cat_0.toDataURL('image/png');
+		var link = document.createElement("a");
+		cat_0_image && link.setAttribute("href", cat_0_image);
+		link.setAttribute("download", "cat_0_image.png");
+		link.click();
+
+		const cat_1_image = cat_1.toDataURL('image/png');
+		cat_1_image && link.setAttribute("href", cat_1_image);
+		link.setAttribute("download", "cat_1_image.png");
+		link.click();
+
+		const cat__1_image = cat__1.toDataURL('image/png');
+		cat__1_image && link.setAttribute("href", cat__1_image);
+		link.setAttribute("download", "cat__1_image.png");
+		link.click();
+
+		const cat_5_image = cat_5.toDataURL('image/png');
+		cat_5_image && link.setAttribute("href", cat_5_image);
+		link.setAttribute("download", "cat_5_image.png");
+		link.click();
+
+		const cat_2_image = cat_2.toDataURL('image/png');
+		cat_2_image && link.setAttribute("href", cat_2_image);
+		link.setAttribute("download", "cat_2_image.png");
+		link.click();
+	};
+
+	Kns.getPngSeparately = function () {
+		const cat_0 = document.getElementById('cat_0');
+		const cat_1 = document.getElementById('cat_1');
+		const cat__1 = document.getElementById('cat_-1');
+		const cat_5 = document.getElementById('cat_5');
+		const cat_2 = document.getElementById('cat_2');
+
 		const canvasForPng = document.createElement("canvas");
 		canvasForPng.width = 300;
 		canvasForPng.height = 300;
