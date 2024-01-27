@@ -1,6 +1,6 @@
 //var Kns = {};
 
-var initAll = function(data) {
+var initAll = function (data) {
 	//Kns = data;
 	Kns.isAnimation = true;
 	Kns.error_tm = 0;
@@ -28,7 +28,7 @@ var initAll = function(data) {
 		}
 	};
 
-	Kns.start = function() {
+	Kns.start = function () {
 		/// инициализация буферов канв для котиков
 		var html = '';
 		for (var i = 0; i < Kns.actions.length; i++) {
@@ -54,7 +54,7 @@ var initAll = function(data) {
 		Kns.refresh(true);
 	};
 
-	Kns.code = function() {
+	Kns.code = function () {
 		var code = [];
 		for (var i = 0; i < Kns.parts.length; i++) {
 			var now = [];
@@ -214,11 +214,11 @@ var initAll = function(data) {
 		buffer.height = 150;
 
 		var mark = new Image();
-		var loadNext = function() {
+		var loadNext = function () {
 			Kns.addLayer(canvases, position, id - 1, act, key);
 		};
 		mark.onerror = loadNext;
-		mark.onload = function() {
+		mark.onload = function () {
 			if (key != Kns.canvaKey[act]) {
 				return;
 			}
@@ -233,7 +233,7 @@ var initAll = function(data) {
 			} else {
 				var base = new Image();
 				base.onerror = loadNext;
-				base.onload = function() {
+				base.onload = function () {
 					if (key != Kns.canvaKey[act]) {
 						return;
 					}
@@ -315,7 +315,7 @@ var initAll = function(data) {
 		Kns.doTop(act);
 	};
 
-	Kns.clearCanvas = function() {
+	Kns.clearCanvas = function () {
 		for (var i = 0; i < Kns.actions.length; i++) {
 			var id = Kns.actions[i].id;
 			var buffer = document.getElementById("cat_" + id);
@@ -326,7 +326,7 @@ var initAll = function(data) {
 		}
 	};
 
-	Kns.doTop = function(act) {
+	Kns.doTop = function (act) {
 		var top = [];
 		for (var i = 0; i < Kns.actions.length; i++) {
 			if (Kns.actions[i].id != act) {
@@ -397,7 +397,7 @@ var initAll = function(data) {
 		return "background-image:url('cats/" + act + "/" + name + "/" + id + ".png');";
 	};
 
-	Kns.drawCat = function() {
+	Kns.drawCat = function () {
 		var html = "";
 		for (var i = 0; i < Kns.actions.length; i++) {
 			var size = Kns.actions[i].size || 100;
@@ -415,7 +415,7 @@ var initAll = function(data) {
 		$("#code").val(Kns.code());
 	};
 
-	Kns.drawBlocks = function() {
+	Kns.drawBlocks = function () {
 		var html = "", blocks = [];
 		for (var block = 0; block < Kns.blocks.length; block++) {
 			var table = '<table class="block" id="block' + block + '"><tr><td><b>' + Kns.blocks[block][0] + '</b></td></tr>';
@@ -439,7 +439,7 @@ var initAll = function(data) {
 		html = blocks + html;
 		$("#blocks").html(html);
 	};
-	Kns.adaptBlocks = function() {
+	Kns.adaptBlocks = function () {
 		for (var block = 0; block < Kns.blocks.length; block++) {
 			var showAny = false;
 			for (var i = 1; i < Kns.blocks[block].length; i++) {
@@ -711,7 +711,7 @@ var initAll = function(data) {
 		if (menu.classList.contains('sel')) {
 			return;
 		}
-		$(".sel").each(function() {
+		$(".sel").each(function () {
 			$(this).removeClass('sel')
 		});
 		menu.className += 'sel';
@@ -719,7 +719,7 @@ var initAll = function(data) {
 		Kns.refresh(false, true, false, false, Kns.detailVariant != 1, true);
 	};
 
-	Kns.addDetail = function() {
+	Kns.addDetail = function () {
 		if (Kns.parts[Sel.now].noCombine && Kns.parts[Sel.now][0]) {
 			Kns.error("Невозможно добавить элемент.");
 			return;
@@ -751,7 +751,7 @@ var initAll = function(data) {
 					if (!Kns.partAvailable(false, Sel.now, info[j].id, Kns.palette[palette].colours[c].id)) {
 						continue;
 					}
-					data = {id: info[j].id, colour: Kns.palette[palette].colours[c].id};
+					data = { id: info[j].id, colour: Kns.palette[palette].colours[c].id };
 					break;
 				}
 				break;
@@ -778,7 +778,7 @@ var initAll = function(data) {
 					if (!Kns.partAvailable(false, Sel.now, 0, Kns.palette[palette].colours[c].id)) {
 						continue;
 					}
-					data = {colour: Kns.palette[palette].colours[c].id};
+					data = { colour: Kns.palette[palette].colours[c].id };
 					break;
 				}
 			}
@@ -804,7 +804,7 @@ var initAll = function(data) {
 		Kns.refresh(false, true, false, false, true);
 	};
 
-	Kns.drawPalette = function() {
+	Kns.drawPalette = function () {
 		var html = '';
 		var p;
 		var detail;
@@ -817,7 +817,7 @@ var initAll = function(data) {
 		p = p || (detail.noPalette ? -1 : detail.palette) || 0;
 		p = Sel.nowSelected === undefined ? -1 : p;
 		var dataNum = Kns.parts[Sel.now].noCombine ? 0 : $(".sel").attr("data-num");
-		var pList = [{palette: p, id: 1}];
+		var pList = [{ palette: p, id: 1 }];
 		if (dataNum === undefined) {
 			p = -1;
 			pList = [];
@@ -830,7 +830,7 @@ var initAll = function(data) {
 				if (!Kns.parts[Sel.now].info.hasOwnProperty(data)) continue;
 				p = Kns.parts[Sel.now].info[data].palette;
 				if (p !== undefined && pList.indexOf(p) === -1) {
-					p = {palette: p, id: Kns.parts[Sel.now].info[data].id};
+					p = { palette: p, id: Kns.parts[Sel.now].info[data].id };
 					pList.push(p);
 				}
 			}
@@ -909,7 +909,7 @@ var initAll = function(data) {
 			Kns.drawDetail(false);
 		}
 	};
-	Kns.reset = function() {
+	Kns.reset = function () {
 		Sel.main = [];
 		for (var i = 0; i < Kns.parts.length; i++) {
 			Sel.main[i] = Kns.parts[i].default ? [JSON.parse(JSON.stringify(Kns.parts[i].default))] : [];
@@ -1127,11 +1127,11 @@ var initAll = function(data) {
 		}
 		$("#error").text(text).show();
 		clearTimeout(Kns.error_tm);
-		Kns.error_tm = setTimeout(function() {
+		Kns.error_tm = setTimeout(function () {
 			Kns.hideError();
 		}, 10000);
 	};
-	Kns.hideError = function() {
+	Kns.hideError = function () {
 		clearTimeout(Kns.error_tm);
 		$("#error").fadeOut(500);
 	};
@@ -1141,7 +1141,7 @@ var initAll = function(data) {
 		confirm.show();
 		var yes = $("#confirm_yes");
 		yes.off();
-		yes.on("click", function() {
+		yes.on("click", function () {
 			confirm.hide();
 			Kns.canvaKey = {};
 			Kns.canvaAnim = {};
@@ -1233,8 +1233,8 @@ var initAll = function(data) {
 		e.preventDefault();
 	});
 
-	$("#sbm").on("click", function() {
-		Kns.confirm("Сохранить окрас?", function() {
+	$("#sbm").on("click", function () {
+		Kns.confirm("Сохранить окрас?", function () {
 			//validate
 			try {
 				for (var i = 0; i < Kns.parts.length; i++) {
@@ -1261,7 +1261,7 @@ var initAll = function(data) {
 						}
 						var parts = now[layer];
 						var palette = info.palette | 0;
-						var detail = {id: 0};
+						var detail = { id: 0 };
 						if (info.info) {
 							if (!parts.id) {
 								Kns.error("Сохранение невозможно: некорректный код элемента");
@@ -1296,15 +1296,15 @@ var initAll = function(data) {
 				Kns.error("Ошибка валидации, сохранение невозможно");
 				return;
 			}
-			$.post("kns_save", {code: Kns.code()}, function (data) {
+			$.post("kns_save", { code: Kns.code() }, function (data) {
 				$("body").html(data);
 			});
 		});
 	});
 
-	$("body").on("click", "[class^=edit]", function() {
+	$("body").on("click", "[class^=edit]", function () {
 		Sel.now = parseInt($(this).attr('class').replace('edit', ''));
-		$(".selected_block").each(function() {
+		$(".selected_block").each(function () {
 			$(this).removeClass('selected_block')
 		});
 		$(this).addClass('selected_block');
@@ -1342,35 +1342,35 @@ var initAll = function(data) {
 		Kns.refresh(false, true, false, false, true);
 	});
 
-	$("#random").on("click", function() {
+	$("#random").on("click", function () {
 		Kns.confirm("Сгенерировать случайный окрас? Текущий окрас будет потерян.", Kns.random);
 	});
 
-	$("#random2").on("click", function() {
-		Kns.confirm("Сгенерировать очень случайный окрас? Текущий окрас будет потерян.", function() {
+	$("#random2").on("click", function () {
+		Kns.confirm("Сгенерировать очень случайный окрас? Текущий окрас будет потерян.", function () {
 			Kns.random(1);
 		});
 	});
 
-	$("#reset").on("click", function() {
+	$("#reset").on("click", function () {
 		Kns.confirm("Сбросить окрас?", Kns.reset);
 	});
 
 	$("#error").on("click", Kns.hideError);
 
-	$("#confirm_no").on("click", function() {
+	$("#confirm_no").on("click", function () {
 		$("#confirm").hide();
 	});
 
-	$(".field_palette").on('click', function() {
+	$(".field_palette").on('click', function () {
 		$('#field').css('background-image', this.style.backgroundImage);
-		$(".selected_field").each(function() {
+		$(".selected_field").each(function () {
 			$(this).removeClass('selected_field')
 		});
 		$(this).addClass("selected_field");
 	});
 
-	Kns.copyCode = function() {
+	Kns.copyCode = function () {
 		var copyText = document.getElementById("code");
 		copyText.select();
 
@@ -1386,11 +1386,60 @@ var initAll = function(data) {
 		alert("Код скопирован!");
 	};
 
+	Kns.Png_cat_0 = function () {
+		const cat_0 = document.getElementById('cat_0');
+		Kns.dowloadPng(cat_0, 'cat_0')
+	};
+	Kns.Png_cat_1 = function () {
+		const cat_1 = document.getElementById('cat_1');
+		Kns.dowloadPng(cat_1, 'cat_1')
+	};
+	Kns.Png_cat__1 = function () {
+		const cat__1 = document.getElementById('cat_-1');
+		Kns.dowloadPng(cat__1, 'cat_-1')
+	};
+	Kns.Png_cat_5 = function () {
+		const cat_5 = document.getElementById('cat_5');
+		Kns.dowloadPng(cat_5, 'cat_5')
+	};
+	Kns.Png_cat_2 = function () {
+		const cat_2 = document.getElementById('cat_2');
+		Kns.dowloadPng(cat_2, 'cat_2')
+	};
+
+	Kns.dowloadPng = function (image, name) {
+		const newimage = image.toDataURL('image/png');
+		var link = document.createElement("a");
+		newimage && link.setAttribute("href", newimage);
+		link.setAttribute("download", name);
+		link.click();
+	}
+
+	Kns.getPng = function () {
+		const cat_0 = document.getElementById('cat_0');
+		const cat_1 = document.getElementById('cat_1');
+		const cat__1 = document.getElementById('cat_-1');
+		const cat_5 = document.getElementById('cat_5');
+		const cat_2 = document.getElementById('cat_2');
+
+		const canvasForPng = document.createElement("canvas");
+		canvasForPng.width = 300;
+		canvasForPng.height = 300;
+		const ctx = canvasForPng.getContext("2d");
+
+		cat_0 && ctx.drawImage(cat_0, 0, 0);
+		cat_1 && ctx.drawImage(cat_1, 100, 0);
+		cat__1 && ctx.drawImage(cat__1, 200, 0);
+		cat_5 && ctx.drawImage(cat_5, 0, 160);
+		cat_2 && ctx.drawImage(cat_2, 100, 160);
+
+		Kns.dowloadPng(canvasForPng, 'all-poses')
+	};
 	Kns.start();
 };
 
 
-$(function() {
+$(function () {
 	//$.getJSON('./kns_files/kns_def.json', initAll);
 	initAll();
 });
